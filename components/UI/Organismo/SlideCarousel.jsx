@@ -102,7 +102,7 @@ export default function SlideCarousel(props){
         const date = item.allEditions  && item.allEditions[0] && item.allEditions[0].date ? item.allEditions[0].date : null;
         const fecha = date != null ? date.replaceAll("-","/") : null
         return (
-            <div css={slideCSS.slidepost}>
+            <div css={slideCSS.slidepost} key={item.cityname}>
                 <Box>
                     {fecha != null ? 
                          <Image src={`https://rm.metrolatam.com/${fecha}/${item.cityslug}/thumb_1-${item.allEditions[0].newcode}.jpg`} width='300' height="350" />
