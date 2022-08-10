@@ -18,7 +18,7 @@ export default function Home({data}) {
     console.log('la data', data)
 
     const listCountry = data.map((item) => (
-        <SectionBox>
+        <SectionBox key={item.countryname}>
           <HeadSection titleSection={item.countryname} slug={item.countryslug} options={
             <>
             <Select defaultValue={'Ciudad de México'} options={[
