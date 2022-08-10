@@ -2,10 +2,17 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import { css } from '@emotion/react';
 import Slide from '@mui/material/Slide';
+import Image from 'next/image';
 
 
 
 export default function SlideCarousel(props){
+
+    const {cities} = props
+    //https://rm.metrolatam.com/2022/08/10/metro-sao-paulo/thumb_1-0c13345a768dec6623a4ab663a980c84.jpg
+    //const urlimagen = `https://rm.metrolatam.com/${data.allEditions[0].date}/${data.allEditions[0].date}`
+
+    console.log('data>', cities)
 
     const slideCSS = {
         wrapslide: css({
@@ -90,6 +97,23 @@ export default function SlideCarousel(props){
       
       
       }
+
+      const dataSlidePost = cities.map((item) => {
+        const date = item.allEditions  && item.allEditions[0] && item.allEditions[0].date ? item.allEditions[0].date : null;
+        const fecha = date != null ? date.replaceAll("-","/") : null
+        return (
+            <div css={slideCSS.slidepost}>
+                <Box>
+                    {fecha != null ? 
+                         <Image src={`https://rm.metrolatam.com/${fecha}/${item.cityslug}/thumb_1-${item.allEditions[0].newcode}.jpg`} width='300' height="350" />
+                    : null}
+                
+                <h6>{item.cityname}</h6>
+                </Box>
+            </div>
+            )
+
+        })
     
     return (
         <div css={slideCSS.wrapslide}>
@@ -99,41 +123,7 @@ export default function SlideCarousel(props){
         <div css={slideCSS.wrap}>
             
             
-                <div css={slideCSS.slidepost}>
-                    <Box  >
-                    <h3>slide 1</h3>
-                    </Box>
-                </div>
-                <div css={slideCSS.slidepost}>
-                    <Box >
-                    <h3>slide 2</h3>
-                    </Box>
-                </div>
-                <div css={slideCSS.slidepost}>
-                    <Box  >
-                    <h3>slide 3</h3>
-                    </Box>
-                </div>
-                <div css={slideCSS.slidepost}>
-                    <Box  >
-                    <h3>slide 4</h3>
-                    </Box>
-                </div>
-                <div css={slideCSS.slidepost}>
-                    <Box  >
-                    <h3>slide 5</h3>
-                    </Box>
-                </div>
-                <div css={slideCSS.slidepost}>
-                    <Box  >
-                    <h3>slide 6</h3>
-                    </Box>
-                </div>
-                <div css={slideCSS.slidepost}>
-                    <Box >
-                    <h3>slide 7</h3>
-                    </Box>
-                </div>
+                {dataSlidePost}
                 
             
     </div>

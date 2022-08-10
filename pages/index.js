@@ -4,12 +4,7 @@ import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
 import Select from '@/components/UI/Atomo/Select'
 import MoreOptions from '@/components/UI/Atomo/MoreOptions'
-import Carousel from '@/components/UI/Organismo/Carousel'
 import SlideCarousel from '@/components/UI/Organismo/SlideCarousel'
-
-
-
-const widthItemSlide = '80%'
 
 
 const arrayOptions = [
@@ -18,15 +13,12 @@ const arrayOptions = [
 ]
 
 
+export default function Home({data}) {
 
-
-export default function Home() {
-
-  return (
-     
-      <Layout>
-        <SectionBox>
-          <HeadSection titleSection={"Mexico"} options={
+    const listCountry = data.map((item) => (
+      
+        <SectionBox key={item.countryname}>
+          <HeadSection titleSection={item.countryname} slug={item.countryslug} options={
             <>
             <Select defaultValue={'Ciudad de México'} options={[
               {'item':'opcion1', 'link': '/link1'}, 
@@ -36,25 +28,21 @@ export default function Home() {
             
           } colorBullet={"#ccc"} />
 
-          <Carousel />
+
+          <SlideCarousel cities={item.cities} />
 
         </SectionBox>
-        <SectionBox>
-          <HeadSection titleSection={"Chile"}  />
-          <Carousel />
 
-        </SectionBox>
-        <SectionBox>
-          <HeadSection titleSection={"Ecuadro"} options={"Opciones"}  colorBullet={'red'}/>
 
-          {/* <Slide onScroll={listenerScroll} direction="right" in={true} mountOnEnter unmountOnExit >
-          </Slide> */}
+    ));
 
-          <SlideCarousel />
-             
-          
+  return (
+     
+      <Layout>
 
-        </SectionBox>
+        {listCountry}
+        
+       
 
 
       </Layout>
@@ -62,3 +50,21 @@ export default function Home() {
 
   )
 }
+
+
+
+
+  export async function getStaticProps() {
+    // Call an external API endpoint to get posts.
+    // You can use any data fetching library
+    const res = await fetch('https://api.readmetro.com/country.json');
+    const data = await res.json()
+  
+    // By returning { props: { posts } }, the Blog component
+    // will receive `posts` as a prop at build time
+    return {
+      props: {
+        data,
+      },
+    }
+  }
