@@ -1,14 +1,14 @@
 
 import * as React from 'react';
-import { alpha } from '@mui/material/styles';
-import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
+
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
@@ -31,16 +31,53 @@ import PTflag from '@/public/img/flags/PT@3x.png'
 import USflag from '@/public/img/flags/US@3x.png'
 
 
+import useScrollTrigger from '@mui/material/useScrollTrigger';
 
 
+function ElevationScroll(props) {
+  const { children, window } = props;
+  // Note that you normally won't need to set the window ref as useScrollTrigger
+  // will default to window.
+  // This is only being set here because the demo is in an iframe.
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 35,
+    target: window ? window() : undefined,
+  });
 
+  return React.cloneElement(children, {
+    elevation: trigger ? 4 : 0,
+  });
+}
 
-export default function Header() {
+ElevationScroll.propTypes = {
+  children: PropTypes.element.isRequired,
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window: PropTypes.func,
+};
+
+const elevationFixedWrap = css({
+  '& [elevation="4"]':{
+    position:'fixed',
+    top:0,
+    width: '100%',
+    zIndex: 10
+  }
+
+})
+
+export default function Header(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+
+
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -138,8 +175,8 @@ export default function Header() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1}}>
-      <AppBar color="inherit" position="sticky" sx={{ boxShadow: 1 }} >
+    <>
+      <AppBar color="inherit" position="relative" sx={{ boxShadow: 1 }} >
         <Toolbar>
             <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
                 <IconButton
@@ -236,13 +273,20 @@ export default function Header() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box sx={{flexGrow:1}}>
-        <Box sx={{ display: { xs: 'block', md: 'none' }}}>
-          <SearchDate  />
+      
+        <Box sx={{flexGrow:1}} css={elevationFixedWrap}>
+          <ElevationScroll {...props}>
+          <Box sx={{ display: { xs: 'block', md: 'none' }}}>
+              <SearchDate  />
+          </Box>
+          </ElevationScroll>
         </Box>
-      </Box>
+      
+     
+     
+      
       {renderMobileMenu}
       {renderMenu}
-    </Box>
+    </>
   );
 }

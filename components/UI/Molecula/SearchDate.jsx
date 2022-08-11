@@ -26,7 +26,7 @@ const boxSearch = (theme) => css({
 
 })
     
-;
+
 
 const SearchDate = (props) => {
 
