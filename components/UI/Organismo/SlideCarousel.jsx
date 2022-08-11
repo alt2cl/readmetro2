@@ -27,11 +27,12 @@ export default function SlideCarousel(props){
             '-webkit-overflow-scrolling': 'touch',
             'scroll-snap-type': 'x mandatory',
             'scroll-padding': '0 0 0 0',
-            'scroll-behavior': 'smooth'
+            // 'scroll-behavior': 'smooth'
         }),
         slidepost: (theme) => css({
             width: '250px',
             height: '250px',
+            overflow: 'hidden',
             
             [theme.breakpoints.up('xs')]: {
                 flex: '0 0 40vw',
@@ -117,17 +118,11 @@ export default function SlideCarousel(props){
     
     return (
         <div css={slideCSS.wrapslide}>
-
-        
-        <Slide onScroll={listenerScroll} direction="up" in={true} mountOnEnter unmountOnExit>
-        <div css={slideCSS.wrap}>
-            
-            
-                {dataSlidePost}
-                
-            
-    </div>
-    </Slide>
-    </div>
+            <Slide onScroll={listenerScroll} direction="right" in={true} mountOnEnter unmountOnExit>
+                <div css={slideCSS.wrap}>
+                        {dataSlidePost}
+                </div>
+            </Slide>
+        </div>
     )
 }
