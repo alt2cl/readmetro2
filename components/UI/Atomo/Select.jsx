@@ -15,7 +15,7 @@ export default function SelectSmall(props) {
   };
 
   const opciones = options.map((menuitem) => (
-    <MenuItem value={menuitem.link}>{menuitem.item}</MenuItem>
+    <MenuItem value={menuitem.link} key={menuitem.item}>{menuitem.item}</MenuItem>
 
   ))
 
