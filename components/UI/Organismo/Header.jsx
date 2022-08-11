@@ -20,7 +20,8 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import Logo from '@/public/img/logos/read-metro-color.svg';
 import Image from 'next/image'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import Link from '@/src/Link'
+import Link from '@/src/Link';
+import SearchDate from '@/components/UI/Molecula/SearchDate';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { css } from '@emotion/react';
 import ESflag from '@/public/img/flags/ES@3x.png'
@@ -33,55 +34,6 @@ import USflag from '@/public/img/flags/US@3x.png'
 
 
 
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
-
-const boxSearch = theme => css`
-    display: flex;
-    flex-grow: 1;
-    background-color: ${theme.palette.primary.main};
-    color:${theme.palette.common.white};
-    border-radius: 4px;
-    margin-right: 1rem
-`;
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -200,62 +152,13 @@ export default function Header() {
                     <Image src={Logo} alt="Read Metro Logo"/>
                 </IconButton>
             </Box>
-          
-         
-          
-          <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
-           
-            <Button
-                    size="large"
-                    edge="end"
-                    aria-label="account of current user"
-                    aria-controls={menuId}
-                    aria-haspopup="true"
-                    onClick={handleProfileMenuOpen}
-                    color="inherit"
-                    sx={{bgcolor:'primary.light'}}
-                    >
-                        <Typography
-                            variant="subtitle2"
-                            noWrap
-                            component="div"
-                            sx={{ display: { xs: 'block', sm: 'block' } }}
-                        >
-                            Mundo
-                        </Typography>
-                        <KeyboardArrowDownIcon />
-                </Button>
-                <IconButton
-                    size="large"
-                    edge="end"
-                    aria-label="account of current user"
-                    aria-controls={menuId}
-                    aria-haspopup="true"
-                    onClick={handleCalendarMenuOpen}
-                    color="inherit"
-                    sx={{display: 'flex', justifyContent: 'space-between',flexGrow: 1}}
-                    >
-                        <Typography
-                            variant="subtitle2"
-                            noWrap
-                            component="div"
-                            sx={{ display: { xs: 'block', sm: 'block' } }}
-                        >
-                            Hoy - Domingo 17 de Sept 2022
-                        </Typography>
-                        <CalendarMonthIcon sx={{ mr: 2 }}/>
-                </IconButton>
-          {/* <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search> */}
 
-          </Box>
+            <Box sx={{flexGrow:1}}>
+              <Box sx={{ display: { xs: 'none', md: 'block' }}}>
+                <SearchDate  />
+              </Box>
+            </Box>
+         
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 0 }}>
             <Button
                 size="large"
@@ -333,6 +236,11 @@ export default function Header() {
           </Box>
         </Toolbar>
       </AppBar>
+      <Box sx={{flexGrow:1}}>
+        <Box sx={{ display: { xs: 'block', md: 'none' }}}>
+          <SearchDate  />
+        </Box>
+      </Box>
       {renderMobileMenu}
       {renderMenu}
     </Box>

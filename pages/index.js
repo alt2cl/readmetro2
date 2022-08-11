@@ -3,38 +3,48 @@ import Layout from '@/components/Layout/layout'
 import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
 import Select from '@/components/UI/Atomo/Select'
-import MoreOptions from '@/components/UI/Atomo/MoreOptions'
 import SlideCarousel from '@/components/UI/Organismo/SlideCarousel'
 
 
-const arrayOptions = [
-  {item:'Juan', link: '/link1'}, 
-  {item:'Andres', link: '/link2'}
-]
+
 
 
 export default function Home({data}) {
 
-    const listCountry = data.map((item) => (
+    const listCountry = data.map((item) => {
+
+        console.log('valor item desde el index:', item)
+        let selectOptions = []
+        let defaultSelectoption =""
+
+        item.cities.map((ele,i)=>{
+          if(i == 0) {
+            defaultSelectoption = {'item':`${ele.cityname}`, 'link': `/${ele.cityslug}`}
+          } else {
+            selectOptions.push(
+              {'item':`${ele.cityname}`, 'link': `/${ele.cityslug}`}
+            )
+          }
+        } 
+        )
+          
+       
+
+
       
-        <SectionBox key={item.countryname}>
+        return(<SectionBox key={item.countryname}>
           <HeadSection titleSection={item.countryname} slug={item.countryslug} options={
             <>
-            <Select defaultValue={'Ciudad de México'} options={[
-              {'item':'opcion1', 'link': '/link1'}, 
-              {'item':'opcion2', 'link': '/link2'}]} />
-              <MoreOptions options={arrayOptions} />
+            <Select defaultValue={defaultSelectoption} options={selectOptions} />
             </>
-            
-          } colorBullet={"#ccc"} />
-
+          } colorBullet={"#ccc"} data={item}/>
 
           <SlideCarousel cities={item.cities} />
 
-        </SectionBox>
+        </SectionBox>)
 
 
-    ));
+        });
 
   return (
      

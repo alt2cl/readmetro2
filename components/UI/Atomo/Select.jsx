@@ -4,30 +4,35 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function SelectSmall() {
-  const [age, setAge] = React.useState('');
+export default function SelectSmall(props) {
+  const [city, setCity] = React.useState('');
+  const {options, defaultValue} = props
+
+  console.log('defaultSelectoption', defaultValue)
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setCity(event.target.value);
   };
 
+  const opciones = options.map((menuitem) => (
+    <MenuItem value={menuitem.link}>{menuitem.item}</MenuItem>
+
+  ))
+
   return (
-    <FormControl sx={{ mr: 1, minWidth: 180 }} size="small">
-      <InputLabel id="demo-select-small"> Ciudad de México</InputLabel>
+    <FormControl sx={{ mr: 1, minWidth: 180 }} size="small" fullWidth>
+      {/* <InputLabel id="demo-select-small"> {defaultValue.item}</InputLabel> */}
       <Select
-        labelId="demo-select-small"
-        id="demo-select-small"
-        value={age}
-        label="Ciudad de México"
+        id="select-city"
+        value={city}
+        displayEmpty
+        inputProps={{ 'aria-label': 'Without label' }}
         onChange={handleChange}
-        
       >
         <MenuItem value="">
-          <em>Ciudad de Mexico</em>
-        </MenuItem>
-        <MenuItem value={10}>Chiapas</MenuItem>
-        <MenuItem value={20}>Guerrero</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
+            <em>{defaultValue.item}</em>
+          </MenuItem>
+        {opciones}
       </Select>
     </FormControl>
   );

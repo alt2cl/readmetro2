@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { css } from '@emotion/react';
 import Slide from '@mui/material/Slide';
 import Image from 'next/image';
+import { Typography } from '@mui/material';
 
 
 
@@ -31,7 +32,7 @@ export default function SlideCarousel(props){
         }),
         slidepost: (theme) => css({
             width: '250px',
-            height: '250px',
+            height: '350px',
             overflow: 'hidden',
             'scroll-snap-align': 'center',
             
@@ -108,8 +109,15 @@ export default function SlideCarousel(props){
                     {fecha != null ? 
                          <Image src={`https://rm.metrolatam.com/${fecha}/${item.cityslug}/thumb_1-${item.allEditions[0].newcode}.jpg`} width='300' height="350" />
                     : null}
-                
-                <h6>{item.cityname}</h6>
+
+                    <Typography 
+                        variant="h6"
+                        noWrap
+                        component="h6"
+                         >
+                    {item.cityname} 
+                    </Typography>
+           
                 </Box>
             </div>
             )
@@ -123,6 +131,7 @@ export default function SlideCarousel(props){
                         {dataSlidePost}
                 </div>
             </Slide>
+            
         </div>
     )
 }
