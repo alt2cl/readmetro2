@@ -22,7 +22,7 @@ export default function SlideCarousel(props){
             display: 'flex',
             overflowX: 'scroll',
             overflowY: 'hidden',
-            padding: '0 15px',
+            padding: '0px',
             transition: 'all 1s ease',
             '-webkit-overflow-scrolling': 'touch',
             'scroll-snap-type': 'x mandatory',
@@ -33,14 +33,14 @@ export default function SlideCarousel(props){
             width: '250px',
             height: '250px',
             overflow: 'hidden',
+            'scroll-snap-align': 'center',
             
             [theme.breakpoints.up('xs')]: {
-                flex: '0 0 40vw',
-                'scroll-snap-align': 'center none',
+                flex: '0 0 250px',
+                
             },
             [theme.breakpoints.up('md')]: {
-                flex: '0 0 30vw',
-                'scroll-snap-align': 'left none',
+                flex: '0 0 300px',
             }
             
     
