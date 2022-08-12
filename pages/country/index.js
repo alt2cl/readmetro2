@@ -15,19 +15,11 @@ const arrayOptions = [
 
 
 export default function Home({data}) {
-    console.log('la data', data)
+    // console.log('la data', data)
 
     const listCountry = data.map((item) => (
         <SectionBox key={item.countryname}>
-          <HeadSection titleSection={item.countryname} slug={item.countryslug} options={
-            <>
-            <Select defaultValue={'Ciudad de México'} options={[
-              {'item':'opcion1', 'link': '/link1'}, 
-              {'item':'opcion2', 'link': '/link2'}]} />
-              <MoreOptions options={arrayOptions} />
-            </>
-            
-          } colorBullet={"#ccc"} />
+          <HeadSection titleSection={item.countryname} slug={item.countryslug} colorBullet={"#ccc"} />
 
           <Carousel />
 

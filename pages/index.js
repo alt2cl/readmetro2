@@ -13,7 +13,7 @@ export default function Home({data}) {
 
     const listCountry = data.map((item) => {
 
-        console.log('valor item desde el index:', item)
+        // console.log('valor item desde el index:', item)
         let selectOptions = []
         let defaultSelectoption =""
 

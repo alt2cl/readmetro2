@@ -14,7 +14,7 @@ const arrayOptions = [
 
 export default function ListEdiciones({data}) {
 
-    console.log('la data', data)
+    // console.log('la data', data)
 
     const listsections = data.cities.map((item, i) => {
 
@@ -32,7 +32,7 @@ export default function ListEdiciones({data}) {
       return(
         <SectionBox key={item.cityslug}>
         <HeadSection titleSection={item.cityname} slug={item.cityslug} colorBullet={"#ccc"} data={item}/>
-        <SlideCarouselCountry todayEdition={item.allEditions[0]} slug={item.cityslug}/>
+        {item.allEditions.length > 0 &&  <SlideCarouselCountry todayEdition={item.allEditions[0]} slug={item.cityslug}/>}
       </SectionBox>
       )
 

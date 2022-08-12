@@ -10,8 +10,6 @@ import { Typography } from '@mui/material';
 export default function SlideCarousel(props){
 
     const {cities} = props
-    //https://rm.metrolatam.com/2022/08/10/metro-sao-paulo/thumb_1-0c13345a768dec6623a4ab663a980c84.jpg
-    //const urlimagen = `https://rm.metrolatam.com/${data.allEditions[0].date}/${data.allEditions[0].date}`
 
 
     const slideCSS = {
@@ -55,7 +53,7 @@ export default function SlideCarousel(props){
           let scrollLeftElement = element.scrollLeft;
           let anchoventana = window.innerWidth
 
-          console.log('scroll event', childElements.lenght, scrollLeftElement)
+        //   console.log('scroll event', childElements.lenght, scrollLeftElement)
       
           //element.clearTimeout( isScrolling );
       
