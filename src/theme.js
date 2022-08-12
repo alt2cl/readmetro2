@@ -13,6 +13,7 @@ const linkColor = "#067134"
 // Create a theme instance.
 const theme = createTheme({
   palette: {
+    mode:'light',
     primary: {
       main: '#2A9858',
       contrastText: '#fff'
@@ -22,6 +23,10 @@ const theme = createTheme({
     },
     error: {
       main: red.A400,
+    },
+    background: {
+      default:'#F8FAFD',
+
     },
     fayerwayer: {
         primary:{

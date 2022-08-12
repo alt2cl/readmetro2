@@ -27,10 +27,6 @@ export default function Home({data}) {
           }
         } 
         )
-          
-       
-
-
       
         return(<SectionBox key={item.countryname}>
           <HeadSection titleSection={item.countryname} slug={item.countryslug} options={
@@ -47,22 +43,11 @@ export default function Home({data}) {
         });
 
   return (
-     
       <Layout>
-
         {listCountry}
-        
-       
-
-
       </Layout>
-    
-
   )
 }
-
-
-
 
   export async function getStaticProps() {
     // Call an external API endpoint to get posts.

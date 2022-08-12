@@ -7,9 +7,9 @@ import { Typography } from '@mui/material';
 
 
 
-export default function SlideCarousel(props){
+export default function SlideCarouselCountry(props){
 
-    const {cities} = props
+    const {cities, todayEdition, slug} = props
     //https://rm.metrolatam.com/2022/08/10/metro-sao-paulo/thumb_1-0c13345a768dec6623a4ab663a980c84.jpg
     //const urlimagen = `https://rm.metrolatam.com/${data.allEditions[0].date}/${data.allEditions[0].date}`
 
@@ -99,52 +99,89 @@ export default function SlideCarousel(props){
       
       }
 
-      const dataSlidePost = cities.map((item) => {
-        const date = item.allEditions  && item.allEditions[0] && item.allEditions[0].date ? item.allEditions[0].date : null;
-        const fecha = date != null ? date.replaceAll("-","/") : null;
-        let foto = null
-        if(fecha) {
-            foto = `https://rm.metrolatam.com/${fecha}/${item.cityslug}/thumb_1-${item.allEditions[0].newcode}.webp`
+      const dataSlidePost = ""
+      let dataSlidePostCountry = ""
 
+      if(todayEdition != null){
+        
+        const cantPages = todayEdition.pages;
+        const imagenes = [];
+        const date = todayEdition.date ? todayEdition.date : null;
+        const fecha = date != null ? date.replaceAll("-","/") : null;
+
+        for (let index = 1; index < cantPages; index++) {
+            imagenes.push(
+                {
+                foto:`https://rm.metrolatam.com/${fecha}/${slug}/thumb_${index}-${todayEdition.newcode}.webp`,
+                link: `google.com`
+                }
+
+            )
+            
         }
 
-        const myLoader = ({ src, width, quality }) => {
-            return `${foto}?w=${200}&q=${quality || 70}`
-          }
-  
-       
-        return (
-            <div css={slideCSS.slidepost} key={item.cityname}>
+        dataSlidePostCountry = imagenes.map((item) => {
+
+            return (
+                <div css={slideCSS.slidepost} key={item.cityname}>
                 <Box>
-                    {fecha && foto != null ? 
-                         <Image src={foto} 
-                         loader={myLoader}
+                    {imagenes != null ? 
+                         <Image src={item.foto} 
                          layout="responsive"
                          width={200}
                          height={250}
-                         alt={item.cityname}
+                         alt={item.link}
                           />
                     : null}
-
-                    <Typography 
-                        variant="h6"
-                        noWrap
-                        component="h6"
-                         >
-                    {item.cityname} 
-                    </Typography>
-           
                 </Box>
             </div>
             )
-
         })
+
+
+      } else {
+        dataSlidePost = cities.map((item) => {
+            const date = item.allEditions  && item.allEditions[0] && item.allEditions[0].date ? item.allEditions[0].date : null;
+            const fecha = date != null ? date.replaceAll("-","/") : null;
+            let foto = null
+            if(fecha) {
+                foto = `https://rm.metrolatam.com/${fecha}/${item.cityslug}/thumb_1-${item.allEditions[0].newcode}.webp`
+            }
+            const myLoader = ({ src, width, quality }) => {
+                return `${foto}?w=${200}&q=${quality || 70}`
+              }
+            return (
+                <div css={slideCSS.slidepost} key={item.cityname}>
+                    <Box>
+                        {fecha && foto != null ? 
+                             <Image src={foto} 
+                             loader={myLoader}
+                             layout="responsive"
+                             width={200}
+                             height={250}
+                             alt={item.cityname}
+                              />
+                        : null}
+                        <Typography 
+                            variant="h6"
+                            noWrap
+                            component="h6"
+                             >
+                        {item.cityname} 
+                        </Typography>
+                    </Box>
+                </div>
+                )
+            })
+      }
+
+
     
     return (
         <div css={slideCSS.wrapslide}>
             <Slide onScroll={listenerScroll} direction="right" in={true} mountOnEnter unmountOnExit>
                 <div css={slideCSS.wrap}>
-                        {dataSlidePost}
+                        {todayEdition != null ? dataSlidePostCountry : dataSlidePost}
                 </div>
             </Slide>
             

@@ -1,11 +1,9 @@
 
+import React from 'react';
 import Layout from '@/components/Layout/layout'
 import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
-import Select from '@/components/UI/Atomo/Select'
-import MoreOptions from '@/components/UI/Atomo/MoreOptions'
-import Carousel from '@/components/UI/Organismo/Carousel'
-import SlideCarousel from '@/components/UI/Organismo/SlideCarousel'
+import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry'
 
 
 const arrayOptions = [
@@ -14,18 +12,36 @@ const arrayOptions = [
 ]
 
 
-export default function Country({data}) {
+export default function ListEdiciones({data}) {
 
-  console.log('data', data.cities)
+    console.log('la data', data)
 
-  // const datacities = data.cities.map((data) => (
-  //   data
+    const listsections = data.cities.map((item, i) => {
 
-  // ))
+      let selectOptions = []
+      let defaultSelectoption = "";
+
+      if(i == 0) {
+        defaultSelectoption = {'item':`${item.cityname}`, 'link': `/${item.cityslug}`}
+      } else {
+        selectOptions.push(
+          {'item':`${item.cityname}`, 'link': `/${item.cityslug}`}
+        )
+      }
+
+      return(
+        <SectionBox key={item.cityslug}>
+        <HeadSection titleSection={item.cityname} slug={item.cityslug} colorBullet={"#ccc"} data={item}/>
+        <SlideCarouselCountry todayEdition={item.allEditions[0]} slug={item.cityslug}/>
+      </SectionBox>
+      )
+
+    })
+      
 
   return (
       <Layout>
-       <h1>{data.countryname}</h1>
+        {listsections}
       </Layout>
   )
 }
