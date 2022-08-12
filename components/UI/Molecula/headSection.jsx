@@ -9,15 +9,7 @@ const headSectionCSS = {
     headWrapper : (theme) => css({
         display: 'flex',
         marginBottom:theme.spacing(3),
-        [theme.breakpoints.up('xs')]: {
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            
-        },
-        [theme.breakpoints.up('md')]: {
-            flexDirection: 'row',
-            alignItems: 'center',
-        }
+       
     }),
     titlebullet: css({
         display:'flex',
@@ -27,12 +19,12 @@ const headSectionCSS = {
     boxOptions: (theme) => css({
         display: 'flex', 
         alignItems:'center', 
-        [theme.breakpoints.up('xs')]: {
-            width: '100%'
-        },
-        [theme.breakpoints.up('md')]: {
-            width: 'auto'
-        }
+        // [theme.breakpoints.up('xs')]: {
+        //     width: '100%'
+        // },
+        // [theme.breakpoints.up('md')]: {
+        //     width: 'auto'
+        // }
         
     }),
     wrapOptions:  css({
@@ -50,7 +42,7 @@ const headSectionCSS = {
 
 
 const HeadSection = (props) => {
-    const {slug, colorBullet, titleSection, options} = props;
+    const {slug, colorBullet, titleSection, options, pretext} = props;
 
     const arrayOptions = [
         {item:'Juan', link: '/link1'}, 
@@ -59,7 +51,10 @@ const HeadSection = (props) => {
 
     return ( 
         <>
-            <Box css={headSectionCSS.headWrapper}>
+            <Box css={headSectionCSS.headWrapper} {...props} sx={{
+                flexDirection: { xs: props.options != null ? 'column' : 'row', md: 'row' },
+                alignItems: {xs: 'flex-start', md: 'center'},
+            }}>
                 <div css={headSectionCSS.titlebullet}>
                 <Box sx={{
                     height: 10,
@@ -75,12 +70,15 @@ const HeadSection = (props) => {
                         component="div"
                         sx={{ display: { xs: 'block', sm: 'block' } }}
                     >
+                    {pretext}
                     {titleSection}
                     </Typography>
                 </Link>
                 <Divider light sx={{flexGrow: 1, ml: '1rem', mr: '1rem', height: '1px'}} />
                 </div>
-                <div css={headSectionCSS.boxOptions}>
+                <Box css={headSectionCSS.boxOptions} {...props} sx={{
+                    width: { xs: props.options != null ? '100%' : 'auto', md: 'auto' },
+                }}>
                 {options?
                 <Box css={headSectionCSS.wrapOptions} >
                     {options}
@@ -90,7 +88,7 @@ const HeadSection = (props) => {
                     null
                 }
                 <MoreOptions options={arrayOptions} />
-                </div>
+                </Box>
                 
                 
             </Box>

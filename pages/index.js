@@ -3,7 +3,7 @@ import Layout from '@/components/Layout/layout'
 import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
 import Select from '@/components/UI/Atomo/Select'
-import SlideCarousel from '@/components/UI/Organismo/SlideCarousel'
+import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry'
 
 
 
@@ -29,13 +29,18 @@ export default function Home({data}) {
         )
       
         return(<SectionBox key={item.countryname}>
-          <HeadSection titleSection={item.countryname} slug={item.countryslug} options={
-            <>
-            <Select defaultValue={defaultSelectoption} options={selectOptions} />
-            </>
-          } colorBullet={"#ccc"} data={item}/>
+          <HeadSection titleSection={item.countryname} slug={item.countryslug} 
+          // options={
+          //   <>
+          //   <Select defaultValue={defaultSelectoption} options={selectOptions} />
+          //   </>
+          // } 
+          colorBullet={"#ccc"} 
+          data={item}
+          pretext={'Hoy en: '}
+          />
 
-          <SlideCarousel cities={item.cities} />
+          <SlideCarouselCountry cities={item.cities} />
 
         </SectionBox>)
 

@@ -4,6 +4,8 @@ import { css } from '@emotion/react';
 import Slide from '@mui/material/Slide';
 import Image from 'next/image';
 import { Typography } from '@mui/material';
+import { shadows } from '@mui/system';
+import theme from '@/src/theme';
 
 
 
@@ -96,7 +98,7 @@ export default function SlideCarouselCountry(props){
       
       }
 
-      const dataSlidePost = ""
+      let dataSlidePost = ""
       let dataSlidePostCountry = ""
 
       if(todayEdition != null){
@@ -117,17 +119,19 @@ export default function SlideCarouselCountry(props){
             
         }
 
-        dataSlidePostCountry = imagenes.map((item) => {
+        dataSlidePostCountry = imagenes.map((item, i) => {
 
             return (
                 <div css={slideCSS.slidepost} key={item.cityname}>
-                <Box>
+                <Box sx={{ boxShadow: 3 }}>
                     {imagenes != null ? 
                          <Image src={item.foto} 
                          layout="responsive"
                          width={200}
                          height={250}
                          alt={item.link}
+                         priority = {i == 0 ? 'true': 'false'}
+                         
                           />
                     : null}
                 </Box>
@@ -148,8 +152,15 @@ export default function SlideCarouselCountry(props){
                 return `${foto}?w=${200}&q=${quality || 70}`
               }
             return (
-                <div css={slideCSS.slidepost} key={item.cityname}>
-                    <Box>
+                <Box css={slideCSS.slidepost} key={item.cityname} >
+                    <Box sx={{mr: 3,p: 1, border: '1px solid #f1ecec', borderRadius:'5px'}}>
+                        <Typography 
+                            variant="button"
+                            noWrap
+                            component="h6"
+                             >
+                        {item.cityname} 
+                        </Typography>
                         {fecha && foto != null ? 
                              <Image src={foto} 
                              loader={myLoader}
@@ -157,17 +168,14 @@ export default function SlideCarouselCountry(props){
                              width={200}
                              height={250}
                              alt={item.cityname}
+                             sx={{
+                                boxShadow: 3
+                             }}
                               />
                         : null}
-                        <Typography 
-                            variant="h6"
-                            noWrap
-                            component="h6"
-                             >
-                        {item.cityname} 
-                        </Typography>
+                        
                     </Box>
-                </div>
+                </Box>
                 )
             })
       }

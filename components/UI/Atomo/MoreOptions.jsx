@@ -42,7 +42,7 @@ export default function BasicMenu(props) {
         {
             options &&
             options.map((data)=> (
-                <MenuItem key={data.item} onClick={handleClose}>{data.item}</MenuItem>
+                <MenuItem key={data.item} onClick={handleClose} disableGutters={'true'}>{data.item}</MenuItem>
             ))
         }
      
