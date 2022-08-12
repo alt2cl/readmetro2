@@ -4,6 +4,7 @@ import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
 import Select from '@/components/UI/Atomo/Select'
 import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry'
+import theme from '@/src/theme'
 
 
 
@@ -35,7 +36,7 @@ export default function Home({data}) {
           //   <Select defaultValue={defaultSelectoption} options={selectOptions} />
           //   </>
           // } 
-          colorBullet={"#ccc"} 
+          colorBullet={'green'} 
           data={item}
           pretext={'Hoy en: '}
           />
