@@ -6,7 +6,8 @@
         "@/components/*": ["components/*"],
         "@/src/*": ["src/*"],
         "@/public/*": ["public/*"],
-        "@/pages/*": ["pages/*"]
+        "@/pages/*": ["pages/*"],
+        "@/redux/*": ["redux/*"]
       }
     }
   }

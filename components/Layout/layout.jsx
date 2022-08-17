@@ -6,7 +6,7 @@ import Header from '@/components/UI/Organismo/Header'
 function Layout( {children} ) {
     return (
         <>
-            <Header/>
+            <Header />
             
             <main>
             <Container  maxWidth="xl">

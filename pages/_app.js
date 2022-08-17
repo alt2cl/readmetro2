@@ -5,8 +5,11 @@ import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
-import theme from '../src/theme';
+import theme from '@/src/theme';
 import createEmotionCache from '../src/createEmotionCache';
+import { Provider } from 'react-redux'
+import store from '@/redux/store.js'
+
 import '../styles/globals.css'
 
 
@@ -16,6 +19,7 @@ const clientSideEmotionCache = createEmotionCache();
 function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
+    <Provider store={store}>
     <CacheProvider value={emotionCache}>
       <Head>
         <title>Read Metro 2.0</title>
@@ -31,6 +35,7 @@ function MyApp(props) {
         <Component {...pageProps} />
       </ThemeProvider>
     </CacheProvider>
+    </Provider>
     
   )
 }

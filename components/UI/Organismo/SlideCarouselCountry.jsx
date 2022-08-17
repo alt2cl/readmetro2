@@ -1,17 +1,20 @@
 import React from 'react';
+import { useState } from "react";
 import Box from '@mui/material/Box';
 import { css } from '@emotion/react';
 import Slide from '@mui/material/Slide';
 import Image from 'next/image';
 import { Typography } from '@mui/material';
-import { shadows } from '@mui/system';
-import theme from '@/src/theme';
+import fallback from '@/public/img/fallback.jpg'
 
 
 
 export default function SlideCarouselCountry(props){
 
     const {cities, todayEdition, slug} = props
+    const [imageError, setImageError] = useState(false);
+
+    console.log('fallback', fallback.src)
 
     const slideCSS = {
         wrapslide: css({
@@ -120,20 +123,26 @@ export default function SlideCarouselCountry(props){
         }
 
         dataSlidePostCountry = imagenes.map((item, i) => {
-
             return (
+                //item slide landing country
                 <div css={slideCSS.slidepost} key={item.cityname}>
-                <Box sx={{ boxShadow: 3 }}>
+                <Box sx={{ boxShadow: 3, m: 1 }}>
                     {imagenes != null ? 
-                         <Image src={item.foto} 
+                         <Image src={imageError ? fallback.src : item.foto} 
                          layout="responsive"
                          width={200}
                          height={250}
                          alt={item.link}
                          priority = {i == 0 ? 'true': 'false'}
-                         
+                         onError={() => setImageError(true)}
                           />
-                    : null}
+                    : <Image src={fallback.src} 
+                    layout="responsive"
+                    width={fallback.width}
+                    height={fallback.height}
+                    alt={'error'}
+                    />
+                    }
                 </Box>
             </div>
             )
@@ -152,8 +161,9 @@ export default function SlideCarouselCountry(props){
                 return `${foto}?w=${200}&q=${quality || 70}`
               }
             return (
+                //item slide homepage
                 <Box css={slideCSS.slidepost} key={item.cityname} >
-                    <Box sx={{mr: 3,p: 1, border: '1px solid #f1ecec', borderRadius:'5px'}}>
+                    <Box sx={{ml:1 , mr:1,p: 1, border: '1px solid #f1ecec', borderRadius:'5px'}}>
                         <Typography 
                             variant="button"
                             noWrap
@@ -161,9 +171,8 @@ export default function SlideCarouselCountry(props){
                              >
                         {item.cityname} 
                         </Typography>
-                        {fecha && foto != null ? 
-                             <Image src={foto} 
-                             loader={myLoader}
+                        {fecha != null ? 
+                             <Image src={imageError ? fallback.blurDataURL : foto} 
                              layout="responsive"
                              width={200}
                              height={250}
@@ -171,8 +180,15 @@ export default function SlideCarouselCountry(props){
                              sx={{
                                 boxShadow: 3
                              }}
+                             onError={() => setImageError(true)}
                               />
-                        : null}
+                        : <Image src={fallback.src} 
+                            layout="responsive"
+                            width={fallback.width}
+                            height={fallback.height}
+                            alt={'error'}
+                            />
+                            }
                         
                     </Box>
                 </Box>

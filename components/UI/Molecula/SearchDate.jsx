@@ -10,6 +10,13 @@ import MenuItem from '@mui/material/MenuItem';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Menu from '@mui/material/Menu';
 import { css } from '@emotion/react';
+import { useSelector, useDispatch } from 'react-redux'
+import { decrement, increment } from '@/redux/features/counter/counterSlice'
+import { update } from '@/redux/features/countryselect/countrySlice'
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Input from '@mui/material/Input';
+import { useRouter } from 'next/router'
 
 const boxSearch = (theme) => css({
     display: 'flex',
@@ -31,8 +38,15 @@ const boxSearch = (theme) => css({
 const SearchDate = (props) => {
 
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const router = useRouter()
+    
     const menuId = 'primary-search-account-menu';
     const isMenuOpen = Boolean(anchorEl);
+
+    const count = useSelector(state => state.counter.value)
+    const countrycurrent = useSelector(state => state.country.value)
+    const [countryvalue, setCountryValue] = React.useState('Mundo');
+    const dispatch = useDispatch()
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
@@ -52,6 +66,14 @@ const SearchDate = (props) => {
     const handleCalendarMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
       };
+
+    const handleChangeSelectcountry = (e) => {
+      console.log('handlechange: ', e.target.value)
+      router.push('/country/'+e.target.value)
+    }
+
+  
+
 
       const renderMenu = (
         <Menu
@@ -76,8 +98,23 @@ const SearchDate = (props) => {
 
     return (
         <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
+
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <Select
+            value={countrycurrent}
+            onChange={handleChangeSelectcountry}
+            displayEmpty
+          >
+            <MenuItem value="">
+              <em>{countrycurrent}...</em>
+            </MenuItem>
+            <MenuItem value={'mexico'}>Mexico</MenuItem>
+            <MenuItem value={'brazil'}>Brasil</MenuItem>
+            <MenuItem value={'chile'}>Chile</MenuItem>
+          </Select>
+        </FormControl>
            
-        <Button
+        {/* <Button
                 size="large"
                 edge="end"
                 aria-label="account of current user"
@@ -96,7 +133,7 @@ const SearchDate = (props) => {
                         Mundo
                     </Typography>
                     <KeyboardArrowDownIcon />
-            </Button>
+            </Button> */}
             <IconButton
                 size="large"
                 edge="end"
@@ -118,6 +155,25 @@ const SearchDate = (props) => {
                     <CalendarMonthIcon sx={{ mr: 2 }}/>
             </IconButton>
             {renderMenu}
+
+            <div>
+      <div>
+        <button
+          aria-label="Increment value"
+          onClick={() => dispatch(increment())}
+        >
+          Increment
+        </button>
+        <span>{count}</span>
+        <span>{countrycurrent}</span>
+        <button
+          aria-label="Decrement value"
+          onClick={() => dispatch(decrement())}
+        >
+          Decrement
+        </button>
+      </div>
+    </div>
    
 
       </Box>

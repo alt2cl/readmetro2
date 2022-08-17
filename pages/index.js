@@ -2,9 +2,7 @@
 import Layout from '@/components/Layout/layout'
 import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
-import Select from '@/components/UI/Atomo/Select'
 import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry'
-import theme from '@/src/theme'
 
 
 

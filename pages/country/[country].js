@@ -40,7 +40,7 @@ export default function ListEdiciones({data}) {
       
 
   return (
-      <Layout>
+      <Layout data={data}>
         {listsections}
       </Layout>
   )
