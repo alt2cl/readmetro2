@@ -4,6 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { PropaneSharp } from '@mui/icons-material';
+import Link from '@/src/Link';
 
 export default function BasicMenu(props) {
     const {options} = props;
@@ -42,7 +43,11 @@ export default function BasicMenu(props) {
         {
             options &&
             options.map((data)=> (
-                <MenuItem key={data.item} onClick={handleClose} disableGutters={'true'}>{data.item}</MenuItem>
+                <MenuItem key={data.item} onClick={handleClose} >
+                  <Link href={data.link} target={data.target ? data.target : '_top'}>
+                  {data.item}
+                  </Link>
+                </MenuItem>
             ))
         }
      

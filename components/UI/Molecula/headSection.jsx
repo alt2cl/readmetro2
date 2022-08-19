@@ -42,12 +42,24 @@ const headSectionCSS = {
 
 
 const HeadSection = (props) => {
-    const {slug, colorBullet, titleSection, options, pretext} = props;
+    const {slug, colorBullet, titleSection, options, pretext, linksite, linkedition, data} = props;
 
-    const arrayOptions = [
-        {item:'Juan', link: '/link1'}, 
-        {item:'Andres', link: '/link2'}
-      ]
+    console.log('data headsection', data)
+
+    const arrayOptions = []
+
+    if(linksite) {
+        arrayOptions.push(
+            {item:'Ir al sitio', link: linksite, target: '_blank'}
+        )
+    }
+
+    if(linkedition) {
+        arrayOptions.push(
+            {item:'Ir a la Edición', link: '/country/'+slug, target: '_top'}
+        )
+
+    }
 
     return ( 
         <>

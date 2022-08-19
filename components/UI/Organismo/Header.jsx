@@ -22,13 +22,14 @@ import Image from 'next/image'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Link from '@/src/Link';
 import SearchDate from '@/components/UI/Molecula/SearchDate';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { css } from '@emotion/react';
-import ESflag from '@/public/img/flags/ES@3x.png'
-import FRflag from '@/public/img/flags/FR@3x.png'
-import NEflag from '@/public/img/flags/NE@3x.png'
-import PTflag from '@/public/img/flags/PT@3x.png'
-import USflag from '@/public/img/flags/US@3x.png'
+
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+
+
+import configsite from '@/src/configSite'
 
 
 import useScrollTrigger from '@mui/material/useScrollTrigger';
@@ -72,14 +73,23 @@ const elevationFixedWrap = css({
 export default function Header(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const menupaises = configsite.routeCountry;
+  const langOptions = configsite.langOptions
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+console.log('configsite:', menupaises)
 
+const [age, setAge] = React.useState('');
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
 
 
   const handleProfileMenuOpen = (event) => {
+    console.log('handleProfileMenuOpen', event.currentTarget)
     setAnchorEl(event.currentTarget);
   };
 
@@ -101,6 +111,7 @@ export default function Header(props) {
   };
 
   const menuId = 'primary-search-account-menu';
+  const menuLangId = 'primary-lang-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -117,10 +128,46 @@ export default function Header(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {menupaises.map((item) => {
+        return(
+          <MenuItem onClick={handleMenuClose} key={item.name}>
+            <Link href={item.externalLink}>
+              {item.name}
+            </Link>
+          </MenuItem>
+        )
+      })}
+
     </Menu>
   );
+
+  const renderMenuLang = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={menuLangId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      {langOptions.map((item) => {
+        return(
+          <MenuItem onClick={handleMenuClose} key={item.name}>
+            <Image src={item.flagUrl} alt={item.name} width={30} height={20}/>
+          </MenuItem>
+        )
+      })}
+
+    </Menu>
+  );
+
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -173,6 +220,20 @@ export default function Header(props) {
       </MenuItem>
     </Menu>
   );
+
+  const langOptionsRender = langOptions.map((item)=>{
+    return(
+     
+      <MenuItem value={item.name} key={item.name}>
+        <Image src={item.flagUrl} alt={item.name} width={30} height={20}/>
+        {item.name}
+      </MenuItem>
+      
+
+        
+      
+    )
+    })
 
   return (
     <>
@@ -232,31 +293,31 @@ export default function Header(props) {
                     color="#000"  
                     variant="subtitle2"
                 >
+                  
                      Acerca de Metro
                 </Link>
             </Button>
           </Box>
          
           <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
-          <Button
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-              sx={{mr: 0}}
-            >
-                <Typography
-                    variant="subtitle2"
-                    noWrap
-                    component="div"
-                >
-                    <Image src={ESflag} title="Idioma Español" width={30} height={20}/>
-                </Typography>
-              <KeyboardArrowDownIcon />
-            </Button>
+
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                  <Select
+                    value={age}
+                    onChange={handleChange}
+                    displayEmpty
+                    inputProps={{ 'aria-label': 'Without label' }}
+                  >
+                    <MenuItem value="">
+                      <em>Idioma</em>
+                    </MenuItem>
+                    {langOptionsRender}
+                  </Select>
+                </FormControl>
+
+       
+
+         
 
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -286,7 +347,11 @@ export default function Header(props) {
      
       
       {renderMobileMenu}
+
       {renderMenu}
+
+      {/* {renderMenuLang} */}
+      
     </>
   );
 }

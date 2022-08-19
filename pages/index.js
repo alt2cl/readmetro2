@@ -28,7 +28,7 @@ export default function Home({data}) {
         )
       
         return(<SectionBox key={item.countryname}>
-          <HeadSection titleSection={item.countryname} slug={item.countryslug} 
+          <HeadSection titleSection={item.countryname} slug={item.countryslug} linksite={item.website} linkedition 
           // options={
           //   <>
           //   <Select defaultValue={defaultSelectoption} options={selectOptions} />

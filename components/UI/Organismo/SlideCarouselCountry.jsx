@@ -1,24 +1,47 @@
 import React from 'react';
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Box from '@mui/material/Box';
 import { css } from '@emotion/react';
 import Slide from '@mui/material/Slide';
 import Image from 'next/image';
 import { Typography } from '@mui/material';
 import fallback from '@/public/img/fallback.jpg'
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import IconButton from '@mui/material/IconButton';
 
 
 
 export default function SlideCarouselCountry(props){
 
-    const {cities, todayEdition, slug} = props
+    const {cities, todayEdition, slug, widthItem} = props
     const [imageError, setImageError] = useState(false);
+    const scrollElement = useRef(null);
 
     console.log('fallback', fallback.src)
 
-    const slideCSS = {
-        wrapslide: css({
-            width: '100%',
+    const handleNext = () => {
+        //setChecked((prev) => !prev);
+        //scrollElement.current.scrollLeft += 250;
+        scrollElement.current.scrollLeft += widthItem
+
+    };
+
+    const handlePrev = () => {
+        //setChecked((prev) => !prev);
+        scrollElement.current.scrollLeft -= widthItem;
+    };
+
+    const slideCSS =  {
+        wrapslide: (theme) => css({
+            width: 'calc(100% + 30px)',
+            marginLeft: '-15px',
+            position: 'relative',
+            scrollBehavior: 'smooth',
+            transition: 'all .5s ease-out',
+            [theme.breakpoints.up('md')]: {
+                padding: '0 20px',
+            },
         }),
         wrap: css({
             display: 'flex',
@@ -32,13 +55,13 @@ export default function SlideCarouselCountry(props){
             // 'scroll-behavior': 'smooth'
         }),
         slidepost: (theme) => css({
-            width: '250px',
+            width: widthItem ? widthItem+'px' : '250px',
             height: '350px',
             overflow: 'hidden',
             'scroll-snap-align': 'center',
             
             [theme.breakpoints.up('xs')]: {
-                flex: '0 0 250px',
+                flex: widthItem ? '0 0 '+widthItem+'px' : '0 0 250px',
                 
             },
             [theme.breakpoints.up('md')]: {
@@ -50,51 +73,114 @@ export default function SlideCarouselCountry(props){
     
     }
 
+    const controlCSS = {
+        btnSig: (theme) => css({
+            background: '#fff',
+            position: 'absolute',
+            top: '50%',
+            right: '0',
+            borderRadius: '50%',
+            [theme.breakpoints.up('md')]: {
+                right: '-30px',
+            },
+        }),
+        btnAnt: (theme) => css({
+            background: '#fff',
+            position: 'absolute',
+            top: '50%',
+            left: '0',
+            borderRadius: '50%',
+            [theme.breakpoints.up('md')]: {
+                left: '-30px',
+            },
+        })
+    }
+
+    function addClass(name, element) {
+        let classesString;
+        classesString = element.className || "";
+        if (classesString.indexOf(name) === -1) {
+          element.className += " " + name;
+        }
+      }
+
+    function removeClass(name, arrayElements){
+
+        for (let index = 0; index < arrayElements.length; index++) {
+            const el = arrayElements[index];
+
+            if (el.classList.contains(name)) {
+                // Has my-class in it
+                el.classList.remove(name);
+            } else {
+                // No my-class :(
+
+            }
+        }
+
+    }
+
+    let isScrolling;
+
     function listenerScroll(e){
         
           let element = e.target;
-          let childElements = element.childNodes;
+          let childElements = element.children;
           let scrollLeftElement = element.scrollLeft;
           let anchoventana = window.innerWidth
 
-        //   console.log('scroll event', childElements.lenght, scrollLeftElement)
+        console.log('scroll event', scrollLeftElement, anchoventana, childElements[0].offsetWidth, 'ancho total:',childElements.length, childElements.length * 250)
       
-          //element.clearTimeout( isScrolling );
+        //element.clearTimeout( isScrolling );
+        const firstScroll = childElements[0].offsetWidth - ((anchoventana - childElements[0].offsetWidth)/2)
+        console.log('firstScroll', firstScroll)
       
-          // isScrolling = setTimeout(function() {
-      
-      
-          //     if(scrollLeftElement < anchoventana - 100){
-          //         removeClass('current',childElements);
-          //         addClass('current', element.childNodes[0])
-          //         //element.childNodes[0].className = element.childNodes[1].className + ' ' +  'current'
-      
-          //     } else if (scrollLeftElement > ((anchoventana * 1) - 100) && scrollLeftElement < ((anchoventana * 2) - 101)) {
-          //         removeClass('current',childElements);
-          //         addClass('current', element.childNodes[1])
-      
-          //     } else if (scrollLeftElement > ((anchoventana * 2) - 100) && scrollLeftElement < ((anchoventana * 3) - 101)) {
-          //         removeClass('current',childElements);
-          //         addClass('current', element.childNodes[2])
-          //     } else if (scrollLeftElement > ((anchoventana * 3) - 100) && scrollLeftElement < ((anchoventana * 4) - 101)) {
-          //         removeClass('current',childElements);
-          //         addClass('current', element.childNodes[3])
-          //     } else if (scrollLeftElement > ((anchoventana * 4) - 100) && scrollLeftElement < ((anchoventana * 5) - 101)) {
-          //         removeClass('current',childElements);
-          //         addClass('current', element.childNodes[4])
-          //     } else if (scrollLeftElement > ((anchoventana * 5) - 100) && scrollLeftElement < ((anchoventana * 6) - 101)) {
-          //         removeClass('current',childElements);
-          //         addClass('current', element.childNodes[5])
-          //     } else if (scrollLeftElement > ((anchoventana * 6) - 100) && scrollLeftElement < ((anchoventana * 7) - 101)) {
-          //         removeClass('current',childElements);
-          //         addClass('current', element.childNodes[6])
-          //     }
-      
-          //     // Run the callback
+          isScrolling = setTimeout(function() {
       
       
+              if(scrollLeftElement < firstScroll){
+                console.log('scroll event 1')
+                  removeClass('current',childElements);
+                  addClass('current', childElements[0])
+                  //element.childNodes[0].className = element.childNodes[1].className + ' ' +  'current'
       
-          // }, 200);
+              } else if (scrollLeftElement > firstScroll && scrollLeftElement < (firstScroll + childElements[0].offsetWidth)) {
+                console.log('scroll event 2')
+                  removeClass('current',childElements);
+                  addClass('current', childElements[1])
+      
+              } else if (scrollLeftElement > (firstScroll + childElements[0].offsetWidth) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 2)) {
+                console.log('scroll event 3')
+                  removeClass('current',childElements);
+                  addClass('current', childElements[2])
+              } else if (scrollLeftElement > (firstScroll + (childElements[0].offsetWidth * 2)) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 3)) {
+                console.log('scroll event 4')
+                  removeClass('current',childElements);
+                  addClass('current', childElements[3])
+              } else if (scrollLeftElement > (firstScroll + (childElements[0].offsetWidth * 3)) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 4)) {
+                console.log('scroll event 5')
+                  removeClass('current',childElements);
+                  addClass('current', childElements[4])
+              } else if (scrollLeftElement > (firstScroll + (childElements[0].offsetWidth * 4)) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 5)) {
+                console.log('scroll event 6')
+                  removeClass('current',childElements);
+                  addClass('current', childElements[5])
+              } else if (scrollLeftElement > (firstScroll + (childElements[0].offsetWidth * 5)) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 6)) {
+                console.log('scroll event 7')
+                  removeClass('current',childElements);
+                  addClass('current', childElements[6])
+              } else if (scrollLeftElement > (firstScroll + (childElements[0].offsetWidth * 6)) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 7)) {
+                console.log('scroll event 7')
+                  removeClass('current',childElements);
+                  addClass('current', childElements[7])
+              }
+              
+      
+              // Run the callback
+      
+      
+      
+          }, 200);
       
       
       
@@ -130,8 +216,8 @@ export default function SlideCarouselCountry(props){
                     {imagenes != null ? 
                          <Image src={imageError ? fallback.src : item.foto} 
                          layout="responsive"
-                         width={200}
-                         height={250}
+                         width={widthItem}
+                         height={300}
                          alt={item.link}
                          priority = {i == 0 ? 'true': 'false'}
                          onError={() => setImageError(true)}
@@ -200,12 +286,24 @@ export default function SlideCarouselCountry(props){
     
     return (
         <div css={slideCSS.wrapslide}>
-            <Slide onScroll={listenerScroll} direction="right" in={true} mountOnEnter unmountOnExit>
+            <Slide onScroll={listenerScroll} direction="right" in={true} mountOnEnter unmountOnExit ref={scrollElement}>
                 <div css={slideCSS.wrap}>
-                        {todayEdition != null ? dataSlidePostCountry : dataSlidePost}
+                    {todayEdition != null ? dataSlidePostCountry : dataSlidePost}
                 </div>
             </Slide>
-            
+            <Box css={controlCSS}>
+                <Box css={controlCSS.btnSig} sx={{ boxShadow: 2 }}>
+                    <IconButton aria-label="next" onClick={handleNext}>
+                        <NavigateNextIcon />
+                    </IconButton>
+                    
+                </Box>
+                <Box css={controlCSS.btnAnt} sx={{ boxShadow: 2 }}>
+                    <IconButton aria-label="before" onClick={handlePrev}>
+                        <NavigateBeforeIcon />
+                    </IconButton>
+                </Box>
+            </Box>
         </div>
     )
 }

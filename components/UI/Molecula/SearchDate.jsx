@@ -15,8 +15,9 @@ import { decrement, increment } from '@/redux/features/counter/counterSlice'
 import { update } from '@/redux/features/countryselect/countrySlice'
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import Input from '@mui/material/Input';
 import { useRouter } from 'next/router'
+import FormHelperText from '@mui/material/FormHelperText';
+import NativeSelect from '@mui/material/NativeSelect';
 
 const boxSearch = (theme) => css({
     display: 'flex',
@@ -68,7 +69,6 @@ const SearchDate = (props) => {
       };
 
     const handleChangeSelectcountry = (e) => {
-      console.log('handlechange: ', e.target.value)
       router.push('/country/'+e.target.value)
     }
 
@@ -96,23 +96,43 @@ const SearchDate = (props) => {
         </Menu>
       );
 
+     
+
     return (
         <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
 
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <NativeSelect
+          defaultValue={'mundo'}
+          inputProps={{
+            name: 'country',
+            id: 'uncontrolled-native',
+          }}
+          onChange={handleChangeSelectcountry}
+        >
+          <option value={'/'}>Mundo</option>
+          <option value={'colombia'}>Colombia</option>
+          <option value={'chile'}>Chile</option>
+        </NativeSelect>
+
+        {/* <FormControl sx={{ m: 1, minWidth: 120 }}>
           <Select
             value={countrycurrent}
             onChange={handleChangeSelectcountry}
             displayEmpty
+            inputProps={{ 'aria-label': 'Without label' }}
           >
             <MenuItem value="">
-              <em>{countrycurrent}...</em>
+              <em>Mundo</em>
             </MenuItem>
             <MenuItem value={'mexico'}>Mexico</MenuItem>
             <MenuItem value={'brazil'}>Brasil</MenuItem>
             <MenuItem value={'chile'}>Chile</MenuItem>
+            <MenuItem value={'colombia'}>Colombia</MenuItem>
           </Select>
-        </FormControl>
+          <FormHelperText>Without label</FormHelperText>
+        </FormControl> */}
+
+        
            
         {/* <Button
                 size="large"
@@ -158,7 +178,7 @@ const SearchDate = (props) => {
 
             <div>
       <div>
-        <button
+        {/* <button
           aria-label="Increment value"
           onClick={() => dispatch(increment())}
         >
@@ -171,7 +191,7 @@ const SearchDate = (props) => {
           onClick={() => dispatch(decrement())}
         >
           Decrement
-        </button>
+        </button> */}
       </div>
     </div>
    
