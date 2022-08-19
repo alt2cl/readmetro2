@@ -39,6 +39,7 @@ export default function SlideCarouselCountry(props){
             position: 'relative',
             scrollBehavior: 'smooth',
             transition: 'all .5s ease-out',
+  
             [theme.breakpoints.up('md')]: {
                 padding: '0 20px',
             },
@@ -52,7 +53,7 @@ export default function SlideCarouselCountry(props){
             '-webkit-overflow-scrolling': 'touch',
             'scroll-snap-type': 'x mandatory',
             'scroll-padding': '0 0 0 0',
-            // 'scroll-behavior': 'smooth'
+            'scroll-behavior': 'smooth',
         }),
         slidepost: (theme) => css({
             width: widthItem ? widthItem+'px' : '250px',
