@@ -9,6 +9,7 @@ import fallback from '@/public/img/fallback.jpg'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import IconButton from '@mui/material/IconButton';
+import ZoomInOutlinedIcon from '@mui/icons-material/ZoomInOutlined';
 
 
 
@@ -68,9 +69,55 @@ export default function SlideCarouselCountry(props){
             [theme.breakpoints.up('md')]: {
                 flex: '0 0 300px',
             }
-            
-    
+        }),
+        counterOptions: css({
+            position: 'absolute',
+            bottom: '4px',
+            left: '4px',
+            right: '4px',
+
+        }),
+        counter: (theme) => css({
+            background: theme.palette.primary.main,
+            color: theme.palette.common.white,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '30px',
+            height: '30px',
+            borderRadius: '3px',
+            border:`1px solid ${theme.palette.primary.main}`
+        }),
+        expandbtn: (theme) => css({
+            background: theme.palette.common.white,
+            color: theme.palette.primary.main,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: 'auto',
+            height: '30px',
+            borderRadius: '3px',
+            padding: '0 10px',
+            border:`1px solid ${theme.palette.primary.main}`
+        }),
+        zoom: (theme)=> css({
+            position: 'absolute',
+            top:0,
+            right: 0,
+            backgroundImage: `linear-gradient(225deg, rgb(0 0 0) 19%, rgb(0 0 0 / 0%) 51%)`,
+            padding: '20px 20px 100px 100px',
+            color: theme.palette.common.white,
+            borderRadius: 0,
+            opacity: 0.7,
+
+            '& svg':  {
+                width: '40px',
+                height: '40px',
+            }
+
+
         })
+        
     
     }
 
@@ -213,14 +260,14 @@ export default function SlideCarouselCountry(props){
             return (
                 //item slide landing country
                 <div css={slideCSS.slidepost} key={item.cityname}>
-                <Box sx={{ boxShadow: 3, m: 1 }}>
+                <Box sx={{ boxShadow: 3, m: 1, position: 'relative' }}>
                     {imagenes != null ? 
                          <Image src={imageError ? fallback.src : item.foto} 
                          layout="responsive"
                          width={widthItem}
                          height={300}
                          alt={item.link}
-                         priority = {i == 0 ? 'true': 'false'}
+                         priority = {i <= 2 ? 'true': 'false'}
                          onError={() => setImageError(true)}
                           />
                     : <Image src={fallback.src} 
@@ -230,6 +277,19 @@ export default function SlideCarouselCountry(props){
                     alt={'error'}
                     />
                     }
+                    <Box css={slideCSS.counterOptions} sx={{display:'flex'}}>
+                        <Box css={slideCSS.counter}>
+                            {i+1}
+                        </Box>
+                        <Box css={slideCSS.expandbtn}>
+
+                            Expandir
+                        </Box>
+                        
+                    </Box>
+                    <IconButton css={slideCSS.zoom} aria-label="zoom" >
+                        <ZoomInOutlinedIcon />
+                    </IconButton>
                 </Box>
             </div>
             )
@@ -237,7 +297,7 @@ export default function SlideCarouselCountry(props){
 
 
       } else {
-        dataSlidePost = cities.map((item) => {
+        dataSlidePost = cities.map((item, i) => {
             const date = item.allEditions  && item.allEditions[0] && item.allEditions[0].date ? item.allEditions[0].date : null;
             const fecha = date != null ? date.replaceAll("-","/") : null;
             let foto = null
@@ -276,6 +336,11 @@ export default function SlideCarouselCountry(props){
                             alt={'error'}
                             />
                             }
+                        <Box sx={{display:'flex'}}>
+                            <Box css={slideCSS.counter}>
+                                {i}
+                            </Box>
+                        </Box>
                         
                     </Box>
                 </Box>
@@ -296,6 +361,7 @@ export default function SlideCarouselCountry(props){
                 <Box css={controlCSS.btnSig} sx={{ boxShadow: 2 }}>
                     <IconButton aria-label="next" onClick={() => handleNext()}>
                         <NavigateNextIcon />
+                        
                     </IconButton>
                     
                 </Box>

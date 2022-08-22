@@ -32,7 +32,7 @@ export default function ListEdiciones({data}) {
       return(
         <SectionBox key={item.cityslug}>
         <HeadSection titleSection={item.cityname} slug={item.cityslug} colorBullet={"#ccc"} linksite={data.website}/>
-        {item.allEditions.length > 0 &&  <SlideCarouselCountry todayEdition={item.allEditions[0]} slug={item.cityslug} widthItem={280}/>}
+        {item.allEditions.length > 0 &&  <SlideCarouselCountry todayEdition={item.allEditions[0]} slug={item.cityslug} widthItem={250}/>}
         </SectionBox>
       )
 
