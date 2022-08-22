@@ -141,32 +141,6 @@ const [age, setAge] = React.useState('');
     </Menu>
   );
 
-  const renderMenuLang = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuLangId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      {langOptions.map((item) => {
-        return(
-          <MenuItem onClick={handleMenuClose} key={item.name}>
-            <Image src={item.flagUrl} alt={item.name} width={30} height={20}/>
-          </MenuItem>
-        )
-      })}
-
-    </Menu>
-  );
 
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -314,11 +288,6 @@ const [age, setAge] = React.useState('');
                     {langOptionsRender}
                   </Select>
                 </FormControl>
-
-       
-
-         
-
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <Button

@@ -294,12 +294,13 @@ export default function SlideCarouselCountry(props){
             </Slide>
             <Box css={controlCSS}>
                 <Box css={controlCSS.btnSig} sx={{ boxShadow: 2 }}>
-                    <IconButton aria-label="next" onClick={() => {handleNext()}}>
+                    <IconButton aria-label="next" onClick={() => handleNext()}>
                         <NavigateNextIcon />
                     </IconButton>
+                    
                 </Box>
                 <Box css={controlCSS.btnAnt} sx={{ boxShadow: 2 }}>
-                    <IconButton aria-label="before" onClick={() => {handlePrev()}}>
+                    <IconButton aria-label="before" onClick={() => handlePrev()}>
                         <NavigateBeforeIcon />
                     </IconButton>
                 </Box>

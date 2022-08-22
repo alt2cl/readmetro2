@@ -39,7 +39,7 @@ export default function Home({data}) {
           pretext={'Hoy en: '}
           />
 
-          <SlideCarouselCountry cities={item.cities} />
+          <SlideCarouselCountry cities={item.cities} widthItem={280}/>
 
         </SectionBox>)
 
