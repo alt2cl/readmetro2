@@ -9,6 +9,7 @@ import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry
 
 
 export default function Home({data}) {
+  
 
     const listCountry = data.map((item) => {
 

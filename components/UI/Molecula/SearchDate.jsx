@@ -1,5 +1,6 @@
 
 import * as React from 'react';
+import { useState, useEffect } from "react";
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -42,15 +43,21 @@ const SearchDate = (props) => {
 
   console.log('data search', data)
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
     const router = useRouter()
+
+    console.log('router:::', ' - ', router.query.country ,' - ', router.asPath)
+    
     
     const menuId = 'primary-search-account-menu';
     const isMenuOpen = Boolean(anchorEl);
 
     const count = useSelector(state => state.counter.value)
     const countrycurrent = useSelector(state => state.country.value)
-    const [countryvalue, setCountryValue] = React.useState('Mundo');
+    const [countryvalue, setCountryValue] = useState('Mundo');
+
+    
+
     const dispatch = useDispatch()
 
     const handleMobileMenuClose = () => {
@@ -75,6 +82,8 @@ const SearchDate = (props) => {
     const handleChangeSelectcountry = (e) => {
       router.push("/"+e.target.value)
     }
+
+
 
   
 
@@ -107,15 +116,17 @@ const SearchDate = (props) => {
           )
         })
 
+
       
 
-     
+        
 
     return (
         <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
 
-        <NativeSelect
-          defaultValue={'mundo'}
+         
+          <NativeSelect
+          defaultValue={router.asPath ? router.asPath : '/'}
           inputProps={{
             name: 'country',
             id: 'uncontrolled-native',
@@ -126,6 +137,9 @@ const SearchDate = (props) => {
        
 
         </NativeSelect>
+          
+
+        
 
 
 
