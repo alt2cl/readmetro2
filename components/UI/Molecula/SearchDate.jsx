@@ -38,6 +38,10 @@ const boxSearch = (theme) => css({
 
 const SearchDate = (props) => {
 
+  const {data} = props
+
+  console.log('data search', data)
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const router = useRouter()
     
@@ -69,7 +73,7 @@ const SearchDate = (props) => {
       };
 
     const handleChangeSelectcountry = (e) => {
-      router.push('/country/'+e.target.value)
+      router.push("/"+e.target.value)
     }
 
   
@@ -96,6 +100,15 @@ const SearchDate = (props) => {
         </Menu>
       );
 
+   
+        const dataOptions = data.map((item)=>{
+          return(
+            <option value={item.link}>{item.name}</option>
+          )
+        })
+
+      
+
      
 
     return (
@@ -109,51 +122,13 @@ const SearchDate = (props) => {
           }}
           onChange={handleChangeSelectcountry}
         >
-          <option value={'/'}>Mundo</option>
-          <option value={'colombia'}>Colombia</option>
-          <option value={'chile'}>Chile</option>
+          {dataOptions}
+       
+
         </NativeSelect>
 
-        {/* <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <Select
-            value={countrycurrent}
-            onChange={handleChangeSelectcountry}
-            displayEmpty
-            inputProps={{ 'aria-label': 'Without label' }}
-          >
-            <MenuItem value="">
-              <em>Mundo</em>
-            </MenuItem>
-            <MenuItem value={'mexico'}>Mexico</MenuItem>
-            <MenuItem value={'brazil'}>Brasil</MenuItem>
-            <MenuItem value={'chile'}>Chile</MenuItem>
-            <MenuItem value={'colombia'}>Colombia</MenuItem>
-          </Select>
-          <FormHelperText>Without label</FormHelperText>
-        </FormControl> */}
 
-        
-           
-        {/* <Button
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                //aria-controls={menuId}
-                aria-haspopup="true"
-                //onClick={handleProfileMenuOpen}
-                color="inherit"
-                sx={{bgcolor:'primary.light'}}
-                >
-                    <Typography
-                        variant="subtitle2"
-                        noWrap
-                        component="div"
-                        sx={{ display: { xs: 'block', sm: 'block' } }}
-                    >
-                        Mundo
-                    </Typography>
-                    <KeyboardArrowDownIcon />
-            </Button> */}
+
             <IconButton
                 size="large"
                 edge="end"
@@ -178,20 +153,7 @@ const SearchDate = (props) => {
 
             <div>
       <div>
-        {/* <button
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          Increment
-        </button>
-        <span>{count}</span>
-        <span>{countrycurrent}</span>
-        <button
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          Decrement
-        </button> */}
+
       </div>
     </div>
    
