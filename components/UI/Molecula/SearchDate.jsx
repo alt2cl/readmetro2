@@ -103,7 +103,7 @@ const SearchDate = (props) => {
    
         const dataOptions = data.map((item)=>{
           return(
-            <option value={item.link}>{item.name}</option>
+            <option value={item.link} key={item.slug}>{item.name}</option>
           )
         })
 
