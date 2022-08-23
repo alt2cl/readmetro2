@@ -33,6 +33,7 @@ import configsite from '@/src/configSite'
 
 
 import useScrollTrigger from '@mui/material/useScrollTrigger';
+import { NoEncryption } from '@mui/icons-material';
 
 
 function ElevationScroll(props) {
@@ -70,6 +71,23 @@ const elevationFixedWrap = css({
 
 })
 
+const selectLang = css({
+  background: 'none',
+  '&::before': {
+    display: 'none',
+  },
+  '&::after': {
+    display: 'none',
+  },
+
+  '& .MuiSelect-standard': {
+    display: 'flex',
+    alignItems: 'center',
+
+  }
+
+})
+
 export default function Header(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -81,7 +99,7 @@ export default function Header(props) {
 
 console.log('configsite:', menupaises)
 
-const [age, setAge] = React.useState('');
+const [age, setAge] = React.useState('Español');
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -199,8 +217,7 @@ const [age, setAge] = React.useState('');
     return(
      
       <MenuItem value={item.name} key={item.name}>
-        <Image src={item.flagUrl} alt={item.name} width={30} height={20}/>
-        {item.name}
+        <Image src={item.flagUrl} alt={item.name} width={20} height={15}/>
       </MenuItem>
       
 
@@ -273,14 +290,16 @@ const [age, setAge] = React.useState('');
             </Button>
           </Box>
          
-          <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
+          <Box sx={{ display: { xs: 'flex', md: 'flex', padding: '0px' } }}>
 
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <FormControl sx={{ m: 1, minWidth: 50, paddingLeft: '1rem', borderLeft: '1px dotted #ccc', background: '#fff' }} >
                   <Select
                     value={age}
                     onChange={handleChange}
-                    displayEmpty
+                    //displayEmpty
                     inputProps={{ 'aria-label': 'Without label' }}
+                    variant="standard"
+                    css={selectLang}
                   >
                     <MenuItem value="">
                       <em>Idioma</em>

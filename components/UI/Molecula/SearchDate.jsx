@@ -25,15 +25,34 @@ const boxSearch = (theme) => css({
     flexGrow: 1,
     backgroundColor: theme.palette.primary.main,
     color:theme.palette.common.white,
-    borderRadius: '4px',
     [theme.breakpoints.up('xs')]: {
-        marginRight: '0',
+        marginRight: '0px',
+        borderRadius: '0px',
     },
     [theme.breakpoints.up('md')]: {
         marginRight: '1rem',
-    }
+        borderRadius: '4px',
+    },
+
+    
 
 })
+
+const pullproduct = (theme) =>css ({
+  paddingLeft:'20px',
+  color: theme.palette.common.white,
+  fontWeight: 'bold',
+
+  '&::after': {
+    display: 'none',
+  },
+  '&::before': {
+    display: 'none',
+  }
+
+})
+
+
     
 
 
@@ -125,7 +144,7 @@ const SearchDate = (props) => {
         <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
 
          
-          <NativeSelect
+          <NativeSelect css={pullproduct}
           defaultValue={router.asPath ? router.asPath : '/'}
           inputProps={{
             name: 'country',

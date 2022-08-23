@@ -108,11 +108,16 @@ export default function SlideCarouselCountry(props){
             padding: '20px 20px 100px 100px',
             color: theme.palette.common.white,
             borderRadius: 0,
-            opacity: 0.7,
+            opacity: 0.4,
+            transition: 'opacity .3s ease',
 
             '& svg':  {
                 width: '40px',
                 height: '40px',
+            },
+
+            '&:hover': {
+                opacity: 0.8,
             }
 
 
