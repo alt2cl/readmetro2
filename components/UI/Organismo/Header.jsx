@@ -92,7 +92,7 @@ export default function Header(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const menupaises = configsite.routeCountry;
-  const langOptions = configsite.langOptions
+  const langOptions = configsite.langOptions;
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -212,6 +212,8 @@ const [age, setAge] = React.useState('Español');
       </MenuItem>
     </Menu>
   );
+
+
 
   const langOptionsRender = langOptions.map((item)=>{
     return(

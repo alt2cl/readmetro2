@@ -19,6 +19,26 @@ import Select from '@mui/material/Select';
 import { useRouter } from 'next/router'
 import FormHelperText from '@mui/material/FormHelperText';
 import NativeSelect from '@mui/material/NativeSelect';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'; 
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+//import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+//Documentacion abreviaciones y traducciones datepeacker
+//https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+//https://mui.com/x/react-date-pickers/localization/
+//https://mui.com/x/react-date-pickers/localization/#date-engine-locale
+//https://mui.com/x/api/date-pickers/mobile-date-picker/#main-content
+
+import enLocale from 'date-fns/locale/en-US';
+import esLocale from 'date-fns/locale/es';
+import bgLocale from 'date-fns/locale/bg';
 
 const boxSearch = (theme) => css({
     display: 'flex',
@@ -53,6 +73,19 @@ const pullproduct = (theme) =>css ({
 })
 
 
+const textfielddate = (theme) => ({
+  color: theme.palette.common.white,
+
+  '& .MuiInputLabel-root': {
+    display: 'none'
+  },
+
+  '& .MuiOutlinedInput-input': {
+    color: theme.palette.common.white,
+  }
+})
+
+
     
 
 
@@ -60,10 +93,19 @@ const SearchDate = (props) => {
 
   const {data} = props
 
-  console.log('data search', data)
 
     const [anchorEl, setAnchorEl] = useState(null);
-    const router = useRouter()
+    const router = useRouter();
+    const [open, setOpen] = useState(false);
+
+    const [valueDate, setValueDate] = useState(new Date());
+
+    console.log('date value', valueDate)
+
+    const handleChangeDate = (newValue) => {
+      setValueDate(newValue);
+    };
+
 
     console.log('router:::', ' - ', router.query.country ,' - ', router.asPath)
     
@@ -136,6 +178,45 @@ const SearchDate = (props) => {
         })
 
 
+        const handleClickOpen = () => {
+          setOpen(true);
+        };
+      
+        const handleClose = () => {
+          setOpen(false);
+        };
+      
+      
+      
+        const modalDate =(
+
+          <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Use Google's location service?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Let Google help apps determine location. This means sending anonymous
+              location data to Google, even when no apps are running.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Disagree</Button>
+            <Button onClick={handleClose} autoFocus>
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+      
+        )
+
+
       
 
         
@@ -162,13 +243,13 @@ const SearchDate = (props) => {
 
 
 
-            <IconButton
+            {/* <IconButton
                 size="large"
                 edge="end"
                 aria-label="account of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
-                onClick={handleCalendarMenuOpen}
+                onClick={handleClickOpen}
                 color="inherit"
                 sx={{display: 'flex', justifyContent: 'space-between',flexGrow: 1}}
                 >
@@ -181,7 +262,24 @@ const SearchDate = (props) => {
                         Hoy - Domingo 17 de Sept 2022
                     </Typography>
                     <CalendarMonthIcon sx={{ mr: 2 }}/>
-            </IconButton>
+            </IconButton> */}
+
+            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={esLocale}>
+              <Stack spacing={3} sx={{flexGrow: '1'}}>
+                <MobileDatePicker
+                  label="Fecha de edición"
+                  inputFormat="EEEE dd LLLL yyyy"
+                  value={valueDate}
+                  onChange={handleChangeDate}
+                  renderInput={(params) => <TextField css={textfielddate} {...params} />}
+                  dayOfWeekFormatter={(day) => day.charAt(0).toUpperCase()}
+                  toolbarFormat="dd MMMM"
+                  disableFuture
+                  
+                />
+                
+              </Stack>
+            </LocalizationProvider>
             {renderMenu}
 
             <div>
@@ -189,6 +287,7 @@ const SearchDate = (props) => {
 
       </div>
     </div>
+
    
 
       </Box>
