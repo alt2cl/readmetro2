@@ -30,6 +30,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 //import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
 //Documentacion abreviaciones y traducciones datepeacker
 //https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
 //https://mui.com/x/react-date-pickers/localization/
@@ -74,14 +76,19 @@ const pullproduct = (theme) =>css ({
 
 
 const textfielddate = (theme) => ({
-  color: theme.palette.common.white,
+  
 
   '& .MuiInputLabel-root': {
     display: 'none'
   },
 
-  '& .MuiOutlinedInput-input': {
+  '& .MuiOutlinedInput-input:first-child': {
     color: theme.palette.common.white,
+  },
+
+  '& .MuiPickersToolbar-penIconButton': {
+    color: 'red',
+
   }
 })
 
@@ -271,11 +278,10 @@ const SearchDate = (props) => {
                   inputFormat="EEEE dd LLLL yyyy"
                   value={valueDate}
                   onChange={handleChangeDate}
-                  renderInput={(params) => <TextField css={textfielddate} {...params} />}
+                  renderInput={(params) => <OutlinedInput css={textfielddate} endAdornment={<InputAdornment position="end"><CalendarMonthIcon sx={{color: 'white'}} /></InputAdornment>} {...params}  />}
                   dayOfWeekFormatter={(day) => day.charAt(0).toUpperCase()}
                   toolbarFormat="dd MMMM"
                   disableFuture
-                  
                 />
                 
               </Stack>

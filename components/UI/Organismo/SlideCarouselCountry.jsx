@@ -58,10 +58,12 @@ export default function SlideCarouselCountry(props){
         }),
         slidepost: (theme) => css({
             width: widthItem ? widthItem+'px' : '250px',
-            height: '350px',
+            height: 'auto',
             overflow: 'hidden',
             'scroll-snap-align': 'center',
+            paddingBottom: '1rem',
             
+
             [theme.breakpoints.up('xs')]: {
                 flex: widthItem ? '0 0 '+widthItem+'px' : '0 0 250px',
                 
@@ -86,7 +88,8 @@ export default function SlideCarouselCountry(props){
             width: '30px',
             height: '30px',
             borderRadius: '3px',
-            border:`1px solid ${theme.palette.primary.main}`
+            border:`1px solid ${theme.palette.primary.main}`,
+            position: 'relative'
         }),
         expandbtn: (theme) => css({
             background: theme.palette.common.white,
@@ -287,7 +290,6 @@ export default function SlideCarouselCountry(props){
                             {i+1}
                         </Box>
                         <Box css={slideCSS.expandbtn}>
-
                             Expandir
                         </Box>
                         
@@ -315,7 +317,7 @@ export default function SlideCarouselCountry(props){
             return (
                 //item slide homepage
                 <Box css={slideCSS.slidepost} key={item.cityname} >
-                    <Box sx={{ml:1 , mr:1,p: 1, border: '1px solid #f1ecec', borderRadius:'5px'}}>
+                    <Box sx={{ml:1 , mr:1,p: 1,  borderRadius:'5px', position: 'relative', background: 'white', boxShadow: 3 }}>
                         <Typography 
                             variant="button"
                             noWrap
@@ -341,7 +343,7 @@ export default function SlideCarouselCountry(props){
                             alt={'error'}
                             />
                             }
-                        <Box sx={{display:'flex'}}>
+                        <Box sx={{display:'flex', position: 'absolute', bottom: '19px', left: '19px'}}>
                             <Box css={slideCSS.counter}>
                                 {i}
                             </Box>
