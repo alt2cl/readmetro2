@@ -12,8 +12,15 @@ import IconButton from '@mui/material/IconButton';
 import ZoomInOutlinedIcon from '@mui/icons-material/ZoomInOutlined';
 import { useRouter } from 'next/router'
 import ExpandIcon from '@mui/icons-material/Expand';
-import Modal from '@mui/material/Modal';
 import Link from '@/src/Link';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 
 
 
@@ -26,6 +33,7 @@ export default function SlideCarouselCountry(props){
     const [openModal, setOpenModal] = useState(false);
     const handleOpenModal = () => setOpenModal(true);
     const handleCloseModal = () => setOpenModal(false);
+    const theme = useTheme();
 
 
     const handleNext = () => {
@@ -46,6 +54,8 @@ export default function SlideCarouselCountry(props){
         handleOpenModal()
 
     }
+
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     const style = {
         position: 'absolute',
@@ -412,7 +422,7 @@ export default function SlideCarouselCountry(props){
             </Box>
         </div>
 
-        <Modal
+        {/* <Modal
         keepMounted
         open={openModal}
         onClose={handleCloseModal}
@@ -427,7 +437,32 @@ export default function SlideCarouselCountry(props){
             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
           </Typography>
         </Box>
-      </Modal>
+      </Modal> */}
+
+    <Dialog
+        fullScreen={fullScreen}
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="responsive-dialog-title">
+          {"Use Google's location service?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleCloseModal}>
+            Disagree
+          </Button>
+          <Button onClick={handleCloseModal} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
         </>
         
     )
