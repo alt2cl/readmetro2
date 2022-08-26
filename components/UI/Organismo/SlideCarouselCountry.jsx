@@ -13,6 +13,7 @@ import ZoomInOutlinedIcon from '@mui/icons-material/ZoomInOutlined';
 import { useRouter } from 'next/router'
 import ExpandIcon from '@mui/icons-material/Expand';
 import Modal from '@mui/material/Modal';
+import Link from '@/src/Link';
 
 
 
@@ -353,7 +354,7 @@ export default function SlideCarouselCountry(props){
                              >
                         {item.cityname} 
                         </Typography>
-                        <Link src={'/country/brazil?edicion=sao-pablo&&page=2'}>
+                        
                         {fecha != null ? 
                              <Image src={imageError ? fallback.blurDataURL : foto} 
                              layout="responsive"
@@ -372,7 +373,7 @@ export default function SlideCarouselCountry(props){
                             alt={'error'}
                             />
                             }
-                        </Link>
+                        
                         <Box sx={{display:'flex', position: 'absolute', bottom: '19px', left: '19px'}}>
                             <Box css={slideCSS.counter}>
                                 {i}
