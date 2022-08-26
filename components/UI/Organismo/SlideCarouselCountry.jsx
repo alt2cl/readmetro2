@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Box from '@mui/material/Box';
 import { css } from '@emotion/react';
 import Slide from '@mui/material/Slide';
@@ -27,6 +27,8 @@ import Button from '@mui/material/Button';
 export default function SlideCarouselCountry(props){
 
     const {cities, todayEdition, slug, widthItem} = props
+
+    console.log('dataslide:', cities, todayEdition, props)
     const [imageError, setImageError] = useState(false);
     const scrollElement = useRef(null);
     const router = useRouter();
@@ -34,6 +36,7 @@ export default function SlideCarouselCountry(props){
     const handleOpenModal = () => setOpenModal(true);
     const handleCloseModal = () => setOpenModal(false);
     const theme = useTheme();
+    const [bigImages, setBigImages] =useState([])
 
 
     const handleNext = () => {
@@ -49,8 +52,8 @@ export default function SlideCarouselCountry(props){
     };
 
     const handleOpenPage =(i, item)=> {
-        console.log('event trae esto', item, slug, router)
-        router.push(`${router.asPath}?edicion=${slug}&&page=${i}`)
+        console.log('event trae esto:::',router)
+        router.push(`/country/${router.query.country}?edition=${slug}&&page=${i}`)
         handleOpenModal()
 
     }
@@ -282,11 +285,13 @@ export default function SlideCarouselCountry(props){
 
       let dataSlidePost = ""
       let dataSlidePostCountry = ""
+      let dataSlidePostCountryBig = ""
 
       if(todayEdition != null){
         
         const cantPages = todayEdition.pages;
         const imagenes = [];
+        const bigimages = [];
         const date = todayEdition.date ? todayEdition.date : null;
         const fecha = date != null ? date.replaceAll("-","/") : null;
 
@@ -296,10 +301,38 @@ export default function SlideCarouselCountry(props){
                 foto:`https://rm.metrolatam.com/${fecha}/${slug}/thumb_${index}-${todayEdition.newcode}.webp`,
                 link: `google.com`
                 }
+            )
+
+            
+
+            bigimages.push(
+                {
+                    foto:`https://rm.metrolatam.com/${fecha}/${slug}/full_${index}-${todayEdition.newcode}.webp`,
+                    link: `google.com`
+                    }
 
             )
-            
         }
+
+        {bigimages.lenght > 0 ? setBigImages(bigimages) : null}
+
+        dataSlidePostCountryBig = bigImages.map((item, i) =>{
+            return(
+                <Box>
+                    <Image src={imageError ? fallback.src : item.foto} 
+                    layout="responsive"
+                    width={1301}
+                    height={1500}
+                    alt={item.link}
+                    priority = {i <= 2 ? 'true': 'false'}
+                    onError={() => setImageError(true)}
+                    />
+                </Box>
+
+            )
+        })
+
+        
 
         dataSlidePostCountry = imagenes.map((item, i) => {
             return (
@@ -397,6 +430,8 @@ export default function SlideCarouselCountry(props){
       }
 
 
+
+
     
     return (
         <>
@@ -422,22 +457,6 @@ export default function SlideCarouselCountry(props){
             </Box>
         </div>
 
-        {/* <Modal
-        keepMounted
-        open={openModal}
-        onClose={handleCloseModal}
-        aria-labelledby="keep-mounted-modal-title"
-        aria-describedby="keep-mounted-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
-      </Modal> */}
 
     <Dialog
         fullScreen={fullScreen}
@@ -450,6 +469,161 @@ export default function SlideCarouselCountry(props){
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
+
+            {dataSlidePostCountryBig}
+            
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
             Let Google help apps determine location. This means sending anonymous
             location data to Google, even when no apps are running.
           </DialogContentText>
