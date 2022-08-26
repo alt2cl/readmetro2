@@ -318,7 +318,7 @@ export default function SlideCarouselCountry(props){
 
         dataSlidePostCountryBig = bigImages.map((item, i) =>{
             return(
-                <Box>
+                <Box key={item.foto}>
                     <Image src={imageError ? fallback.src : item.foto} 
                     layout="responsive"
                     width={1301}
