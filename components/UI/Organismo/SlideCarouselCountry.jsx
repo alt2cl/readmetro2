@@ -50,7 +50,7 @@ export default function SlideCarouselCountry(props){
 
     const handleOpenPage =(i, item)=> {
         console.log('event trae esto', item, slug, router)
-        router.push(`/country/brazil?edicion=${slug}&&page=${i}`)
+        router.push(`${router.asPath}?edicion=${slug}&&page=${i}`)
         handleOpenModal()
 
     }
