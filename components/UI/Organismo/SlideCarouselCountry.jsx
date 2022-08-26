@@ -10,6 +10,9 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import IconButton from '@mui/material/IconButton';
 import ZoomInOutlinedIcon from '@mui/icons-material/ZoomInOutlined';
+import { useRouter } from 'next/router'
+import ExpandIcon from '@mui/icons-material/Expand';
+import Modal from '@mui/material/Modal';
 
 
 
@@ -18,8 +21,11 @@ export default function SlideCarouselCountry(props){
     const {cities, todayEdition, slug, widthItem} = props
     const [imageError, setImageError] = useState(false);
     const scrollElement = useRef(null);
+    const router = useRouter();
+    const [openModal, setOpenModal] = useState(false);
+    const handleOpenModal = () => setOpenModal(true);
+    const handleCloseModal = () => setOpenModal(false);
 
-    console.log('fallback', fallback.src)
 
     const handleNext = () => {
         //setChecked((prev) => !prev);
@@ -32,6 +38,25 @@ export default function SlideCarouselCountry(props){
         //setChecked((prev) => !prev);
         scrollElement.current.scrollLeft -= widthItem;
     };
+
+    const handleOpenPage =(i, item)=> {
+        console.log('event trae esto', item, slug, router)
+        router.push(`/country/brazil?edicion=${slug}&&page=${i}`)
+        handleOpenModal()
+
+    }
+
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+      };
 
     const slideCSS =  {
         wrapslide: (theme) => css({
@@ -101,7 +126,8 @@ export default function SlideCarouselCountry(props){
             height: '30px',
             borderRadius: '3px',
             padding: '0 10px',
-            border:`1px solid ${theme.palette.primary.main}`
+            border:`1px solid ${theme.palette.primary.main}`,
+            cursor:'pointer'
         }),
         zoom: (theme)=> css({
             position: 'absolute',
@@ -269,6 +295,7 @@ export default function SlideCarouselCountry(props){
                 //item slide landing country
                 <div css={slideCSS.slidepost} key={item.cityname}>
                 <Box sx={{ boxShadow: 3, m: 1, position: 'relative' }}>
+
                     {imagenes != null ? 
                          <Image src={imageError ? fallback.src : item.foto} 
                          layout="responsive"
@@ -285,12 +312,13 @@ export default function SlideCarouselCountry(props){
                     alt={'error'}
                     />
                     }
-                    <Box css={slideCSS.counterOptions} sx={{display:'flex'}}>
+                    <Box css={slideCSS.counterOptions} sx={{display:'flex',justifyContent:'space-between'}}>
                         <Box css={slideCSS.counter}>
                             {i+1}
                         </Box>
-                        <Box css={slideCSS.expandbtn}>
+                        <Box css={slideCSS.expandbtn} onClick={()=>handleOpenPage(i+1, item)}>
                             Expandir
+                            <ExpandIcon />
                         </Box>
                         
                     </Box>
@@ -325,6 +353,7 @@ export default function SlideCarouselCountry(props){
                              >
                         {item.cityname} 
                         </Typography>
+                        <Link src={'/country/brazil?edicion=sao-pablo&&page=2'}>
                         {fecha != null ? 
                              <Image src={imageError ? fallback.blurDataURL : foto} 
                              layout="responsive"
@@ -343,6 +372,7 @@ export default function SlideCarouselCountry(props){
                             alt={'error'}
                             />
                             }
+                        </Link>
                         <Box sx={{display:'flex', position: 'absolute', bottom: '19px', left: '19px'}}>
                             <Box css={slideCSS.counter}>
                                 {i}
@@ -358,6 +388,7 @@ export default function SlideCarouselCountry(props){
 
     
     return (
+        <>
         <div css={slideCSS.wrapslide}>
             <Slide onScroll={listenerScroll} direction="right" in={true} mountOnEnter unmountOnExit ref={scrollElement}>
                 <div css={slideCSS.wrap}>
@@ -379,5 +410,24 @@ export default function SlideCarouselCountry(props){
                 </Box>
             </Box>
         </div>
+
+        <Modal
+        keepMounted
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
+            Text in a modal
+          </Typography>
+          <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography>
+        </Box>
+      </Modal>
+        </>
+        
     )
 }

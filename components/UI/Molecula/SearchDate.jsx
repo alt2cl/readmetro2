@@ -114,7 +114,7 @@ const SearchDate = (props) => {
     };
 
 
-    console.log('router:::', ' - ', router.query.country ,' - ', router.asPath)
+    //console.log('router:::', ' - ', router.query.country ,' - ', router.asPath)
     
     
     const menuId = 'primary-search-account-menu';
@@ -148,6 +148,7 @@ const SearchDate = (props) => {
       };
 
     const handleChangeSelectcountry = (e) => {
+      
       router.push("/"+e.target.value)
     }
 
