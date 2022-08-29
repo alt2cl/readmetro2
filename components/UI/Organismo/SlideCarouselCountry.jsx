@@ -3,9 +3,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Box from '@mui/material/Box';
 import { css } from '@emotion/react';
 import Slide from '@mui/material/Slide';
-import Image from 'next/image';
-import { Typography } from '@mui/material';
-import fallback from '@/public/img/fallback.jpg'
+
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import IconButton from '@mui/material/IconButton';
@@ -13,64 +11,63 @@ import ZoomInOutlinedIcon from '@mui/icons-material/ZoomInOutlined';
 import { useRouter } from 'next/router'
 import ExpandIcon from '@mui/icons-material/Expand';
 import Link from '@/src/Link';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
+import { Typography } from '@mui/material';
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import Button from '@mui/material/Button';
+import Image from 'next/image';
+
+
+//import { useTheme } from '@mui/material/styles';
+
+import Dialogmodal from '@/components/UI/Molecula/Dialogmodal'
 
 
 
 export default function SlideCarouselCountry(props){
 
-    const {cities, todayEdition, slug, widthItem} = props
+    const {todayEdition, citySlug,slug, widthItem, content, optionsbtnsoff, goeditionon, bigimages, data} = props
 
-    console.log('dataslide:', cities, todayEdition, props)
-    const [imageError, setImageError] = useState(false);
+    console.log('la data', todayEdition)
+
+
+
     const scrollElement = useRef(null);
     const router = useRouter();
     const [openModal, setOpenModal] = useState(false);
     const handleOpenModal = () => setOpenModal(true);
     const handleCloseModal = () => setOpenModal(false);
-    const theme = useTheme();
+    const fullListImage = () => setFullListImage([]);
+    //const theme = useTheme();
     const [bigImages, setBigImages] =useState([])
+    const [recortes, setRecortes] =useState([])
+
+    const handleRecortes = () => {
+        if (todayEdition.recortes.length > 0) {
+            setRecortes(todayEdition.recortes)
+        }
+    }
 
 
     const handleNext = () => {
-        //setChecked((prev) => !prev);
-        //scrollElement.current.scrollLeft += 250;
         scrollElement.current.scrollLeft += widthItem
-
     };
 
     const handlePrev = () => {
-        //setChecked((prev) => !prev);
         scrollElement.current.scrollLeft -= widthItem;
     };
 
+ 
+
     const handleOpenPage =(i, item)=> {
-        console.log('event trae esto:::',router)
         router.push(`/country/${router.query.country}?edition=${slug}&&page=${i}`)
         handleOpenModal()
 
+        setBigImages(bigimages);
+        handleRecortes();
+
     }
 
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-      };
 
     const slideCSS =  {
         wrapslide: (theme) => css({
@@ -216,23 +213,21 @@ export default function SlideCarouselCountry(props){
 
     }
 
-    let isScrolling;
+    let isScrolling
 
     function listenerScroll(e){
-        
           let element = e.target;
           let childElements = element.children;
           let scrollLeftElement = element.scrollLeft;
-          let anchoventana = window.innerWidth
+          let anchoventana = window.innerWidth;
 
-        console.log('scroll event', scrollLeftElement, anchoventana, childElements[0].offsetWidth, 'ancho total:',childElements.length, childElements.length * 250)
+        // console.log('scroll event', scrollLeftElement, anchoventana, childElements[0].offsetWidth, 'ancho total:',childElements.length, childElements.length * 250)
       
         //element.clearTimeout( isScrolling );
         const firstScroll = childElements[0].offsetWidth - ((anchoventana - childElements[0].offsetWidth)/2)
         console.log('firstScroll', firstScroll)
       
           isScrolling = setTimeout(function() {
-      
       
               if(scrollLeftElement < firstScroll){
                 console.log('scroll event 1')
@@ -270,164 +265,105 @@ export default function SlideCarouselCountry(props){
                   removeClass('current',childElements);
                   addClass('current', childElements[7])
               }
-              
-      
               // Run the callback
-      
-      
-      
           }, 200);
-      
-      
-      
-      
       }
 
-      let dataSlidePost = ""
-      let dataSlidePostCountry = ""
-      let dataSlidePostCountryBig = ""
+      // bigimages.push(
+            //     {
+            //         foto:`https://rm.metrolatam.com/${fecha}/${slug}/full_${index}-${todayEdition.newcode}.webp`,
+            //         link: `google.com`
+            //         }
+            // )
 
-      if(todayEdition != null){
-        
-        const cantPages = todayEdition.pages;
-        const imagenes = [];
-        const bigimages = [];
-        const date = todayEdition.date ? todayEdition.date : null;
-        const fecha = date != null ? date.replaceAll("-","/") : null;
 
-        for (let index = 1; index < cantPages; index++) {
-            imagenes.push(
-                {
-                foto:`https://rm.metrolatam.com/${fecha}/${slug}/thumb_${index}-${todayEdition.newcode}.webp`,
-                link: `google.com`
-                }
-            )
+      console.log('el content:', content)
 
-            
 
-            bigimages.push(
-                {
-                    foto:`https://rm.metrolatam.com/${fecha}/${slug}/full_${index}-${todayEdition.newcode}.webp`,
-                    link: `google.com`
-                    }
+      const wrapContent = content.map((item, i)=>{
+        console.log('item:',item)
 
-            )
-        }
-
-        {bigimages.lenght > 0 ? setBigImages(bigimages) : null}
-
-        dataSlidePostCountryBig = bigImages.map((item, i) =>{
-            return(
-                <Box key={item.foto}>
-                    <Image src={imageError ? fallback.src : item.foto} 
-                    layout="responsive"
-                    width={1301}
-                    height={1500}
-                    alt={item.link}
-                    priority = {i <= 2 ? 'true': 'false'}
-                    onError={() => setImageError(true)}
-                    />
-                </Box>
-
-            )
-        })
-
-        
-
-        dataSlidePostCountry = imagenes.map((item, i) => {
-            return (
-                //item slide landing country
-                <div css={slideCSS.slidepost} key={item.cityname}>
+        return(
+            <Box css={slideCSS.slidepost} key={item.cityname}>
                 <Box sx={{ boxShadow: 3, m: 1, position: 'relative' }}>
+                    
+                    {item}
 
-                    {imagenes != null ? 
-                         <Image src={imageError ? fallback.src : item.foto} 
-                         layout="responsive"
-                         width={widthItem}
-                         height={300}
-                         alt={item.link}
-                         priority = {i <= 2 ? 'true': 'false'}
-                         onError={() => setImageError(true)}
-                          />
-                    : <Image src={fallback.src} 
-                    layout="responsive"
-                    width={fallback.width}
-                    height={fallback.height}
-                    alt={'error'}
-                    />
-                    }
-                    <Box css={slideCSS.counterOptions} sx={{display:'flex',justifyContent:'space-between'}}>
-                        <Box css={slideCSS.counter}>
+                    {optionsbtnsoff ? null :
+                        <>
+                        <Box css={slideCSS.counterOptions} sx={{display:'flex',justifyContent:'space-between'}}>
+                            <Button sx={{background: 'white'}} variant="outlined">
                             {i+1}
-                        </Box>
-                        <Box css={slideCSS.expandbtn} onClick={()=>handleOpenPage(i+1, item)}>
+                            </Button>
+                            <Button variant="contained" onClick={()=>handleOpenPage(i+1, item)} endIcon={<ExpandIcon />}>
                             Expandir
-                            <ExpandIcon />
+                            </Button>
+                           
                         </Box>
-                        
-                    </Box>
-                    <IconButton css={slideCSS.zoom} aria-label="zoom" >
-                        <ZoomInOutlinedIcon />
-                    </IconButton>
-                </Box>
-            </div>
-            )
-        })
+                        <IconButton css={slideCSS.zoom} aria-label="zoom" onClick={()=>handleOpenPage(i+1, item)} >
+                            <ZoomInOutlinedIcon />
+                        </IconButton>
+                        </>
+                    }
 
-
-      } else {
-        dataSlidePost = cities.map((item, i) => {
-            const date = item.allEditions  && item.allEditions[0] && item.allEditions[0].date ? item.allEditions[0].date : null;
-            const fecha = date != null ? date.replaceAll("-","/") : null;
-            let foto = null
-            if(fecha) {
-                foto = `https://rm.metrolatam.com/${fecha}/${item.cityslug}/thumb_1-${item.allEditions[0].newcode}.webp`
-            }
-            const myLoader = ({ src, width, quality }) => {
-                return `${foto}?w=${200}&q=${quality || 70}`
-              }
-            return (
-                //item slide homepage
-                <Box css={slideCSS.slidepost} key={item.cityname} >
-                    <Box sx={{ml:1 , mr:1,p: 1,  borderRadius:'5px', position: 'relative', background: 'white', boxShadow: 3 }}>
-                        <Typography 
-                            variant="button"
-                            noWrap
-                            component="h6"
-                             >
-                        {item.cityname} 
-                        </Typography>
-                        
-                        {fecha != null ? 
-                             <Image src={imageError ? fallback.blurDataURL : foto} 
-                             layout="responsive"
-                             width={200}
-                             height={250}
-                             alt={item.cityname}
-                             sx={{
-                                boxShadow: 3
-                             }}
-                             onError={() => setImageError(true)}
-                              />
-                        : <Image src={fallback.src} 
-                            layout="responsive"
-                            width={fallback.width}
-                            height={fallback.height}
-                            alt={'error'}
-                            />
-                            }
-                        
-                        <Box sx={{display:'flex', position: 'absolute', bottom: '19px', left: '19px'}}>
-                            <Box css={slideCSS.counter}>
-                                {i}
-                            </Box>
+                    {goeditionon ? 
+                        <Box css={slideCSS.counterOptions} sx={{display:'flex',justifyContent:'center', mb:'1rem'}}>
+                            <Link href={'/country/'+citySlug}>
+                            <Button variant="contained" endIcon={<ArrowForwardOutlinedIcon />}>
+                            Ir a la edición
+                            </Button>
+                            </Link>
                         </Box>
-                        
-                    </Box>
+
+                        : null
+                    }
+
+                    
+                    
                 </Box>
-                )
-            })
-      }
+                
+            </Box>
+        )
+    })
+
+    const readfull = bigImages.map((item)=>{
+        return(
+            <Box sx={{position: 'relative'}} key={item.foto}>
+                {recortes.length > 0  ? 
+                    recortes.map((item, i)=> {
+                        {item.pagina = i+1 ?
+                           
+                                <>
+                                <audio controls>
+                                    <source src={item.audio} type="audio/mpeg" />
+                                Your browser does not support the audio element.
+                                </audio> 
+    
+                                <h6>{item.pagina} {i}</h6>
+                                </>
+                                
+                            
+                            : null;
+
+                        }
+                        
+
+                    })
+                    
+                : null }
+                
+                <Image src={item.foto} 
+                layout="responsive"
+                width={1000}
+                height={1200}
+                alt={item.link}
+                onError={() => setImageError(true)}
+                />
+            </Box>
+            
+        )
+
+    })
 
 
 
@@ -438,7 +374,8 @@ export default function SlideCarouselCountry(props){
         <div css={slideCSS.wrapslide}>
             <Slide onScroll={listenerScroll} direction="right" in={true} mountOnEnter unmountOnExit ref={scrollElement}>
                 <div css={slideCSS.wrap}>
-                    {todayEdition != null ? dataSlidePostCountry : dataSlidePost}
+                {wrapContent}
+
                 </div>
             </Slide>
             <Box css={controlCSS}>
@@ -457,186 +394,12 @@ export default function SlideCarouselCountry(props){
             </Box>
         </div>
 
+        <Dialogmodal openModal={openModal} onCloseModal={()=>handleCloseModal()}>
+            { readfull}
+        </Dialogmodal>
 
-    <Dialog
-        fullScreen={fullScreen}
-        open={openModal}
-        onClose={handleCloseModal}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle id="responsive-dialog-title">
-          {"Use Google's location service?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
 
-            {dataSlidePostCountryBig}
-            
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleCloseModal}>
-            Disagree
-          </Button>
-          <Button onClick={handleCloseModal} autoFocus>
-            Agree
-          </Button>
-        </DialogActions>
-      </Dialog>
+   
         </>
         
     )

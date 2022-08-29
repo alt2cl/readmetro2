@@ -1,25 +1,30 @@
 
 import React from 'react';
-import Layout from '@/components/Layout/layout'
+import { useState, useEffect, useRef, useCallback } from "react";
+import Layout from '@/components/Layout/layout';
+import Image from 'next/image';
 import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
 import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry'
+import { css } from '@emotion/react';
 
 
-const arrayOptions = [
-  {item:'Juan', link: '/link1'}, 
-  {item:'Andres', link: '/link2'}
-]
-
+const widthItem = 250
 
 export default function ListEdiciones({data}) {
 
-    console.log('la data', data)
+    const [imageError, setImageError] = useState(false);
 
     const listsections = data.cities.map((item, i) => {
-
       let selectOptions = []
       let defaultSelectoption = "";
+      let todayEdition = item.allEditions[0];
+      const date = todayEdition.date ? todayEdition.date : null;
+      const fecha = date != null ? date.replaceAll("-","/") : null;
+      const slug = item.cityslug;
+      const cantPages = todayEdition.pages;
+      const imagenes = [];
+      const bigimages = [];
 
       if(i == 0) {
         defaultSelectoption = {'item':`${item.cityname}`, 'link': `/${item.cityslug}`}
@@ -29,10 +34,55 @@ export default function ListEdiciones({data}) {
         )
       }
 
+      for (let index = 1; index < cantPages; index++) {
+          imagenes.push(
+              {
+              foto:`https://rm.metrolatam.com/${fecha}/${slug}/thumb_${index}-${todayEdition.newcode}.webp`,
+              link: `google.com`
+              }
+          )
+      }
+
+      for (let index = 1; index < cantPages; index++) {
+        bigimages.push(
+            {
+            foto:`https://rm.metrolatam.com/${fecha}/${slug}/full_${index}-${todayEdition.newcode}.webp`,
+            link: `google.com`
+            }
+        )
+    }
+
+
+      const dataSlidePostCountry = imagenes.map((item, i) => {
+        return (
+            //imagenes a cargar en el carrusel
+            <>
+                {imagenes != null ? 
+                     <Image src={imageError ? fallback.src : item.foto} 
+                     layout="responsive"
+                     width={widthItem}
+                     height={300}
+                     alt={item.link}
+                     priority = {i <= 2 ? 'true': 'false'}
+                     onError={() => setImageError(true)}
+                      />
+                : <Image src={fallback.src} 
+                layout="responsive"
+                width={fallback.width}
+                height={fallback.height}
+                alt={'error'}
+                />
+                }
+        </>
+        )
+    })
+
       return(
         <SectionBox key={item.cityslug}>
-        <HeadSection titleSection={item.cityname} slug={item.cityslug} colorBullet={"#ccc"} linksite={data.website}/>
-        {item.allEditions.length > 0 &&  <SlideCarouselCountry todayEdition={item.allEditions[0]} slug={item.cityslug} widthItem={250}/>}
+          <HeadSection titleSection={item.cityname} slug={item.cityslug} colorBullet={"#ccc"} linksite={data.website}/>
+          {item.allEditions.length > 0 &&  
+          <SlideCarouselCountry todayEdition={item.allEditions[0]} slug={item.cityslug} widthItem={widthItem} content={dataSlidePostCountry} bigimages={bigimages} data={item}/>
+          }
         </SectionBox>
       )
 
