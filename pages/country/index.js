@@ -2,10 +2,8 @@
 import Layout from '@/components/Layout/layout'
 import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
-import Select from '@/components/UI/Atomo/Select'
-import MoreOptions from '@/components/UI/Atomo/MoreOptions'
+
 import Carousel from '@/components/UI/Organismo/Carousel'
-import SlideCarousel from '@/components/UI/Organismo/SlideCarousel'
 
 
 const arrayOptions = [

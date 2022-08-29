@@ -38,7 +38,7 @@ export default function Home({data}) {
           return (
               //item slide homepage
             
-                  <Box sx={{  borderRadius:'5px', background: 'white' }}>
+                  <Box sx={{  borderRadius:'5px', background: 'white' }} key={item.cityname}>
                       <Typography 
                           variant="button"
                           noWrap

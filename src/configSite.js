@@ -27,7 +27,7 @@ const configSite = {
         {
             "link": "/country/ecuador",
             "slug": "ecuador",
-            "name": "Ecudor",
+            "name": "Ecuador",
             "externalLink": "https://www.metroecuador.com.ec/"
         },
          {
