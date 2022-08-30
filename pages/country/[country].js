@@ -18,11 +18,11 @@ export default function ListEdiciones({data}) {
     const listsections = data.cities.map((item, i) => {
       let selectOptions = []
       let defaultSelectoption = "";
-      let todayEdition = item.allEditions[0];
-      const date = todayEdition.date ? todayEdition.date : null;
+      let todayEdition = item.allEditions ? item.allEditions[0] : null;
+      const date = todayEdition && todayEdition.date ? todayEdition.date : null;
       const fecha = date != null ? date.replaceAll("-","/") : null;
       const slug = item.cityslug;
-      const cantPages = todayEdition.pages;
+      const cantPages = todayEdition && todayEdition.pages;
       const imagenes = [];
       const bigimages = [];
 
