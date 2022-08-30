@@ -1,60 +1,29 @@
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import Header from '@/components/UI/Organismo/Header'
 
-import Layout from '@/components/Layout/layout'
-import SectionBox from '@/components/Layout/sectionBox'
-import HeadSection from '@/components/UI/Molecula/headSection'
+export default function PostPage() {
+  const router = useRouter()
+  const {country} = router.query
 
-import Carousel from '@/components/UI/Organismo/Carousel'
-
-
-const arrayOptions = [
-  {item:'Juan', link: '/link1'}, 
-  {item:'Andres', link: '/link2'}
-]
-
-
-export default function Home({data}) {
-    // console.log('la data', data)
-
-    const listCountry = data.map((item) => (
-        <SectionBox key={item.countryname}>
-          <HeadSection titleSection={item.countryname} slug={item.countryslug} colorBullet={"#ccc"} />
-
-          <Carousel />
-
-        </SectionBox>
-
-
-    ));
+  console.log('lang', country)
 
   return (
-     
-      <Layout>
-
-        {listCountry}
-        
-       
-
-
-      </Layout>
-    
-
+    <>
+      <Header />
+      <h1>Post: {country}</h1>
+      <ul>
+        <li>
+          <Link href={`/${country}/chile`}>
+            <a>First comment</a>
+          </Link>
+        </li>
+        <li>
+          <Link href={`/${country}/chile`}>
+            <a>Second comment</a>
+          </Link>
+        </li>
+      </ul>
+    </>
   )
 }
-
-
-
-
-  export async function getStaticProps() {
-    // Call an external API endpoint to get posts.
-    // You can use any data fetching library
-    const res = await fetch('https://api.readmetro.com/country.json');
-    const data = await res.json()
-  
-    // By returning { props: { posts } }, the Blog component
-    // will receive `posts` as a prop at build time
-    return {
-      props: {
-        data,
-      },
-    }
-  }

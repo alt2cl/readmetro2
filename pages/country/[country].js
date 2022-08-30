@@ -7,11 +7,19 @@ import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
 import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry'
 import { css } from '@emotion/react';
+import {useRouter} from 'next/router'
 
 
 const widthItem = 250
 
 export default function ListEdiciones({data}) {
+
+  const router = useRouter();
+
+  
+
+
+  console.log('router::::', router.query)
 
     const [imageError, setImageError] = useState(false);
 
@@ -98,23 +106,23 @@ export default function ListEdiciones({data}) {
 
 
 
-  export async function getStaticPaths(){
+  export async function getStaticPaths(context){
     try {
       const res = await fetch('https://api.readmetro.com/country.json');
       const data = await res.json();
-      const paths = data.map(({countryslug}) => ({params: {country: `${countryslug}`}}));
+      const paths = data.map(({countryslug}) => ({params: { country: `${countryslug}`, lang:'es' }}));
       return {
         paths,
         fallback: false,
       };
     } catch (error) {
       console.log(error)
-      
     }
   }
 
 
-  export async function getStaticProps({params}) {
+  export async function getStaticProps({params, locales}) {
+    console.log('los params():::::::::::',locales)
     // Call an external API endpoint to get posts.
     // You can use any data fetching library
     const res = await fetch(`https://api.readmetro.com/${params.country}/index.json`);
@@ -126,5 +134,7 @@ export default function ListEdiciones({data}) {
       props: {
         data,
       },
+      revalidate: 10,
+     
     }
   }
