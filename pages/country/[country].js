@@ -31,7 +31,7 @@ export default function ListEdiciones({data}) {
       const imagenes = [];
       const bigimages = [];
 
-      console.log('value item', item.allEditions[0].recortes)
+      //console.log('value item', item.allEditions[0].recortes)
 
       if(i == 0) {
         defaultSelectoption = {'item':`${item.cityname}`, 'link': `/${item.cityslug}`}
@@ -55,7 +55,7 @@ export default function ListEdiciones({data}) {
             {
             foto:`https://rm.metrolatam.com/${fecha}/${slug}/full_${index}-${todayEdition.newcode}.webp`,
             link: `google.com`,
-            recortes: item.allEditions[0].recortes,
+            recortes: item.allEditions.length > 0 && item.allEditions[0].recortes ? item.allEditions[0].recortes : null,
             }
         )
     }
@@ -125,6 +125,7 @@ export default function ListEdiciones({data}) {
     // Call an external API endpoint to get posts.
     // You can use any data fetching library
     const res = await fetch(`https://api.readmetro.com/${params.country}/index.json`);
+    
     const data = await res.json()
   
     // By returning { props: { posts } }, the Blog component

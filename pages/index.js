@@ -19,13 +19,10 @@ export default function Home({data}) {
 
     const listCountry = data.map((item) => {
 
-        // console.log('valor item desde el index:', item)
-     
-
-        
-
+        console.log('valor item desde el index:', item.cities)
 
         const dataSlidePost = item.cities.map((item, i) => {
+          
           const date = item.allEditions  && item.allEditions[0] && item.allEditions[0].date ? item.allEditions[0].date : null;
           const fecha = date != null ? date.replaceAll("-","/") : null;
           let foto = null
