@@ -15,6 +15,8 @@ import { Typography } from '@mui/material';
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import Button from '@mui/material/Button';
 import Image from 'next/image';
+import Chip from '@mui/material/Chip';
+import HeadphonesIcon from '@mui/icons-material/Headphones';
 
 
 //import { useTheme } from '@mui/material/styles';
@@ -326,39 +328,77 @@ export default function SlideCarouselCountry(props){
         )
     })
 
-    const readfull = bigImages.map((item)=>{
-        return(
-            <Box sx={{position: 'relative'}} key={item.foto}>
-                {recortes.length > 0  ? 
-                    recortes.map((item, i)=> {
-                        {item.pagina = i+1 ?
-                           
-                                <>
+    const readfull = bigImages.map((item, index)=>{
+
+        console.log('item recorte:::', item.recortes.pagina, index)
+        let audios = [];
+        let audiosPoints = [];
+
+        if(item.recortes.length > 0) {
+            console.log('element::',item.recortes.length )
+            item.recortes.map((ele, i)=> {
+                
+                    console.log('element:',i ,  ele)
+
+                    {ele.pagina == index +1 ?
+                        audios.push((
+                            <>
+                            <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem'}}>
+                                <Chip sx={{background: 'green',color: 'white'}} label={i+1} />
                                 <audio controls>
-                                    <source src={item.audio} type="audio/mpeg" />
+                                    <source src={ele.audio} type="audio/mpeg" />
                                 Your browser does not support the audio element.
                                 </audio> 
-    
-                                <h6>{item.pagina} {i}</h6>
-                                </>
-                                
+                            </Box>
                             
-                            : null;
+                            </>
+    
+                        ))
+                        : null
+                    }
 
-                        }
-                        
-
-                    })
+                    {ele.pagina == index +1 ?
+                        audiosPoints.push((
+                            <>
+                            <Chip sx={{position: 'absolute',left: `calc(${ele.x*100/1354}% - 20px)`, top: `calc(${ele.y*100/1500}% - 20px)`,background: 'green',color: 'white',height: '30px', opacity: '0.8', '& .MuiChip-label': {paddingLeft:'10px', paddingRight:'10px'}}} icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} label={i+1} />
+                            </>
+                        ))
+                        : null
+                    }
                     
-                : null }
+                    
+                   
                 
-                <Image src={item.foto} 
-                layout="responsive"
-                width={1000}
-                height={1200}
-                alt={item.link}
-                onError={() => setImageError(true)}
-                />
+            })
+        }
+
+        console.log( 'element foto::', item)
+
+        
+
+
+        return(
+            <Box sx={{borderBottom: '1px solid #ccc', mb: '2rem', pb: '2rem'}} key={item.foto}>
+                <Box sx={{display:'flex',flexDirection: {xs:'column', md:'row'}}}>
+                    <Button size="small" variant="contained" sx={{minWidth:'240px'}} startIcon={<HeadphonesIcon />}>Escuchar esta página</Button>
+                    <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}, mt:{xs:'1rem', md:'0px'},  mb:{xs:'1rem', md:'0px'}}}>
+                    {audios} 
+                    </Box>
+                </Box>
+
+                <Box sx={{position: 'relative'}}>
+                    <Image src={item.foto} 
+                        layout="responsive"
+                        width={1354}
+                        height={1500}
+                        alt={item.link}
+                        onError={() => setImageError(true)}
+                        />
+
+                    {audiosPoints}
+                </Box>
+                
+                  
             </Box>
             
         )

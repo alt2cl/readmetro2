@@ -16,10 +16,7 @@ export default function ListEdiciones({data}) {
 
   const router = useRouter();
 
-  
-
-
-  console.log('router::::', router.query)
+  //console.log('router::::', router.query)
 
     const [imageError, setImageError] = useState(false);
 
@@ -33,6 +30,8 @@ export default function ListEdiciones({data}) {
       const cantPages = todayEdition && todayEdition.pages;
       const imagenes = [];
       const bigimages = [];
+
+      console.log('value item', item.allEditions[0].recortes)
 
       if(i == 0) {
         defaultSelectoption = {'item':`${item.cityname}`, 'link': `/${item.cityslug}`}
@@ -55,7 +54,8 @@ export default function ListEdiciones({data}) {
         bigimages.push(
             {
             foto:`https://rm.metrolatam.com/${fecha}/${slug}/full_${index}-${todayEdition.newcode}.webp`,
-            link: `google.com`
+            link: `google.com`,
+            recortes: item.allEditions[0].recortes,
             }
         )
     }
@@ -122,7 +122,6 @@ export default function ListEdiciones({data}) {
 
 
   export async function getStaticProps({params, locales}) {
-    console.log('los params():::::::::::',locales)
     // Call an external API endpoint to get posts.
     // You can use any data fetching library
     const res = await fetch(`https://api.readmetro.com/${params.country}/index.json`);
