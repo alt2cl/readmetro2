@@ -107,7 +107,7 @@ export default function CarouselComponent(props)
     ]
 
     return (
-        <Carousel className="Example"
+        <Carousel 
         autoPlay={false}
         animation="slide"
         height= {380}

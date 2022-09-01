@@ -26,7 +26,7 @@ export default function SelectSmall(props) {
         id="select-city"
         value={city}
         displayEmpty
-        inputProps={{ 'aria-label': 'Without label' }}
+        inputprops={{ 'aria-label': 'Without label' }}
         onChange={handleChange}
       >
         <MenuItem value="">

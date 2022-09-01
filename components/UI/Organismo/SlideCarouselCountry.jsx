@@ -98,7 +98,7 @@ export default function SlideCarouselCountry(props){
             width: widthItem ? widthItem+'px' : '250px',
             height: 'auto',
             overflow: 'hidden',
-            'scroll-snap-align': 'center',
+            scrollSnapAlign: 'center',
             paddingBottom: '1rem',
             
 
@@ -172,7 +172,7 @@ export default function SlideCarouselCountry(props){
         btnSig: (theme) => css({
             background: '#fff',
             position: 'absolute',
-            top: '50%',
+            top: 'calc(50% - 40px)',
             right: '0',
             borderRadius: '50%',
             [theme.breakpoints.up('md')]: {
@@ -182,7 +182,7 @@ export default function SlideCarouselCountry(props){
         btnAnt: (theme) => css({
             background: '#fff',
             position: 'absolute',
-            top: '50%',
+            top: 'calc(50% - 40px)',
             left: '0',
             borderRadius: '50%',
             [theme.breakpoints.up('md')]: {
@@ -286,7 +286,7 @@ export default function SlideCarouselCountry(props){
         console.log('item:',item)
 
         return(
-            <Box css={slideCSS.slidepost} key={item.cityname}>
+            <Box css={slideCSS.slidepost} key={`${i}-${item.cityname}`}>
                 <Box sx={{ boxShadow: 3, m: 1, position: 'relative' }}>
                     
                     {item}
@@ -378,7 +378,7 @@ export default function SlideCarouselCountry(props){
 
 
         return(
-            <Box sx={{borderBottom: '1px solid #ccc', mb: '2rem', pb: '2rem'}} key={item.foto}>
+            <Box sx={{borderBottom: '1px solid #ccc', mb: '2rem', pb: '2rem'}} key={`${item.foto}-${index}`}>
                 <Box sx={{display:'flex',flexDirection: {xs:'column', md:'row'}}}>
                     <Button size="small" variant="contained" sx={{minWidth:'240px'}} startIcon={<HeadphonesIcon />}>Escuchar esta página</Button>
                     <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}, mt:{xs:'1rem', md:'0px'},  mb:{xs:'1rem', md:'0px'}}}>
@@ -418,7 +418,7 @@ export default function SlideCarouselCountry(props){
 
                 </div>
             </Slide>
-            <Box css={controlCSS}>
+            <Box>
                 <Box css={controlCSS.btnSig} sx={{ boxShadow: 2 }}>
                     <IconButton aria-label="next" onClick={() => handleNext()}>
                         <NavigateNextIcon />

@@ -133,8 +133,7 @@ export default function ListEdiciones({data}) {
     return {
       props: {
         data,
-      },
-      revalidate: 10,
+      }
      
     }
   }

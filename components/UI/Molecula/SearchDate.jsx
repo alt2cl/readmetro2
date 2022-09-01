@@ -82,7 +82,7 @@ const textfielddate = (theme) => ({
     display: 'none'
   },
 
-  '& .MuiOutlinedInput-input:first-child': {
+  '& .MuiOutlinedInput-input:first-of-type': {
     color: theme.palette.common.white,
   },
 
@@ -235,7 +235,7 @@ const SearchDate = (props) => {
          
           <NativeSelect css={pullproduct}
           defaultValue={router.asPath ? router.asPath : '/'}
-          inputProps={{
+          inputprops={{
             name: 'country',
             id: 'uncontrolled-native',
           }}

@@ -299,7 +299,7 @@ const [age, setAge] = React.useState('Español');
                     value={age}
                     onChange={handleChange}
                     //displayEmpty
-                    inputProps={{ 'aria-label': 'Without label' }}
+                    inputprops={{ 'aria-label': 'Without label' }}
                     variant="standard"
                     css={selectLang}
                   >

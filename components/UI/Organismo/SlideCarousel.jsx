@@ -23,15 +23,15 @@ export default function SlideCarousel(props){
             padding: '0px',
             transition: 'all 1s ease',
             '-webkit-overflow-scrolling': 'touch',
-            'scroll-snap-type': 'x mandatory',
-            'scroll-padding': '0 0 0 0',
+            scrollSnapType: 'x mandatory',
+            scrollPadding: '0 0 0 0',
             // 'scroll-behavior': 'smooth'
         }),
         slidepost: (theme) => css({
             width: '250px',
             height: '350px',
             overflow: 'hidden',
-            'scroll-snap-align': 'center',
+            scrollSnapAlign: 'center',
             
             [theme.breakpoints.up('xs')]: {
                 flex: '0 0 250px',
