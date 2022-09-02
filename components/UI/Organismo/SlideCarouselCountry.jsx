@@ -395,12 +395,12 @@ export default function SlideCarouselCountry(props){
                     {/* <Slide direction="up" in={scrollTrigger} mountOnEnter unmountOnExit> */}
 
                     {audios.length > 0 ?
-                        <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: 'linear-gradient(to bottom, rgba(256,256,256,1),rgba(256,256,256,0))'  }}>
-                        <Button size="small" variant="contained" sx={{height: '50px',minWidth:'140px',fontSize: '11px',width: '132px',textAlign: 'left',lineHeight: '18px'}} startIcon={<HeadphonesIcon />}>Escuchar esta página</Button>
-                        <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}, mt:{xs:'1rem', md:'0px'},  mb:{xs:'1rem', md:'0px'}}}>
-                        { audios} 
+                        <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: 'linear-gradient(to bottom, rgba(58,58,70,1) 20%,rgba(58,58,70,0))', p: '5px 0 2rem 5px', marginLeft: '-5px',width: 'calc(100% + 10px)'  }}>
+                            <Button size="small" variant="contained" sx={{height: '50px',minWidth:'140px',fontSize: '11px',width: '132px',textAlign: 'left',lineHeight: '18px'}} startIcon={<HeadphonesIcon />}>Escuchar esta página</Button>
+                            <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}}}>
+                            { audios} 
+                            </Box>
                         </Box>
-                    </Box>
                     : null
                     }
 
