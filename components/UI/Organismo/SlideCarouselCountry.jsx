@@ -17,6 +17,9 @@ import Button from '@mui/material/Button';
 import Image from 'next/image';
 import Chip from '@mui/material/Chip';
 import HeadphonesIcon from '@mui/icons-material/Headphones';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
+
+
 
 
 //import { useTheme } from '@mui/material/styles';
@@ -29,7 +32,16 @@ export default function SlideCarouselCountry(props){
 
     const {todayEdition, citySlug,slug, widthItem, content, optionsbtnsoff, goeditionon, bigimages, data} = props
 
-    console.log('la data', todayEdition)
+  
+
+    const [scrollTarget, setScrollTarget] = useState(undefined) 
+    const scrollTrigger = useScrollTrigger({ 
+        disableHysteresis: true,
+        threshold:0,
+        target: scrollTarget 
+    });
+
+    console.log('scrollTrigger', scrollTrigger)
 
 
 
@@ -279,11 +291,11 @@ export default function SlideCarouselCountry(props){
             // )
 
 
-      console.log('el content:', content)
+      //console.log('el content:', content)
 
 
       const wrapContent = content.map((item, i)=>{
-        console.log('item:',item)
+        //console.log('item:',item)
 
         return(
             <Box css={slideCSS.slidepost} key={`${i}-${item.cityname}`}>
@@ -372,19 +384,29 @@ export default function SlideCarouselCountry(props){
             })
         }
 
-        console.log( 'element foto::', item)
+        //console.log( 'element foto::', item)
 
         
 
 
         return(
-            <Box sx={{borderBottom: '1px solid #ccc', mb: '2rem', pb: '2rem'}} key={`${item.foto}-${index}`}>
-                <Box sx={{display:'flex',flexDirection: {xs:'column', md:'row'}}}>
-                    <Button size="small" variant="contained" sx={{minWidth:'240px'}} startIcon={<HeadphonesIcon />}>Escuchar esta página</Button>
-                    <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}, mt:{xs:'1rem', md:'0px'},  mb:{xs:'1rem', md:'0px'}}}>
-                    {audios} 
-                    </Box>
-                </Box>
+            <Box sx={{borderBottom: '1px solid #ccc', mb: '2rem', pb: '2rem', position: 'relative'}} key={`${item.foto}-${index}`} ref={node => {
+                if (node) {
+                    setScrollTarget(node);
+                }
+            }} >
+                    {/* <Slide direction="up" in={scrollTrigger} mountOnEnter unmountOnExit> */}
+                        <Box sx={{display:'flex',flexDirection: {xs:'column', md:'row'}, position: 'sticky', top: '0px', zIndex: '20'  }}>
+                            <Button size="small" variant="contained" sx={{minWidth:'240px'}} startIcon={<HeadphonesIcon />}>Escuchar esta página</Button>
+                            <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}, mt:{xs:'1rem', md:'0px'},  mb:{xs:'1rem', md:'0px'}}}>
+                            {audios} 
+                            </Box>
+                        </Box>
+
+                    {/* </Slide> */}
+                    
+
+                
 
                 <Box sx={{position: 'relative'}}>
                     <Image src={item.foto} 

@@ -29,12 +29,12 @@ export default function Dialogmodal(props) {
         <DialogTitle id="responsive-dialog-title">
           {"Use Google's location service?"}
         </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
+        <DialogContent sx={{padding: {xs:'20px 5px', md:'20px 24px'}}}>
+          {/* <DialogContentText> */}
 
             {props.children}
             
-          </DialogContentText>
+          {/* </DialogContentText> */}
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={()=>onCloseModal()}>

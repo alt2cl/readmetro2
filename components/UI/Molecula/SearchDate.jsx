@@ -251,26 +251,7 @@ const SearchDate = (props) => {
 
 
 
-            {/* <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleClickOpen}
-                color="inherit"
-                sx={{display: 'flex', justifyContent: 'space-between',flexGrow: 1}}
-                >
-                    <Typography
-                        variant="subtitle2"
-                        noWrap
-                        component="div"
-                        sx={{ display: { xs: 'block', sm: 'block' } }}
-                    >
-                        Hoy - Domingo 17 de Sept 2022
-                    </Typography>
-                    <CalendarMonthIcon sx={{ mr: 2 }}/>
-            </IconButton> */}
+         
 
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={esLocale}>
               <Stack spacing={3} sx={{flexGrow: '1'}}>

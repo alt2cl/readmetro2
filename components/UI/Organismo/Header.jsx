@@ -26,40 +26,15 @@ import { css } from '@emotion/react';
 
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import ElevationScroll from '@/components/CustomHooks/ElevationScroll';
 
 
 
 import configsite from '@/src/configSite'
 
 
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-import { NoEncryption } from '@mui/icons-material';
 
 
-function ElevationScroll(props) {
-  const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 35,
-    target: window ? window() : undefined,
-  });
-
-  return React.cloneElement(children, {
-    elevation: trigger ? 4 : 0,
-  });
-}
-
-ElevationScroll.propTypes = {
-  children: PropTypes.element.isRequired,
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
 
 const elevationFixedWrap = css({
   '& [elevation="4"]':{
@@ -279,7 +254,7 @@ const [age, setAge] = React.useState('Español');
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
-              sx={{mr: 0}}
+              sx={{mr:0}}
             >   
                 <Link 
                     href="https://www.metroworldnews.com/about-us/" 
@@ -326,7 +301,7 @@ const [age, setAge] = React.useState('Español');
       </AppBar>
       
         <Box sx={{flexGrow:1}} css={elevationFixedWrap}>
-          <ElevationScroll {...props}>
+          <ElevationScroll threshold={35} {...props}>
           <Box sx={{ display: { xs: 'block', md: 'none' }}}>
               <SearchDate data={menupaises}  />
           </Box>
