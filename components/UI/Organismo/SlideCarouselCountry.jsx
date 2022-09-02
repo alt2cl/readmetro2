@@ -46,6 +46,7 @@ export default function SlideCarouselCountry(props){
 
 
     const scrollElement = useRef(null);
+    const audioref = useRef(null)
     const router = useRouter();
     const [openModal, setOpenModal] = useState(false);
     const handleOpenModal = () => setOpenModal(true);
@@ -355,9 +356,9 @@ export default function SlideCarouselCountry(props){
                     {ele.pagina == index +1 ?
                         audios.push((
                             <>
-                            <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem'}}>
-                                <Chip sx={{background: 'green',color: 'white'}} label={i+1} />
-                                <audio controls>
+                            <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem', position: 'relative', pl: {xs:'1rem', md: '0' }} } key={'audio'+ele.pagina}>
+                                <Chip sx={{backgroundColor: (theme) => theme.palette.primary.main ,color: 'white', position: 'absolute',top: '0',zIndex:' 2',left:'10px',width: '22px',height: '22px',textAlign: 'center', '& .MuiChip-label': {padding:'0'} }} label={i+1} />
+                                <audio id={'audioplay'+(i+1)} controls ref={audioref}>
                                     <source src={ele.audio} type="audio/mpeg" />
                                 Your browser does not support the audio element.
                                 </audio> 
@@ -372,7 +373,7 @@ export default function SlideCarouselCountry(props){
                     {ele.pagina == index +1 ?
                         audiosPoints.push((
                             <>
-                            <Chip sx={{position: 'absolute',left: `calc(${ele.x*100/1354}% - 20px)`, top: `calc(${ele.y*100/1500}% - 20px)`,background: 'green',color: 'white',height: '30px', opacity: '0.8', '& .MuiChip-label': {paddingLeft:'10px', paddingRight:'10px'}}} icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} label={i+1} />
+                            <Chip sx={{position: 'absolute',left: `calc(${ele.x*100/1354}% - 10px)`, top: `calc(${ele.y*100/1500}% - 10px)`,background: 'black',color: 'white',height: '20px', opacity: '0.4', '& .MuiChip-label': {paddingLeft:'10px', paddingRight:'10px'}}} icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} label={i+1} />
                             </>
                         ))
                         : null
@@ -390,20 +391,22 @@ export default function SlideCarouselCountry(props){
 
 
         return(
-            <Box sx={{borderBottom: '1px solid #ccc', mb: '2rem', pb: '2rem', position: 'relative'}} key={`${item.foto}-${index}`} ref={node => {
-                if (node) {
-                    setScrollTarget(node);
-                }
-            }} >
+            <Box sx={{borderBottom: '1px solid #ccc', mb: '2rem', pb: '2rem', position: 'relative'}} key={`${item.foto}-${index}`} >
                     {/* <Slide direction="up" in={scrollTrigger} mountOnEnter unmountOnExit> */}
-                        <Box sx={{display:'flex',flexDirection: {xs:'column', md:'row'}, position: 'sticky', top: '0px', zIndex: '20'  }}>
-                            <Button size="small" variant="contained" sx={{minWidth:'240px'}} startIcon={<HeadphonesIcon />}>Escuchar esta página</Button>
-                            <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}, mt:{xs:'1rem', md:'0px'},  mb:{xs:'1rem', md:'0px'}}}>
-                            {audios} 
-                            </Box>
-                        </Box>
 
-                    {/* </Slide> */}
+                    {audios.length > 0 ?
+                        <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: 'linear-gradient(to bottom, rgba(256,256,256,1),rgba(256,256,256,0))'  }}>
+                        <Button size="small" variant="contained" sx={{height: '50px',minWidth:'140px',fontSize: '11px',width: '132px',textAlign: 'left',lineHeight: '18px'}} startIcon={<HeadphonesIcon />}>Escuchar esta página</Button>
+                        <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}, mt:{xs:'1rem', md:'0px'},  mb:{xs:'1rem', md:'0px'}}}>
+                        { audios} 
+                        </Box>
+                    </Box>
+                    : null
+                    }
+
+                       
+
+                 
                     
 
                 
