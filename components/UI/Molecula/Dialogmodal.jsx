@@ -8,6 +8,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 
+
+
 export default function Dialogmodal(props) {
 
     const {openModal,onCloseModal} = props
