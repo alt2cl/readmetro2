@@ -347,11 +347,34 @@ export default function SlideCarouselCountry(props){
         let audios = [];
         let audiosPoints = [];
 
+        let wrapAudios = [];
+
+        if (audios.length > 0) {
+            audios.map((audio, i)=>{
+                wrapAudios.push((
+                    <>
+                        <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem', position: 'relative', pl: {xs:'1rem', md: '0' }} } key={'audio'+ele.pagina}>
+                            <Chip sx={{backgroundColor: (theme) => theme.palette.primary.main ,color: 'white', position: 'absolute',top: '0',zIndex:' 2',left:'10px',width: '22px',height: '22px',textAlign: 'center', '& .MuiChip-label': {padding:'0'} }} label={i+1} />
+                            <audio id={'audioplay'+(i+1)} controls ref={audioref}>
+                                {audio[i]}
+                            Your browser does not support the audio element.
+                            </audio> 
+                        </Box>
+                    </>
+                    
+    
+                ))
+                
+            })
+            
+
+        }
+
         if(item.recortes.length > 0) {
             console.log('element::',item.recortes.length )
             item.recortes.map((ele, i)=> {
                 
-                    console.log('element:',i ,  ele)
+                    //console.log('element:',i ,  ele)
 
                     {ele.pagina == index +1 ?
                         audios.push((
@@ -363,9 +386,7 @@ export default function SlideCarouselCountry(props){
                                 Your browser does not support the audio element.
                                 </audio> 
                             </Box>
-                            
                             </>
-    
                         ))
                         : null
                     }
