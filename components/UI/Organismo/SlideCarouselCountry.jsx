@@ -11,78 +11,39 @@ import ZoomInOutlinedIcon from '@mui/icons-material/ZoomInOutlined';
 import { useRouter } from 'next/router'
 import ExpandIcon from '@mui/icons-material/Expand';
 import Link from '@/src/Link';
-import { Typography } from '@mui/material';
+//import { Typography } from '@mui/material';
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import Button from '@mui/material/Button';
-import Image from 'next/image';
-import Chip from '@mui/material/Chip';
-import HeadphonesIcon from '@mui/icons-material/Headphones';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-
-
-
-
-//import { useTheme } from '@mui/material/styles';
-
-import Dialogmodal from '@/components/UI/Molecula/Dialogmodal'
-
+//import Image from 'next/image';
+//import Chip from '@mui/material/Chip';
+//import HeadphonesIcon from '@mui/icons-material/Headphones';
+//import useScrollTrigger from '@mui/material/useScrollTrigger';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
+//import Dialogmodal from '@/components/UI/Molecula/Dialogmodal'
+import { openDialog } from '@/redux/features/dialog/dialogSlice';
 
 
 export default function SlideCarouselCountry(props){
 
-    const {todayEdition, citySlug,slug, widthItem, content, optionsbtnsoff, goeditionon, bigimages, data} = props
+    const {citySlug, widthItem, content, optionsbtnsoff, goeditionon, bigimages, data} = props
 
-  
-
-    const [scrollTarget, setScrollTarget] = useState(undefined) 
-    const scrollTrigger = useScrollTrigger({ 
-        disableHysteresis: true,
-        threshold:0,
-        target: scrollTarget 
-    });
-
-    console.log('scrollTrigger', scrollTrigger)
-
-
-
+    const dispatch = useDispatch();
     const scrollElement = useRef(null);
-    const audioref = useRef(null)
+    //const audioref = useRef(null)
     const router = useRouter();
-    const [openModal, setOpenModal] = useState(false);
-    const handleOpenModal = () => setOpenModal(true);
-    const handleCloseModal = () => setOpenModal(false);
-    const fullListImage = () => setFullListImage([]);
-    //const theme = useTheme();
-    const [bigImages, setBigImages] =useState([])
-    const [recortes, setRecortes] =useState([])
+    //const [openModal, setOpenModal] = useState(false);
 
-    const handleRecortes = () => {
-        if (todayEdition.recortes.length > 0) {
-            setRecortes(todayEdition.recortes)
-        }
-    }
+    
 
+    //const [scrollTarget, setScrollTarget] = useState(undefined) 
+    // const scrollTrigger = useScrollTrigger({ 
+    //     disableHysteresis: true,
+    //     threshold:0,
+    //     target: scrollTarget 
+    // });
 
-    const handleNext = () => {
-        scrollElement.current.scrollLeft += widthItem
-    };
-
-    const handlePrev = () => {
-        scrollElement.current.scrollLeft -= widthItem;
-    };
-
- 
-
-    const handleOpenPage =(i, item)=> {
-        router.push(`/country/${router.query.country}?edition=${slug}&&page=${i}`)
-        handleOpenModal()
-
-        setBigImages(bigimages);
-        handleRecortes();
-
-    }
-
-
+    ////console.log('scrollTrigger', scrollTrigger)
 
     const slideCSS =  {
         wrapslide: (theme) => css({
@@ -204,6 +165,49 @@ export default function SlideCarouselCountry(props){
         })
     }
 
+
+    //const handleOpenModal = () => setOpenModal(true);
+    const handleCloseModal = () => {
+        setOpenModal(false);
+        router.back();
+    };
+    //const fullListImage = () => setFullListImage([]);
+    //const theme = useTheme();
+    //const [bigImages, setBigImages] =useState([])
+    //const [recortes, setRecortes] =useState([])
+
+   
+
+    // const handleRecortes = () => {
+    //     if (todayEdition.recortes.length > 0) {
+    //         setRecortes(todayEdition.recortes)
+    //     }
+    // }
+
+
+    const handleNext = () => {
+        scrollElement.current.scrollLeft += widthItem
+    };
+
+    const handlePrev = () => {
+        scrollElement.current.scrollLeft -= widthItem;
+    };
+
+ 
+
+    const handleOpenPage =(i, data)=> {
+        router.push(`${router.asPath}/${data.cityslug}/${data.allEditions[0].date.replaceAll('-','')}/${i}`)
+        dispatch(updateDialogSlice({
+            arrayimages: bigimages,
+            pagina: i,
+            fecha: data.allEditions[0].date.replaceAll('-',''),
+            edicion: data.cityslug,
+            recortes: data.allEditions[0].recortes.length > 0 ? data.allEditions[0].recortes : [],
+          }))
+        dispatch(openDialog())
+        
+    }
+
     function addClass(name, element) {
         let classesString;
         classesString = element.className || "";
@@ -240,43 +244,43 @@ export default function SlideCarouselCountry(props){
       
         //element.clearTimeout( isScrolling );
         const firstScroll = childElements[0].offsetWidth - ((anchoventana - childElements[0].offsetWidth)/2)
-        console.log('firstScroll', firstScroll)
+        //console.log('firstScroll', firstScroll)
       
           isScrolling = setTimeout(function() {
       
               if(scrollLeftElement < firstScroll){
-                console.log('scroll event 1')
+                //console.log('scroll event 1')
                   removeClass('current',childElements);
                   addClass('current', childElements[0])
                   //element.childNodes[0].className = element.childNodes[1].className + ' ' +  'current'
       
               } else if (scrollLeftElement > firstScroll && scrollLeftElement < (firstScroll + childElements[0].offsetWidth)) {
-                console.log('scroll event 2')
+                //console.log('scroll event 2')
                   removeClass('current',childElements);
                   addClass('current', childElements[1])
       
               } else if (scrollLeftElement > (firstScroll + childElements[0].offsetWidth) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 2)) {
-                console.log('scroll event 3')
+                //console.log('scroll event 3')
                   removeClass('current',childElements);
                   addClass('current', childElements[2])
               } else if (scrollLeftElement > (firstScroll + (childElements[0].offsetWidth * 2)) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 3)) {
-                console.log('scroll event 4')
+                //console.log('scroll event 4')
                   removeClass('current',childElements);
                   addClass('current', childElements[3])
               } else if (scrollLeftElement > (firstScroll + (childElements[0].offsetWidth * 3)) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 4)) {
-                console.log('scroll event 5')
+                //console.log('scroll event 5')
                   removeClass('current',childElements);
                   addClass('current', childElements[4])
               } else if (scrollLeftElement > (firstScroll + (childElements[0].offsetWidth * 4)) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 5)) {
-                console.log('scroll event 6')
+                //console.log('scroll event 6')
                   removeClass('current',childElements);
                   addClass('current', childElements[5])
               } else if (scrollLeftElement > (firstScroll + (childElements[0].offsetWidth * 5)) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 6)) {
-                console.log('scroll event 7')
+                //console.log('scroll event 7')
                   removeClass('current',childElements);
                   addClass('current', childElements[6])
               } else if (scrollLeftElement > (firstScroll + (childElements[0].offsetWidth * 6)) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 7)) {
-                console.log('scroll event 7')
+                //console.log('scroll event 7')
                   removeClass('current',childElements);
                   addClass('current', childElements[7])
               }
@@ -284,22 +288,14 @@ export default function SlideCarouselCountry(props){
           }, 200);
       }
 
-      // bigimages.push(
-            //     {
-            //         foto:`https://rm.metrolatam.com/${fecha}/${slug}/full_${index}-${todayEdition.newcode}.webp`,
-            //         link: `google.com`
-            //         }
-            // )
-
-
-      //console.log('el content:', content)
+ 
 
 
       const wrapContent = content.map((item, i)=>{
         //console.log('item:',item)
 
         return(
-            <Box css={slideCSS.slidepost} key={`${i}-${item.cityname}`}>
+            <Box css={slideCSS.slidepost} key={`${i}-slide`}>
                 <Box sx={{ boxShadow: 3, m: 1, position: 'relative' }}>
                     
                     {item}
@@ -310,12 +306,12 @@ export default function SlideCarouselCountry(props){
                             <Button sx={{background: 'white'}} variant="outlined">
                             {i+1}
                             </Button>
-                            <Button variant="contained" onClick={()=>handleOpenPage(i+1, item)} endIcon={<ExpandIcon />}>
+                            <Button variant="contained" onClick={()=>handleOpenPage(i+1, data)} endIcon={<ExpandIcon />}>
                             Expandir
                             </Button>
                            
                         </Box>
-                        <IconButton css={slideCSS.zoom} aria-label="zoom" onClick={()=>handleOpenPage(i+1, item)} >
+                        <IconButton css={slideCSS.zoom} aria-label="zoom" onClick={()=>handleOpenPage(i+1, data)} >
                             <ZoomInOutlinedIcon />
                         </IconButton>
                         </>
@@ -323,7 +319,7 @@ export default function SlideCarouselCountry(props){
 
                     {goeditionon ? 
                         <Box css={slideCSS.counterOptions} sx={{display:'flex',justifyContent:'center', mb:'1rem'}}>
-                            <Link href={'/country/'+citySlug}>
+                            <Link href={'/docs/'+citySlug}>
                             <Button variant="contained" endIcon={<ArrowForwardOutlinedIcon />}>
                             Ir a la edición
                             </Button>
@@ -332,8 +328,6 @@ export default function SlideCarouselCountry(props){
 
                         : null
                     }
-
-                    
                     
                 </Box>
                 
@@ -341,115 +335,108 @@ export default function SlideCarouselCountry(props){
         )
     })
 
-    const readfull = bigImages.map((item, index)=>{
+    // const readfull = bigimages.map((item, index)=>{
 
-        console.log('item recorte:::', item.recortes.pagina, index)
-        let audios = [];
-        let audiosPoints = [];
+    //     //console.log('item recorte:::', item.recortes.pagina, index)
+    //     let audios = [];
+    //     let audiosPoints = [];
 
-        let wrapAudios = [];
+    //     let wrapAudios = [];
 
-        if (audios.length > 0) {
-            audios.map((audio, i)=>{
-                wrapAudios.push((
-                    <>
-                        <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem', position: 'relative', pl: {xs:'1rem', md: '0' }} } key={'audio'+ele.pagina}>
-                            <Chip sx={{backgroundColor: (theme) => theme.palette.primary.main ,color: 'white', position: 'absolute',top: '0',zIndex:' 2',left:'10px',width: '22px',height: '22px',textAlign: 'center', '& .MuiChip-label': {padding:'0'} }} label={i+1} />
-                            <audio id={'audioplay'+(i+1)} controls ref={audioref}>
-                                {audios[i]}
-                            Your browser does not support the audio element.
-                            </audio> 
-                        </Box>
-                    </>
+    //     if (audios.length > 0) {
+    //         audios.map((audio, i)=>{
+    //             wrapAudios.push((
+    //                 <>
+    //                     <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem', position: 'relative', pl: {xs:'1rem', md: '0' }} } key={'audio'+ele.pagina}>
+    //                         <Chip sx={{backgroundColor: (theme) => theme.palette.primary.main ,color: 'white', position: 'absolute',top: '0',zIndex:' 2',left:'10px',width: '22px',height: '22px',textAlign: 'center', '& .MuiChip-label': {padding:'0'} }} label={i+1} />
+    //                         <audio id={'audioplay'+(i+1)} controls ref={audioref}>
+    //                             {audios[i]}
+    //                         Your browser does not support the audio element.
+    //                         </audio> 
+    //                     </Box>
+    //                 </>
                     
     
-                ))
+    //             ))
                 
-            })
+    //         })
             
 
-        }
+    //     }
 
-        if(item.recortes.length > 0) {
-            console.log('element::',item.recortes.length )
-            item.recortes.map((ele, i)=> {
+    //     if(item.recortes.length > 0) {
+    //         item.recortes.map((ele, i)=> {
                 
-                    //console.log('element:',i ,  ele)
+    //                 //console.log('element:',i ,  ele)
 
-                    {ele.pagina == index +1 ?
-                        audios.push((
-                            <>
-                            <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem', position: 'relative', pl: {xs:'1rem', md: '0' }} } key={'audio'+ele.pagina}>
-                                <Chip sx={{backgroundColor: (theme) => theme.palette.primary.main ,color: 'white', position: 'absolute',top: '0',zIndex:' 2',left:'10px',width: '22px',height: '22px',textAlign: 'center', '& .MuiChip-label': {padding:'0'} }} label={i+1} />
-                                <audio id={'audioplay'+(i+1)} controls ref={audioref}>
-                                    <source src={ele.audio} type="audio/mpeg" />
-                                Your browser does not support the audio element.
-                                </audio> 
-                            </Box>
-                            </>
-                        ))
-                        : null
-                    }
+    //                 {ele.pagina == index +1 ?
+    //                     audios.push((
+    //                         <>
+    //                         <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem', position: 'relative', pl: {xs:'1rem', md: '0' }} } key={'audio'+ele.pagina}>
+    //                             <Chip sx={{backgroundColor: (theme) => theme.palette.primary.main ,color: 'white', position: 'absolute',top: '0',zIndex:' 2',left:'10px',width: '22px',height: '22px',textAlign: 'center', '& .MuiChip-label': {padding:'0'} }} label={i+1} />
+    //                             <audio id={'audioplay'+(i+1)} controls ref={audioref}>
+    //                                 <source src={ele.audio} type="audio/mpeg" />
+    //                             Your browser does not support the audio element.
+    //                             </audio> 
+    //                         </Box>
+    //                         </>
+    //                     ))
+    //                     : null
+    //                 }
 
-                    {ele.pagina == index +1 ?
-                        audiosPoints.push((
-                            <>
-                            <Chip sx={{position: 'absolute',left: `calc(${ele.x*100/1354}% - 10px)`, top: `calc(${ele.y*100/1500}% - 10px)`,background: 'black',color: 'white',height: '20px', opacity: '0.4', '& .MuiChip-label': {paddingLeft:'10px', paddingRight:'10px'}}} icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} label={i+1} />
-                            </>
-                        ))
-                        : null
-                    }
+    //                 {ele.pagina == index +1 ?
+    //                     audiosPoints.push((
+    //                         <>
+    //                         <Chip sx={{position: 'absolute',left: `calc(${ele.x*100/1354}% - 10px)`, top: `calc(${ele.y*100/1500}% - 10px)`,background: 'black',color: 'white',height: '20px', opacity: '0.4', '& .MuiChip-label': {paddingLeft:'10px', paddingRight:'10px'}}} icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} label={i+1} />
+    //                         </>
+    //                     ))
+    //                     : null
+    //                 }
                     
                     
                    
                 
-            })
-        }
+    //         })
+    //     }
 
-        //console.log( 'element foto::', item)
+    //     //console.log( 'element foto::', item)
 
         
 
 
-        return(
-            <Box sx={{borderBottom: '1px solid #ccc', mb: '2rem', pb: '2rem', position: 'relative'}} key={`${item.foto}-${index}`} >
-                    {/* <Slide direction="up" in={scrollTrigger} mountOnEnter unmountOnExit> */}
+    //     return(
+    //         <Box sx={{borderBottom: '1px solid #ccc', mb: '2rem', pb: '2rem', position: 'relative'}} key={`${item.foto}-${index}`} >
+    //                 {/* <Slide direction="up" in={scrollTrigger} mountOnEnter unmountOnExit> */}
 
-                    {audios.length > 0 ?
-                        <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: 'linear-gradient(to bottom, rgba(58,58,70,1) 20%,rgba(58,58,70,0))', p: '5px 0 2rem 5px', marginLeft: '-5px',width: 'calc(100% + 10px)'  }}>
-                            <Button size="small" variant="contained" sx={{height: '50px',minWidth:'140px',fontSize: '11px',width: '132px',textAlign: 'left',lineHeight: '18px'}} startIcon={<HeadphonesIcon />}>Escuchar esta página</Button>
-                            <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}}}>
-                            { audios} 
-                            </Box>
-                        </Box>
-                    : null
-                    }
-
-                       
-
-                 
-                    
-
+    //                 {audios.length > 0 ?
+    //                     <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: 'linear-gradient(to bottom, rgba(58,58,70,1) 20%,rgba(58,58,70,0))', p: '5px 0 2rem 5px', marginLeft: '-5px',width: 'calc(100% + 10px)'  }}>
+    //                         <Button size="small" variant="contained" sx={{height: '50px',minWidth:'140px',fontSize: '11px',width: '132px',textAlign: 'left',lineHeight: '18px'}} startIcon={<HeadphonesIcon />}>Escuchar esta página</Button>
+    //                         <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}}}>
+    //                         { audios} 
+    //                         </Box>
+    //                     </Box>
+    //                 : null
+    //                 }
                 
 
-                <Box sx={{position: 'relative'}}>
-                    <Image src={item.foto} 
-                        layout="responsive"
-                        width={1354}
-                        height={1500}
-                        alt={item.link}
-                        onError={() => setImageError(true)}
-                        />
+    //             <Box sx={{position: 'relative'}}>
+    //                 <Image src={item.foto} 
+    //                     layout="responsive"
+    //                     width={1354}
+    //                     height={1500}
+    //                     alt={item.link}
+    //                     onError={() => setImageError(true)}
+    //                     />
 
-                    {audiosPoints}
-                </Box>
+    //                 {audiosPoints}
+    //             </Box>
                 
                   
-            </Box>
+    //         </Box>
             
-        )
+    //     )
 
-    })
+    // })
 
 
 
@@ -468,7 +455,6 @@ export default function SlideCarouselCountry(props){
                 <Box css={controlCSS.btnSig} sx={{ boxShadow: 2 }}>
                     <IconButton aria-label="next" onClick={() => handleNext()}>
                         <NavigateNextIcon />
-                        
                     </IconButton>
                     
                 </Box>
@@ -480,9 +466,11 @@ export default function SlideCarouselCountry(props){
             </Box>
         </div>
 
-        <Dialogmodal openModal={openModal} onCloseModal={()=>handleCloseModal()}>
+
+
+        {/* <Dialogmodal openModal={openModal} onCloseModal={()=>handleCloseModal()}>
             { readfull}
-        </Dialogmodal>
+        </Dialogmodal> */}
 
 
    

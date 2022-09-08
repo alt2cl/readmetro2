@@ -3,16 +3,16 @@ import { createSlice } from '@reduxjs/toolkit'
 export const countrySlice = createSlice({
   name: 'country',
   initialState: {
-    value: 'Mundo'
+    countryName: 'Mundo'
   },
   reducers: {
-    update: (state, action) => {
-      state = action.payload
+    updateCountrySlice: (state, action) => {
+      state.countryName = action.payload
     }
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { update } = countrySlice.actions
+export const { updateCountrySlice } = countrySlice.actions
 
 export default countrySlice.reducer
