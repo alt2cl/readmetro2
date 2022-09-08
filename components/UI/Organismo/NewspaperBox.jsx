@@ -13,7 +13,8 @@ const NewspaperBox = (props) => {
     const pinpagina =  audioContents.map((item, i)=>{
             if (item.pagina == pagina) {
                 return(
-                    <Chip sx={{
+                    <Box key={`chip-${i}`}>
+                        <Chip sx={{
                         position: 'absolute',
                         left: `calc(${item.x*100/1354}% - 10px)`, 
                         top: `calc(${item.y*100/1500}% - 10px)`,
@@ -22,16 +23,20 @@ const NewspaperBox = (props) => {
                         height: '20px', 
                         opacity: '0.6', 
                         '& .MuiChip-label': {paddingLeft:'10px', paddingRight:'10px'}
+                        
                     }} 
                     icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} 
                     label={Number(item.recorte) + 1 } />
+
+                    </Box>
+                    
                     )}
         })
 
     const audios =  audioContents.map((item, i)=>{
         if (item.pagina == pagina) {
             return(
-                <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem',position: 'relative', pl: {xs:'1rem', md: '0' }} }>
+                <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem',position: 'relative', pl: {xs:'1rem', md: '0' }}} key={`audiochip-${i}`} >
                 <Chip sx={{backgroundColor: (theme) => theme.palette.primary.main ,color: 'white', position: 'absolute',top: '0',zIndex:' 2',left:'10px',width: '22px',height: '22px',textAlign: 'center', '& .MuiChip-label': {padding:'0'} }} 
                 label={Number(item.recorte) + 1 } 
                 />
