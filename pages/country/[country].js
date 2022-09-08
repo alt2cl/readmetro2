@@ -10,14 +10,11 @@ import { css } from '@emotion/react';
 import {useRouter} from 'next/router'
 
 
-const widthItem = 250
+
 
 export default function ListEdiciones({data}) {
 
-  const router = useRouter();
-
-  //console.log('router::::', router.query)
-
+    const widthItem = 250
     const [imageError, setImageError] = useState(false);
 
     const listsections = data.cities.map((item, i) => {
@@ -89,7 +86,15 @@ export default function ListEdiciones({data}) {
         <SectionBox key={item.cityslug}>
           <HeadSection titleSection={item.cityname} slug={item.cityslug} colorBullet={"#ccc"} linksite={data.website}/>
           {item.allEditions.length > 0 &&  
-          <SlideCarouselCountry todayEdition={item.allEditions[0]} slug={item.cityslug} widthItem={widthItem} content={dataSlidePostCountry} bigimages={bigimages} data={item}/>
+          <SlideCarouselCountry 
+          todayEdition={item.allEditions[0]} 
+          slug={item.cityslug} 
+          widthItem={widthItem} 
+          content={dataSlidePostCountry} 
+          bigimages={bigimages} 
+          data={item}
+
+          />
           }
         </SectionBox>
       )

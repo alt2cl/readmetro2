@@ -16,9 +16,6 @@ export default function Dialogmodal(props) {
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-    
-
-
     return(
         <Dialog
         fullScreen={fullScreen}

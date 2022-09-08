@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
+import Layout from '@/components/Layout/layout';
 import theme from '@/src/theme';
 import createEmotionCache from '../src/createEmotionCache';
 import { Provider } from 'react-redux'
@@ -32,7 +33,10 @@ function MyApp(props) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
+        <Layout data={{...pageProps} }>
         <Component {...pageProps} />
+        </Layout>
+        
       </ThemeProvider>
     </CacheProvider>
     </Provider>

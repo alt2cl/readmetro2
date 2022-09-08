@@ -13,7 +13,7 @@ import Menu from '@mui/material/Menu';
 import { css } from '@emotion/react';
 import { useSelector, useDispatch } from 'react-redux'
 import { decrement, increment } from '@/redux/features/counter/counterSlice'
-import { update } from '@/redux/features/countryselect/countrySlice'
+import { update } from '@/redux/features/country/countrySlice'
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useRouter } from 'next/router'
