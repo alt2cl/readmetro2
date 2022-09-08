@@ -319,7 +319,7 @@ export default function SlideCarouselCountry(props){
 
                     {goeditionon ? 
                         <Box css={slideCSS.counterOptions} sx={{display:'flex',justifyContent:'center', mb:'1rem'}}>
-                            <Link href={'/docs/'+citySlug}>
+                            <Link href={'/docs/es/'+citySlug}>
                             <Button variant="contained" endIcon={<ArrowForwardOutlinedIcon />}>
                             Ir a la edición
                             </Button>

@@ -201,13 +201,13 @@ function Landing({data}) {
 export async function getServerSideProps({ params }) {
   const pais = params.slug[1]
 
-  
+
 
   // Fetch data from external API
   const res = await fetch(`https://api.readmetro.com/${pais}/index.json`)
   const data = await res.json()
 
-  console.log('el slug pais', pais)
+  console.log('el slug pais', params)
 
   // Pass data to the page via props
   return { props: {

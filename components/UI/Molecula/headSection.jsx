@@ -44,7 +44,7 @@ const headSectionCSS = {
 const HeadSection = (props) => {
     const {slug, colorBullet, titleSection, options, pretext, linksite, linkedition, data} = props;
 
-    console.log('data headsection', data)
+    //console.log('data headsection', data)
 
     const arrayOptions = []
 
@@ -56,7 +56,7 @@ const HeadSection = (props) => {
 
     if(linkedition) {
         arrayOptions.push(
-            {item:'Ir a la Edición', link: '/country/'+slug, target: '_top'}
+            {item:'Ir a la Edición', link: '/docs/es/'+slug, target: '_top'}
         )
 
     }

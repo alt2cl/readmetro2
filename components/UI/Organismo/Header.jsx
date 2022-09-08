@@ -72,7 +72,7 @@ export default function Header(props) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-console.log('configsite:', menupaises)
+//console.log('configsite:', menupaises)
 
 const [age, setAge] = React.useState('Español');
 
@@ -82,7 +82,7 @@ const [age, setAge] = React.useState('Español');
 
 
   const handleProfileMenuOpen = (event) => {
-    console.log('handleProfileMenuOpen', event.currentTarget)
+    //console.log('handleProfileMenuOpen', event.currentTarget)
     setAnchorEl(event.currentTarget);
   };
 

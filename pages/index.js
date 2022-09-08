@@ -17,9 +17,9 @@ export default function Home({data}) {
   const [imageError, setImageError] = useState(false);
   
 
-    const listCountry = data.map((item) => {
+    const listCountry = data.map((item, index) => {
 
-        console.log('valor item desde el index:', item.cities)
+        //console.log('valor item desde el index:', item.cities)
 
         const dataSlidePost = item.cities.map((item, i) => {
           
@@ -29,13 +29,13 @@ export default function Home({data}) {
           if(fecha) {
               foto = `https://rm.metrolatam.com/${fecha}/${item.cityslug}/thumb_1-${item.allEditions[0].newcode}.webp`
           }
-          const myLoader = ({ src, width, quality }) => {
-              return `${foto}?w=${200}&q=${quality || 70}`
-            }
+          // const myLoader = ({ src, width, quality }) => {
+          //     return `${foto}?w=${200}&q=${quality || 70}`
+          //   }
           return (
               //item slide homepage
             
-                  <Box sx={{  borderRadius:'5px', background: 'white' }} key={item.cityname}>
+                  <Box sx={{  borderRadius:'5px', background: 'white' }} key={`listCitys-${i}`}>
                       <Typography 
                           variant="button"
                           noWrap
@@ -75,7 +75,9 @@ export default function Home({data}) {
               )
           })
       
-        return(<SectionBox key={item.countryname}>
+        return(
+        
+        <SectionBox key={`sectionbox-${index}`}>
           <HeadSection titleSection={item.countryname} slug={item.countryslug} linksite={item.website} linkedition  
           colorBullet={'green'} 
           data={item}
@@ -90,9 +92,12 @@ export default function Home({data}) {
         });
 
   return (
-      <Layout>
-        {listCountry}
-      </Layout>
+    <>
+    {listCountry}
+    </>
+     
+        
+      
   )
 }
 
