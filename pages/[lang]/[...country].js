@@ -9,18 +9,39 @@ import { useRouter } from 'next/router'
 import { useSelector, useDispatch } from 'react-redux'
 import NewspaperBox from '@/components/UI/Organismo/NewspaperBox'
 import Box from '@mui/material/Box';
-import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
+import HeadSeo from '@/components/Layout/headSeo'
+import siteMetadata from '@/src/siteMetadata'
+//import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
 
 
-function Landing({data}) {
+function Landing(props) {
+
+  const data = props.data
 
   const router = useRouter()
-  const {slug} = router.query || []
-  const [lang, country, city, edition, page] = slug
+
+  console.log('la data___',router)
+
+   
+
+  
+  const lang = router.query.lang
+  const country = router.query.country[0]
+  const city = router.query.country[1]
+  const edition = router.query.country[2]
+  const date = router.query.country[2]
+  const page = router.query.country[3]
+  //return false
+  //const {slug} = router.query || []
+  //const [lang, country, city, edition, page] = slug
   const routervalues = { lang: lang, country: country, city:city, edition:edition, page:page}
   const widthItem = 250
   const [imageError, setImageError] = useState(false);
   const [openModal, setOpenModal] = useState(false)
+
+  const [titlehead, setTitleHead] = useState('')
+
+
 
   const dispatch = useDispatch();
   //dispatch(updateCountrySlice({countryName:country}))
@@ -29,23 +50,20 @@ function Landing({data}) {
   const dialogPaginaArrayState = useSelector(state => state.dialog.imagesvalues.pagina)
   const dialogFechaArrayState = useSelector(state => state.dialog.imagesvalues.fecha)
   const dialogEdicionArrayState = useSelector(state => state.dialog.imagesvalues.edicion)
-
+  const metatagsTitleState = useSelector(state => state.metatags.title)
   //console.log('dialogImagesArrayState', dialogImagesArrayState)
-  console.log('estado openModal', dialogState)
+  //console.log('estado openModal', dialogState)
+
+  //console.log('router values:', lang, country)
 
     const handleCloseModal = () => {
-      router.push(`/docs/${lang}/${country}`)
+      console.log('router values: click modal')
+      router.push(`/${lang}/${country}`)
       //dispatch(closeDialog())
       //router.back();
     };
 
-  
-
-
-
-   
-
-   
+ 
 
     const listsections = data.cities.map((item, i) => {
       let selectOptions = []
@@ -57,20 +75,7 @@ function Landing({data}) {
       const imagenes = [];
       const bigimages = [];
 
-      //console.log('todayEdition>>>>', item)
-      //const [bigImages, setBigImages] =useState([])
-
       
-
-      //console.log('value item', item.allEditions[0].recortes)
-
-      // if(i == 0) {
-      //   defaultSelectoption = {'item':`${item.cityname}`, 'link': `/${item.cityslug}`}
-      // } else {
-      //   selectOptions.push(
-      //     {'item':`${item.cityname}`, 'link': `/${item.cityslug}`}
-      //   )
-      // }
 
         for (let index = 1; index < cantPages; index++) {
             imagenes.push(
@@ -156,7 +161,7 @@ function Landing({data}) {
     // })
 
     useEffect(()=>{
-        console.log('ciudad:', city, 'edition:',edition, 'page:', page)
+        //console.log('ciudad:', city, 'edition:',edition, 'page:', page)
 
       if(page != undefined && edition != undefined && city != undefined ){
         setOpenModal(true)
@@ -164,10 +169,32 @@ function Landing({data}) {
         setOpenModal(false)
       }
 
+      // if(country != undefined) {
+      //   setTitleHead(`Title country ${country}`)
+      // }
+    
+      // if(country != undefined && city != undefined ) {
+      //   setTitleHead(`Title ciudad ${city}`)
+      // }
+
     })
 
   return (
     <>
+      <HeadSeo
+          title={
+            page ?  `ReadMetro - Página ${page}. Edición ${edition}. ${city}, ${country}` : 
+            page == undefined && edition ? `ReadMetro - Edición ${edition}. ${city}, ${country}` :
+            edition == undefined && city ? `ReadMetro - Edición ${city}, ${country}` :
+            city == undefined && country ? `ReadMetro - ${country}` :
+            'Readmetro'
+          }
+          description={`Description country`}
+          canonicalUrl={siteMetadata.siteUrl}
+          ogTwitterImage={siteMetadata.siteLogoSquare}
+          ogType={"article"}
+      />
+     
       <h6>Idioma: {lang}</h6>
       <h6>Pais: {country}</h6>
       <h6>Ciudad: {city}</h6>
@@ -177,7 +204,7 @@ function Landing({data}) {
       
 
  
-        {listsections}
+        {data ? listsections : 'Cargando'}
      
         <Dialogmodal openModal={openModal} onCloseModal={()=>handleCloseModal()}>
             <h3>Modal de dialogo...</h3>
@@ -198,76 +225,110 @@ function Landing({data}) {
   )
 }
 
+
+
 export async function getServerSideProps({ params }) {
-  const pais = params.slug[1]
 
-
+  console.log('paramc:', params)
 
   // Fetch data from external API
-  const res = await fetch(`https://api.readmetro.com/${pais}/index.json`)
+  const res = await fetch(`https://api.readmetro.com/${params.country[0]}/index.json`)
   const data = await res.json()
-
-  console.log('el slug pais', params)
 
   // Pass data to the page via props
   return { props: {
     data
-  } }
+  }}
 }
 
-// export async function getStaticPaths(context){
-//   //console.log('el contest:', slug)
-//   try {
-//     // const res = await fetch('https://api.readmetro.com/country.json');
-//     // const data = await res.json();
-//     // const paths = data.map(({countryslug}) => ({params: { slug: `${countryslug}`, lang:'es' }}));
+// export const getStaticPaths = async (context) => {
+//   //const countries = ['chile', 'brasil', 'mexico', 'argentina']
+  
+//     console.log( '////el context:', context.params)
+//     const res = await fetch('https://api.readmetro.com/country.json')
+//     const data = await res.json();
+//     const paths = data.map(({countryslug}) => ({params: { country: [`${countryslug}`] }}));
+
 
 //     return {
-//       paths: [
-//         { params: { slug: ["lang", "country", "city", "edition", "page"] } },
-//       ],
-//       //paths,
-//       // paths: [
-//       //   { params: { lang: slug[0] }},
-//       //   {
-//       //     params: { country: slug[1] },
-//       //     // with i18n configured the locale for the path can be returned as well
-//       //     //locale: "en",
-//       //   },
-//       //   { params: { city: slug[2] }},
-//       //   { params: { edition: slug[3] }},
-//       //   { params: { page: slug[4] }},
-//       // ],
-//       fallback: false,
+//       paths,
+//       fallback: 'blocking',
 //     };
-//   } catch (error) {
-//     console.log(error)
-//   }
+  
+//   // try {
+//   //   const res = await fetch('https://api.readmetro.com/country.json')
+//   //   const data = await res.json();
+//   //   const paths = data.map(({countryslug}) => ({params: { country: [`${countryslug}`] }}));
+    
+    
+//   //   console.log('el B:', data)
+//   //   //const a = data.map(({countryslug}) => ({params: { country: [`${countryslug}`] }}));
+    
+
+    
+
+//   //   //const country = ['chile', 'brasil', 'mexico', 'argentina']
+//   //   //const lang = ['es', 'en']
+
+//   //   // const paths = [
+//   //   //   ['lang','country','city','date','page'],
+//   //   // ]
+
+   
+//   //   //   const paths = [
+//   //   //     {
+//   //   //       params: { country: [] },
+//   //   //     },
+//   //   //     // {
+//   //   //     //   params: { country: ["lang"] },
+//   //   //     // },
+//   //   //     // {
+//   //   //     //   params: { country: ["lang", "country"] },
+//   //   //     // },
+//   //   //     // {
+//   //   //     //   params: { country: ["lang", "country", "city"] },
+//   //   //     // },
+//   //   //     // {
+//   //   //     //   params: { country: ["lang", "country", "city", "date"] },
+//   //   //     // },
+//   //   //     // {
+//   //   //     //   params: { country: ["lang", "country", "city", "date", "page"] },
+//   //   //     // },
+      
+//   //   // ]
+
+//   //   //console.log('el C:', params, paths)
+//   //   return {
+//   //     paths,
+//   //     fallback: true,
+//   //   };
+//   // } catch (error) {
+//   //   console.log(error)
+//   // }
 // }
 
-
-// export async function getStaticProps({params, locales}) {
+// export async function getStaticProps({params}) {
 //   // Call an external API endpoint to get posts.
 //   // You can use any data fetching library
-//   console.log('parameatrosXXXX',params)
-//   // const res = await fetch(`https://api.readmetro.com/${params.slug[1]}/index.json`);
-//   // const country = await res.json()
+//   //console.log('paramxxxx:', params.country[1])
+//   const res = await fetch(`https://api.readmetro.com/${params.country[1]}/index.json`)
+//   const data = await res.json()
 
-//   // By returning { props: { posts } }, the Blog component
-//   // will receive `posts` as a prop at build time
 //   return {
 //     props: {
-//       //country,
-//     }
+//       data,
+//       country: params.country
+//     },
+//     revalidate: 10,
    
 //   }
 // }
 
-// export async function getStaticProps(context) {
-//   console.log('parametros:', context)
-//   return {
-//     props: {}, // will be passed to the page component as props
-//   }
-// }
+
+
+
+
+
+
 
 export default Landing

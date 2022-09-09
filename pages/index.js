@@ -7,6 +7,11 @@ import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import Image from 'next/image';
 import fallback from '@/public/img/fallback.jpg'
+import Link from '@/src/Link';
+import Button from '@mui/material/Button';
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+import HeadSeo from '@/components/Layout/headSeo'
+import siteMetadata from '@/src/siteMetadata'
 
 
 
@@ -19,7 +24,9 @@ export default function Home({data}) {
 
     const listCountry = data.map((item, index) => {
 
-        //console.log('valor item desde el index:', item.cities)
+        //console.log('valor item desde el index:', item)
+
+        const countryslug = item.countryslug
 
         const dataSlidePost = item.cities.map((item, i) => {
           
@@ -29,12 +36,16 @@ export default function Home({data}) {
           if(fecha) {
               foto = `https://rm.metrolatam.com/${fecha}/${item.cityslug}/thumb_1-${item.allEditions[0].newcode}.webp`
           }
+
+
           // const myLoader = ({ src, width, quality }) => {
           //     return `${foto}?w=${200}&q=${quality || 70}`
           //   }
           return (
               //item slide homepage
-            
+
+              <>    
+                       
                   <Box sx={{  borderRadius:'5px', background: 'white' }} key={`listCitys-${i}`}>
                       <Typography 
                           variant="button"
@@ -71,6 +82,16 @@ export default function Home({data}) {
                       </Box> */}
                       
                   </Box>
+
+                  <Box  sx={{position: 'absolute',bottom: '4px',left: '4px',right: '4px',display:'flex',justifyContent:'center', mb:'1rem'}}>
+                            <Link href={'/es/'+countryslug+'/'+item.cityslug}>
+                            <Button variant="contained" endIcon={<ArrowForwardOutlinedIcon />}>
+                            Ir a la edición
+                            </Button>
+                            </Link>
+                        </Box>
+
+                  </>
               
               )
           })
@@ -93,6 +114,14 @@ export default function Home({data}) {
 
   return (
     <>
+    <HeadSeo
+                    title={`Index Your Awesome Title Here`}
+                    description={`Your description goes here on every page. 
+                      Keep character count between 140 to 160 characters`}
+                    canonicalUrl={siteMetadata.siteUrl}
+                    ogTwitterImage={siteMetadata.siteLogoSquare}
+                    ogType={"website"}
+                /> 
     {listCountry}
     </>
      

@@ -34,7 +34,6 @@ export default function SlideCarouselCountry(props){
     const router = useRouter();
     //const [openModal, setOpenModal] = useState(false);
 
-    
 
     //const [scrollTarget, setScrollTarget] = useState(undefined) 
     // const scrollTrigger = useScrollTrigger({ 
@@ -289,10 +288,10 @@ export default function SlideCarouselCountry(props){
       }
 
  
-
+      console.log('itemsss:',data)
 
       const wrapContent = content.map((item, i)=>{
-        //console.log('item:',item)
+        
 
         return(
             <Box css={slideCSS.slidepost} key={`${i}-slide`}>
@@ -317,9 +316,9 @@ export default function SlideCarouselCountry(props){
                         </>
                     }
 
-                    {goeditionon ? 
+                    {/* {goeditionon ? 
                         <Box css={slideCSS.counterOptions} sx={{display:'flex',justifyContent:'center', mb:'1rem'}}>
-                            <Link href={'/docs/es/'+citySlug}>
+                            <Link href={'/es/'+citySlug+'/'}>
                             <Button variant="contained" endIcon={<ArrowForwardOutlinedIcon />}>
                             Ir a la edición
                             </Button>
@@ -327,7 +326,7 @@ export default function SlideCarouselCountry(props){
                         </Box>
 
                         : null
-                    }
+                    } */}
                     
                 </Box>
                 

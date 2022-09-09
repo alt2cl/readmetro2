@@ -8,9 +8,9 @@ import { CacheProvider } from '@emotion/react';
 import Layout from '@/components/Layout/layout';
 import theme from '@/src/theme';
 import createEmotionCache from '../src/createEmotionCache';
+import HeadManager from '@/components/Layout/headManager';
 import { Provider } from 'react-redux'
 import store from '@/redux/store.js'
-
 import '../styles/globals.css'
 
 
@@ -19,11 +19,14 @@ const clientSideEmotionCache = createEmotionCache();
 
 function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  //const stateMetaTitle = useSelector(state => state.metatags.tags.title)
   return (
     <Provider store={store}>
+     
     <CacheProvider value={emotionCache}>
-      <Head>
-        <title>Read Metro 2.0</title>
+      <Head >
+      
+
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -38,8 +41,10 @@ function MyApp(props) {
         </Layout>
         
       </ThemeProvider>
+      
     </CacheProvider>
     </Provider>
+   
     
   )
 }

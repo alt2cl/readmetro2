@@ -5,6 +5,9 @@ const nextConfig = {
   images: {
     domains: ['rm.metrolatam.com'],
   },
+  experimental: {
+    optionalCatchAll: true,
+  },
   // async rewrites() {
   //   return [
   //     {

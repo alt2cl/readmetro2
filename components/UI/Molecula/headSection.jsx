@@ -56,7 +56,7 @@ const HeadSection = (props) => {
 
     if(linkedition) {
         arrayOptions.push(
-            {item:'Ir a la Edición', link: '/docs/es/'+slug, target: '_top'}
+            {item:'Ir a la Edición', link: '/es/'+slug, target: '_top'}
         )
 
     }
