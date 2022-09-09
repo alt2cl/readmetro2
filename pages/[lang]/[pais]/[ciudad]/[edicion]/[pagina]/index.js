@@ -36,9 +36,50 @@ function PaginaLanding() {
     </>
   )
 }
-export async function getServerSideProps(context) {
+export async function getStaticPaths(context) {
+
+  const response = await fetch('https://api.readmetro.com/country.json');
+  const data = await response.json();
+
+  let paths = [];
+
+  await Promise.all(data.map(async (country) => {
+    await Promise.all(country.cities.map(async (city) => {
+
+      const fullResponse = await fetch(`https://api.readmetro.com/${country.countryslug}/${city.cityslug}/full.json`);
+      const fullEditions = await fullResponse.json();
+      await Promise.all(fullEditions.allEditions.map(async (edition) => {
+        const edicion = edition.date.replaceAll("-","");
+        for (var i = 1; i <= edition.pages; i++) {
+          paths.push( { params: { id: `/es/${country.countryslug}/${city.cityslug}/${edicion}/${i}`, pais: country.countryslug, ciudad: city.cityslug, edicion: edicion, pagina: String(i), lang: 'es' } } );
+          paths.push( { params: { id: `/en/${country.countryslug}/${city.cityslug}/${edicion}/${i}`, pais: country.countryslug, ciudad: city.cityslug, edicion: edicion, pagina: String(i), lang: 'en' } } );
+        }
+
+      }));
+
+    }))
+
+  }))
+
+
+
   return {
-    props: {},
+    paths,
+    fallback: 'blocking',
+  };
+}
+
+export async function getStaticProps(args) {
+
+  // console.log("jano context",`https://api.readmetro.com/${args.params.pais}/${args.params.ciudad}/${args.params.edicion}.json`);
+
+  const response = await fetch(
+      `https://api.readmetro.com/${args.params.pais}/${args.params.ciudad}/${args.params.edicion}.json`);
+
+  const edition = await response.json();
+
+  return {
+    props: { edition },
   }
 }
 

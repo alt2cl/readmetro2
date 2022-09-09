@@ -32,16 +32,15 @@ export default function SlideCarouselCountry(props){
 
     const {todayEdition, citySlug,slug, widthItem, content, optionsbtnsoff, goeditionon, bigimages, data} = props
 
-  
 
-    const [scrollTarget, setScrollTarget] = useState(undefined) 
-    const scrollTrigger = useScrollTrigger({ 
+
+    const [scrollTarget, setScrollTarget] = useState(undefined)
+    const scrollTrigger = useScrollTrigger({
         disableHysteresis: true,
         threshold:0,
-        target: scrollTarget 
+        target: scrollTarget
     });
 
-    console.log('scrollTrigger', scrollTrigger)
 
 
 
@@ -71,7 +70,7 @@ export default function SlideCarouselCountry(props){
         scrollElement.current.scrollLeft -= widthItem;
     };
 
- 
+
 
     const handleOpenPage =(i, item)=> {
         router.push(`/country/${router.query.country}?edition=${slug}&&page=${i}`)
@@ -91,7 +90,7 @@ export default function SlideCarouselCountry(props){
             position: 'relative',
             scrollBehavior: 'smooth',
             transition: 'all .5s ease-out',
-  
+
             [theme.breakpoints.up('md')]: {
                 padding: '0 20px',
             },
@@ -113,11 +112,11 @@ export default function SlideCarouselCountry(props){
             overflow: 'hidden',
             scrollSnapAlign: 'center',
             paddingBottom: '1rem',
-            
+
 
             [theme.breakpoints.up('xs')]: {
                 flex: widthItem ? '0 0 '+widthItem+'px' : '0 0 250px',
-                
+
             },
             [theme.breakpoints.up('md')]: {
                 flex: '0 0 300px',
@@ -177,8 +176,8 @@ export default function SlideCarouselCountry(props){
 
 
         })
-        
-    
+
+
     }
 
     const controlCSS = {
@@ -237,24 +236,24 @@ export default function SlideCarouselCountry(props){
           let anchoventana = window.innerWidth;
 
         // console.log('scroll event', scrollLeftElement, anchoventana, childElements[0].offsetWidth, 'ancho total:',childElements.length, childElements.length * 250)
-      
+
         //element.clearTimeout( isScrolling );
         const firstScroll = childElements[0].offsetWidth - ((anchoventana - childElements[0].offsetWidth)/2)
         console.log('firstScroll', firstScroll)
-      
+
           isScrolling = setTimeout(function() {
-      
+
               if(scrollLeftElement < firstScroll){
                 console.log('scroll event 1')
                   removeClass('current',childElements);
                   addClass('current', childElements[0])
                   //element.childNodes[0].className = element.childNodes[1].className + ' ' +  'current'
-      
+
               } else if (scrollLeftElement > firstScroll && scrollLeftElement < (firstScroll + childElements[0].offsetWidth)) {
                 console.log('scroll event 2')
                   removeClass('current',childElements);
                   addClass('current', childElements[1])
-      
+
               } else if (scrollLeftElement > (firstScroll + childElements[0].offsetWidth) && scrollLeftElement < firstScroll + (childElements[0].offsetWidth * 2)) {
                 console.log('scroll event 3')
                   removeClass('current',childElements);
@@ -301,7 +300,7 @@ export default function SlideCarouselCountry(props){
         return(
             <Box css={slideCSS.slidepost} key={`${i}-${item.cityname}`}>
                 <Box sx={{ boxShadow: 3, m: 1, position: 'relative' }}>
-                    
+
                     {item}
 
                     {optionsbtnsoff ? null :
@@ -313,7 +312,7 @@ export default function SlideCarouselCountry(props){
                             <Button variant="contained" onClick={()=>handleOpenPage(i+1, item)} endIcon={<ExpandIcon />}>
                             Expandir
                             </Button>
-                           
+
                         </Box>
                         <IconButton css={slideCSS.zoom} aria-label="zoom" onClick={()=>handleOpenPage(i+1, item)} >
                             <ZoomInOutlinedIcon />
@@ -321,7 +320,7 @@ export default function SlideCarouselCountry(props){
                         </>
                     }
 
-                    {goeditionon ? 
+                    {goeditionon ?
                         <Box css={slideCSS.counterOptions} sx={{display:'flex',justifyContent:'center', mb:'1rem'}}>
                             <Link href={'/country/'+citySlug}>
                             <Button variant="contained" endIcon={<ArrowForwardOutlinedIcon />}>
@@ -333,10 +332,10 @@ export default function SlideCarouselCountry(props){
                         : null
                     }
 
-                    
-                    
+
+
                 </Box>
-                
+
             </Box>
         )
     })
@@ -350,7 +349,7 @@ export default function SlideCarouselCountry(props){
         if(item.recortes.length > 0) {
             console.log('element::',item.recortes.length )
             item.recortes.map((ele, i)=> {
-                
+
                     console.log('element:',i ,  ele)
 
                     {ele.pagina == index +1 ?
@@ -361,11 +360,11 @@ export default function SlideCarouselCountry(props){
                                 <audio id={'audioplay'+(i+1)} controls ref={audioref}>
                                     <source src={ele.audio} type="audio/mpeg" />
                                 Your browser does not support the audio element.
-                                </audio> 
+                                </audio>
                             </Box>
-                            
+
                             </>
-    
+
                         ))
                         : null
                     }
@@ -378,16 +377,16 @@ export default function SlideCarouselCountry(props){
                         ))
                         : null
                     }
-                    
-                    
-                   
-                
+
+
+
+
             })
         }
 
         //console.log( 'element foto::', item)
 
-        
+
 
 
         return(
@@ -398,21 +397,21 @@ export default function SlideCarouselCountry(props){
                         <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: 'linear-gradient(to bottom, rgba(58,58,70,1) 20%,rgba(58,58,70,0))', p: '5px 0 2rem 5px', marginLeft: '-5px',width: 'calc(100% + 10px)'  }}>
                             <Button size="small" variant="contained" sx={{height: '50px',minWidth:'140px',fontSize: '11px',width: '132px',textAlign: 'left',lineHeight: '18px'}} startIcon={<HeadphonesIcon />}>Escuchar esta página</Button>
                             <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}}}>
-                            { audios} 
+                            { audios}
                             </Box>
                         </Box>
                     : null
                     }
 
-                       
 
-                 
-                    
 
-                
+
+
+
+
 
                 <Box sx={{position: 'relative'}}>
-                    <Image src={item.foto} 
+                    <Image src={item.foto}
                         layout="responsive"
                         width={1354}
                         height={1500}
@@ -422,10 +421,10 @@ export default function SlideCarouselCountry(props){
 
                     {audiosPoints}
                 </Box>
-                
-                  
+
+
             </Box>
-            
+
         )
 
     })
@@ -433,7 +432,7 @@ export default function SlideCarouselCountry(props){
 
 
 
-    
+
     return (
         <>
         <div css={slideCSS.wrapslide}>
@@ -447,9 +446,9 @@ export default function SlideCarouselCountry(props){
                 <Box css={controlCSS.btnSig} sx={{ boxShadow: 2 }}>
                     <IconButton aria-label="next" onClick={() => handleNext()}>
                         <NavigateNextIcon />
-                        
+
                     </IconButton>
-                    
+
                 </Box>
                 <Box css={controlCSS.btnAnt} sx={{ boxShadow: 2 }}>
                     <IconButton aria-label="before" onClick={() => handlePrev()}>
@@ -464,8 +463,8 @@ export default function SlideCarouselCountry(props){
         </Dialogmodal>
 
 
-   
+
         </>
-        
+
     )
 }

@@ -26,7 +26,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'; 
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 //import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -56,7 +56,7 @@ const boxSearch = (theme) => css({
         borderRadius: '4px',
     },
 
-    
+
 
 })
 
@@ -76,7 +76,7 @@ const pullproduct = (theme) =>css ({
 
 
 const textfielddate = (theme) => ({
-  
+
 
   '& .MuiInputLabel-root': {
     display: 'none'
@@ -93,7 +93,7 @@ const textfielddate = (theme) => ({
 })
 
 
-    
+
 
 
 const SearchDate = (props) => {
@@ -107,7 +107,7 @@ const SearchDate = (props) => {
 
     const [valueDate, setValueDate] = useState(new Date());
 
-    console.log('date value', valueDate)
+    
 
     const handleChangeDate = (newValue) => {
       setValueDate(newValue);
@@ -115,8 +115,8 @@ const SearchDate = (props) => {
 
 
     //console.log('router:::', ' - ', router.query.country ,' - ', router.asPath)
-    
-    
+
+
     const menuId = 'primary-search-account-menu';
     const isMenuOpen = Boolean(anchorEl);
 
@@ -124,37 +124,37 @@ const SearchDate = (props) => {
     const countrycurrent = useSelector(state => state.country.value)
     const [countryvalue, setCountryValue] = useState('Mundo');
 
-    
+
 
     const dispatch = useDispatch()
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
       };
-    
+
       const handleMenuClose = () => {
         setAnchorEl(null);
         handleMobileMenuClose();
       };
-    
+
       const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
       };
 
-    
+
 
     const handleCalendarMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
       };
 
     const handleChangeSelectcountry = (e) => {
-      
+
       router.push("/"+e.target.value)
     }
 
 
 
-  
+
 
 
       const renderMenu = (
@@ -178,7 +178,7 @@ const SearchDate = (props) => {
         </Menu>
       );
 
-   
+
         const dataOptions = data.map((item)=>{
           return(
             <option value={item.link} key={item.slug}>{item.name}</option>
@@ -189,13 +189,13 @@ const SearchDate = (props) => {
         const handleClickOpen = () => {
           setOpen(true);
         };
-      
+
         const handleClose = () => {
           setOpen(false);
         };
-      
-      
-      
+
+
+
         const modalDate =(
 
           <Dialog
@@ -221,18 +221,18 @@ const SearchDate = (props) => {
           </DialogActions>
         </Dialog>
 
-      
+
         )
 
 
-      
 
-        
+
+
 
     return (
         <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
 
-         
+
           <NativeSelect css={pullproduct}
           defaultValue={router.asPath ? router.asPath : '/'}
           inputprops={{
@@ -242,16 +242,16 @@ const SearchDate = (props) => {
           onChange={handleChangeSelectcountry}
         >
           {dataOptions}
-       
+
 
         </NativeSelect>
-          
-
-        
 
 
 
-         
+
+
+
+
 
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={esLocale}>
               <Stack spacing={3} sx={{flexGrow: '1'}}>
@@ -265,7 +265,7 @@ const SearchDate = (props) => {
                   toolbarFormat="dd MMMM"
                   disableFuture
                 />
-                
+
               </Stack>
             </LocalizationProvider>
             {renderMenu}
@@ -276,7 +276,7 @@ const SearchDate = (props) => {
       </div>
     </div>
 
-   
+
 
       </Box>
     )

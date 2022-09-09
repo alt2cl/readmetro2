@@ -2,9 +2,10 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Header from '@/components/UI/Organismo/Header'
 
-function CiudadLanding() {
+function CiudadLanding(args) {
   const router = useRouter()
   const {lang,pais,ciudad} = router.query
+
 
   return (
     <>
@@ -20,33 +21,41 @@ function CiudadLanding() {
       <hr/>
       <p>Seleccióne la fecha de la edición:</p>
       <ul>
-        <li>
-          <Link href={`/${lang}/${pais}/${ciudad}/20220905`}>
-            <a>2022-09-05</a>
-          </Link>
-        </li>
-        <li>
-          <Link href={`/${lang}/${pais}/${ciudad}/20220902`}>
-            <a>2022-09-02</a>
-          </Link>
-        </li>
-        <li>
-          <Link href={`/${lang}/${pais}/${ciudad}/20220901`}>
-            <a>2022-09-01</a>
-          </Link>
-        </li>
-        <li>
-          <Link href={`/${lang}/${pais}/${ciudad}/20220831`}>
-            <a>2022-08-31</a>
-          </Link>
-        </li>
+        {args.country.allEditions.map((_, i)=><li key={i}><Link href={`/${lang}/${pais}/${ciudad}/${_.date.replaceAll("-","")}`}><a>{_.date}</a></Link></li>)}
       </ul>
     </>
   )
 }
-export async function getServerSideProps(context) {
+export async function getStaticPaths(context) {
+
+  const response = await fetch(
+      'https://api.readmetro.com/country.json');
+
+  const data = await response.json();
+
+  let paths = [];
+
+  const pathsEn = data.map(function (country) {
+    return country.cities.map(function (city) {
+        paths.push( { params: { id: `/es/${country.countryslug}/${city.cityslug}`, pais: country.countryslug, ciudad: city.cityslug, lang: 'es' } } );
+        paths.push( { params: { id: `/en/${country.countryslug}/${city.cityslug}`, pais: country.countryslug, ciudad: city.cityslug, lang: 'en' } } );
+    });
+  });
+
   return {
-    props: {},
+    paths,
+    fallback: 'blocking',
+  };
+}
+
+export async function getStaticProps(args) {
+
+  const fullResponse = await fetch(`https://api.readmetro.com/${args.params.pais}/${args.params.ciudad}/full.json`);
+  const country = await fullResponse.json();
+
+
+  return {
+    props: { country },
   }
 }
 

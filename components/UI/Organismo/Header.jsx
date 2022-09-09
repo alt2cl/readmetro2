@@ -72,7 +72,7 @@ export default function Header(props) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-console.log('configsite:', menupaises)
+
 
 const [age, setAge] = React.useState('Español');
 
@@ -125,7 +125,7 @@ const [age, setAge] = React.useState('Español');
         return(
           <MenuItem onClick={handleMenuClose} key={item.name}>
             <Link href={item.externalLink}>
-              {item.name} 
+              {item.name}
             </Link>
           </MenuItem>
         )
@@ -192,14 +192,14 @@ const [age, setAge] = React.useState('Español');
 
   const langOptionsRender = langOptions.map((item)=>{
     return(
-     
+
       <MenuItem value={item.name} key={item.name}>
         <Image src={item.flagUrl} alt={item.name} width={20} height={15}/>
       </MenuItem>
-      
 
-        
-      
+
+
+
     )
     })
 
@@ -224,7 +224,7 @@ const [age, setAge] = React.useState('Español');
                 <SearchDate data={menupaises} />
               </Box>
             </Box>
-         
+
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 0 }}>
             <Button
                 size="large"
@@ -255,18 +255,18 @@ const [age, setAge] = React.useState('Español');
               onClick={handleProfileMenuOpen}
               color="inherit"
               sx={{mr:0}}
-            >   
-                <Link 
-                    href="https://www.metroworldnews.com/about-us/" 
-                    color="#000"  
+            >
+                <Link
+                    href="https://www.metroworldnews.com/about-us/"
+                    color="#000"
                     variant="subtitle2"
                 >
-                  
+
                      Acerca de Metro
                 </Link>
             </Button>
           </Box>
-         
+
           <Box sx={{ display: { xs: 'flex', md: 'flex', padding: '0px' } }}>
 
               <FormControl sx={{ m: 1, minWidth: 50, paddingLeft: '1rem', borderLeft: '1px dotted #ccc', background: '#fff' }} >
@@ -299,7 +299,7 @@ const [age, setAge] = React.useState('Español');
           </Box>
         </Toolbar>
       </AppBar>
-      
+
         <Box sx={{flexGrow:1}} css={elevationFixedWrap}>
           <ElevationScroll threshold={35} {...props}>
           <Box sx={{ display: { xs: 'block', md: 'none' }}}>
@@ -307,16 +307,16 @@ const [age, setAge] = React.useState('Español');
           </Box>
           </ElevationScroll>
         </Box>
-      
-     
-     
-      
+
+
+
+
       {renderMobileMenu}
 
       {renderMenu}
 
       {/* {renderMenuLang} */}
-      
+
     </>
   );
 }

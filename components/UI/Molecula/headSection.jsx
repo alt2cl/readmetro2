@@ -9,7 +9,7 @@ const headSectionCSS = {
     headWrapper : (theme) => css({
         display: 'flex',
         marginBottom:theme.spacing(3),
-       
+
     }),
     titlebullet: css({
         display:'flex',
@@ -17,15 +17,15 @@ const headSectionCSS = {
         width: '100%',
     }),
     boxOptions: (theme) => css({
-        display: 'flex', 
-        alignItems:'center', 
+        display: 'flex',
+        alignItems:'center',
         // [theme.breakpoints.up('xs')]: {
         //     width: '100%'
         // },
         // [theme.breakpoints.up('md')]: {
         //     width: 'auto'
         // }
-        
+
     }),
     wrapOptions:  css({
             flexGrow: 1,
@@ -44,7 +44,7 @@ const headSectionCSS = {
 const HeadSection = (props) => {
     const {slug, colorBullet, titleSection, options, pretext, linksite, linkedition, data} = props;
 
-    console.log('data headsection', data)
+    
 
     const arrayOptions = []
 
@@ -61,7 +61,7 @@ const HeadSection = (props) => {
 
     }
 
-    return ( 
+    return (
         <>
             <Box css={headSectionCSS.headWrapper} {...props} sx={{
                 flexDirection: { xs: props.options != null ? 'column' : 'row', md: 'row' },
@@ -94,18 +94,18 @@ const HeadSection = (props) => {
                 {options?
                 <Box css={headSectionCSS.wrapOptions} >
                     {options}
-                    
+
                 </Box>
                     :
                     null
                 }
                 <MoreOptions options={arrayOptions} />
                 </Box>
-                
-                
+
+
             </Box>
         </>
      );
 }
- 
+
 export default HeadSection;
