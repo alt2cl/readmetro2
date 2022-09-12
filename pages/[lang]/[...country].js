@@ -229,7 +229,6 @@ function Landing(props) {
 
 export async function getServerSideProps({ params }) {
 
-  console.log('paramc:', params)
 
   // Fetch data from external API
   const res = await fetch(`https://api.readmetro.com/${params.country[0]}/index.json`)
