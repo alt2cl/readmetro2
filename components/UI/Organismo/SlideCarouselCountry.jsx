@@ -192,18 +192,22 @@ export default function SlideCarouselCountry(props){
         scrollElement.current.scrollLeft -= widthItem;
     };
 
- 
+    console.log('la data desde [...country] ', data)
 
     const handleOpenPage =(i, data)=> {
-        router.push(`${router.asPath}/${data.cityslug}/${data.allEditions[0].date.replaceAll('-','')}/${i}`)
+        
+        router.push(`${router.asPath}/${data.cityslug}/${data.date}/${i}`)
         dispatch(updateDialogSlice({
             arrayimages: bigimages,
             pagina: i,
-            fecha: data.allEditions[0].date.replaceAll('-',''),
+            fecha: data.date,
             edicion: data.cityslug,
-            recortes: data.allEditions[0].recortes.length > 0 ? data.allEditions[0].recortes : [],
+            recortes: data.recortes.length > 0 ? data.recortes : [],
+            width: data.width,
+            height: data.height,
           }))
         dispatch(openDialog())
+
         
     }
 

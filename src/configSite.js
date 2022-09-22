@@ -13,43 +13,43 @@ const configSite = {
             "externalLink": "/"
         },
         {
-            "link":"/country/chile",
+            "link":"/es/chile",
             "slug": "chile",
             "name": "Chile",
             "externalLink": "https://www.publimetro.cl/"
         },
         {
-            "link": "/country/colombia",
+            "link": "/es/colombia",
             "slug": "colombia",
             "name": "Colombia",
             "externalLink": "https://www.publimetro.co/"
         }, 
         {
-            "link": "/country/ecuador",
+            "link": "/es/ecuador",
             "slug": "ecuador",
             "name": "Ecuador",
             "externalLink": "https://www.metroecuador.com.ec/"
         },
          {
-            "link": "/country/brazil",
+            "link": "/es/brazil",
             "slug": "brazil",
             "name": "Brazil",
             "externalLink": "https://www.metroworldnews.com.br/"
         },
         {
-            "link": "/country/canada",
+            "link": "/es/canada",
             "slug": "canada",
             "name": "Canada",
             "externalLink": "https://journalmetro.com/"
         },
         {
-            "link": "/country/mexico",
+            "link": "/es/mexico",
             "slug": "mexico",
             "name": "México",
             "externalLink": "https://www.publimetro.com.mx/"
         },
         {
-            "link": "/country/peru",
+            "link": "/es/peru",
             "slug": "peru",
             "name": "Perú",
             "externalLink": "https://www.publimetro.pe/"

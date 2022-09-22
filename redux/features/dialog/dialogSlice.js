@@ -11,6 +11,8 @@ export const dialogSlice = createSlice({
       fecha:'',
       edicion:'',
       recortes: [],
+      width: '',
+      height: '',
     }
   },
   reducers: {

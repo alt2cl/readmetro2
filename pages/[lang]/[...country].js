@@ -11,6 +11,11 @@ import NewspaperBox from '@/components/UI/Organismo/NewspaperBox'
 import Box from '@mui/material/Box';
 import HeadSeo from '@/components/Layout/headSeo'
 import siteMetadata from '@/src/siteMetadata'
+import fallback from '@/public/img/fallback.jpg'
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import Button from '@mui/material/Button';
+import ShareIcon from '@mui/icons-material/Share';
+import Link from 'next/link'
 //import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
 
 
@@ -47,14 +52,15 @@ function Landing(props) {
   //dispatch(updateCountrySlice({countryName:country}))
   const dialogState = useSelector(state => state.dialog.open)
   const dialogImagesArrayState = useSelector(state => state.dialog.imagesvalues.arrayimages)
+  const dialogDatesState = useSelector(state => state.dialog.imagesvalues)
   const dialogPaginaArrayState = useSelector(state => state.dialog.imagesvalues.pagina)
   const dialogFechaArrayState = useSelector(state => state.dialog.imagesvalues.fecha)
   const dialogEdicionArrayState = useSelector(state => state.dialog.imagesvalues.edicion)
   const metatagsTitleState = useSelector(state => state.metatags.title)
+  const stringDateState = useSelector(state => state.date.stringDate)
   //console.log('dialogImagesArrayState', dialogImagesArrayState)
   //console.log('estado openModal', dialogState)
 
-  //console.log('router values:', lang, country)
 
     const handleCloseModal = () => {
       console.log('router values: click modal')
@@ -63,105 +69,235 @@ function Landing(props) {
       //router.back();
     };
 
- 
+    let listsections
 
-    const listsections = data.cities.map((item, i) => {
-      let selectOptions = []
-      let todayEdition = item.allEditions ? item.allEditions[0] : null;
-      const date = todayEdition && todayEdition.date ? todayEdition.date : null;
-      const fecha = date != null ? date.replaceAll("-","/") : null;
-      const slug = item.cityslug;
-      const cantPages = todayEdition && todayEdition.pages;
-      const imagenes = [];
-      const bigimages = [];
 
-      
 
-        for (let index = 1; index < cantPages; index++) {
-            imagenes.push(
-                {
-                foto:`https://rm.metrolatam.com/${fecha}/${slug}/thumb_${index}-${todayEdition.newcode}.webp`,
-                link: `google.com`
-                }
+   
+
+    let arrayEditions = []
+
+    
+      console.log('aldito entre porque hay fecha', stringDateState)
+      //recorro las ediciones santiago, nuevamujer ..
+      data.cities.map((city, index) => {
+        //entre a santiago
+        if(city.allEditions.length > 0) {
+          const cityslug = city.cityslug
+          const cityname = city.cityname
+          const vertical = city.vertical
+          console.log('aldito --',city.allEditions.length, city.cityslug)
+          if(stringDateState){
+            city.allEditions.map((currentEdition, i) => {
+              let date = currentEdition.date.replaceAll('-','/')
+              console.log('aldito ---', date ,stringDateState )
+              if(date == stringDateState) {
+                //console.log('alditoo encontre la fecha_________')
+                arrayEditions.push(
+                  {
+                    cityslug: cityslug,
+                    cityname: cityname,
+                    date: date,
+                    pages: currentEdition.pages,
+                    newcode: currentEdition.newcode,
+                    width: currentEdition.width,
+                    height: currentEdition.height,
+                    inserts: currentEdition.inserts,
+                    recortes: currentEdition.recortes,
+                  }
+                )
+                
+              }
+            })
+
+          } else {
+            const lastEdition = city.allEditions[0]
+            let date = lastEdition.date.replaceAll('-','/')
+            arrayEditions.push(
+              {
+                cityslug: cityslug,
+                cityname: cityname,
+                date: date,
+                pages: lastEdition.pages,
+                newcode: lastEdition.newcode,
+                width: lastEdition.width,
+                height: lastEdition.height,
+                inserts: lastEdition.inserts,
+                recortes: lastEdition.recortes,
+              }
             )
-        }
 
-        const dataSlidePostCountry = imagenes.map((item, i) => {
-            return (
-                //imagenes a cargar en el carrusel
-                <>
+          }
+          
+        }
+      })
+     
+    
+    //console.log('aldito thisEdition', arrayEditions)
+
+    const newlistsections = arrayEditions.map((edition, i)=>{
+      const pages = edition.pages
+      const cityslug = edition.cityslug
+      const cityname = edition.cityname
+      const date = edition.date
+      const newcode = edition.newcode
+      const width = edition.width
+      const height = edition.height
+      // const inserts = edition.inserts
+      const recortes = edition.recortes
+
+      console.log('height edition', edition, height, width/12)
+
+      const dataSlide = () => {
+        let data = []
+        for (let i = 0; i < pages; i++) {
+          data.push(
+            <>
                 <Box key={`section-${i}`}>
-                  {imagenes != null ? 
-                        <Image src={imageError ? fallback.src : item.foto} 
+                        <Image src={`https://rm.metrolatam.com/${date}/${cityslug}/thumb_${i+1}-${newcode}.webp`} 
                         layout="responsive"
-                        width={widthItem}
-                        height={300}
-                        alt={item.link}
+                        width={width / 12}
+                        height={height / 12}
+                        alt={cityslug}
                         priority = {i <= 2 ? 'true': 'false'}
                         onError={() => setImageError(true)}
                           />
-                    : <Image src={fallback.src} 
-                        layout="responsive"
-                        width={fallback.width}
-                        height={fallback.height}
-                        alt={'error'}
-                    />
-                    }
-
+                   
                 </Box>
-                    
             </>
-            )
-        })
+          )
+        }
+        console.log('ardo dataslide:', data)
+        return data
+      }
 
-        for (let index = 1; index < cantPages; index++) {
-          bigimages.push(
-              {
-              foto:`https://rm.metrolatam.com/${fecha}/${slug}/full_${index}-${todayEdition.newcode}.webp`,
+      const bigimages = () => {
+        let data= []
+        for (let i = 0; i < pages; i++) {
+          data.push(
+            {
+              foto:`https://rm.metrolatam.com/${date}/${cityslug}/full_${i+1}-${newcode}.webp`,
+              fotothumb:`https://rm.metrolatam.com/${date}/${cityslug}/thumb_${i+1}-${newcode}.jpg`,
               link: `google.com`,
-              recortes: item.allEditions.length > 0 && item.allEditions[0].recortes ? item.allEditions[0].recortes : null,
+              recortes: recortes != null && recortes.length > 0 ? recortes : null,
+              width: width,
+              height: height,
               }
           )
         }
-
-
-        // if(city != null && edition != null && page != null) {
-        //   dispatch(updateDialogSlice({
-        //     arrayimages: bigimages,
-        //     pagina: i + 1,
-        //     fecha: item.allEditions[0].date.replaceAll('-',''),
-        //     edicion: item.cityslug,
-        //     recortes: item.allEditions[0].recortes.length > 0 ? item.allEditions[0].recortes : [],
-        //   }))
-        //   dispatch(openDialog())
-      
-        // }
+        console.log('ardo bigimages:', data)
+        return data
+      }
 
       return(
-        <SectionBox key={item.cityslug} >
-          <HeadSection titleSection={item.cityname} slug={item.cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
-          {item.allEditions.length > 0 &&  
+        <SectionBox key={cityslug} >
+          <HeadSection titleSection={cityname} slug={cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
+          {cityslug &&  
           <SlideCarouselCountry 
-          todayEdition={item.allEditions[0]} 
-          widthItem={widthItem} 
-          content={dataSlidePostCountry} 
-          bigimages={bigimages} 
-          data={item}
+          widthItem={width / 12} 
+          content={dataSlide()} 
+          bigimages={bigimages()} 
+          data={edition}
           />
           }
         </SectionBox>
       )
+    }) 
 
-    })
+ 
 
-    // const newspages = dialogImagesArrayState.map((item, i)=>{
+    // listsections = data.cities.map((item, i) => {
+    //   //let selectOptions = []
+    //   let todayEdition = item.allEditions ? item.allEditions[0] : null;
+    //   const date = todayEdition && todayEdition.date ? todayEdition.date : null;
+    //   const fecha = date != null ? date.replaceAll("-","/") : null;
+    //   const slug = item.cityslug;
+    //   const cantPages = todayEdition && todayEdition.pages;
+    //   const imagenes = [];
+    //   const bigimages = [];
+
+      
+
+    //     for (let index = 1; index < cantPages; index++) {
+    //         imagenes.push(
+    //             {
+    //             foto:`https://rm.metrolatam.com/${fecha}/${slug}/thumb_${index}-${todayEdition.newcode}.webp`,
+    //             link: `google.com`
+    //             }
+    //         )
+    //     }
+
+    //     const dataSlidePostCountry = imagenes.map((item, i) => {
+    //         return (
+    //             //imagenes a cargar en el carrusel
+    //             <>
+    //             <Box key={`section-${i}`}>
+    //               {imagenes != null ? 
+    //                     <Image src={imageError ? fallback.src : item.foto} 
+    //                     layout="responsive"
+    //                     width={widthItem}
+    //                     height={300}
+    //                     alt={item.link}
+    //                     priority = {i <= 2 ? 'true': 'false'}
+    //                     onError={() => setImageError(true)}
+    //                       />
+    //                 : <Image src={fallback.src} 
+    //                     layout="responsive"
+    //                     width={fallback.width}
+    //                     height={fallback.height}
+    //                     alt={'error'}
+    //                 />
+    //                 }
+
+    //             </Box>
+                    
+    //         </>
+    //         )
+    //     })
+
+    //     for (let index = 1; index < cantPages; index++) {
+    //       bigimages.push(
+    //           {
+    //           foto:`https://rm.metrolatam.com/${fecha}/${slug}/full_${index}-${todayEdition.newcode}.webp`,
+    //           link: `google.com`,
+    //           recortes: item.allEditions.length > 0 && item.allEditions[0].recortes ? item.allEditions[0].recortes : null,
+    //           }
+    //       )
+    //     }
+
+
+    //     // if(city != null && edition != null && page != null) {
+    //     //   dispatch(updateDialogSlice({
+    //     //     arrayimages: bigimages,
+    //     //     pagina: i + 1,
+    //     //     fecha: item.allEditions[0].date.replaceAll('-',''),
+    //     //     edicion: item.cityslug,
+    //     //     recortes: item.allEditions[0].recortes.length > 0 ? item.allEditions[0].recortes : [],
+    //     //   }))
+    //     //   dispatch(openDialog())
+      
+    //     // }
+
     //   return(
-    //     <NewspaperBox foto={item.foto} width={1354} height={1500} link={item.link} key={`news-${i}`} />
+    //     <SectionBox key={item.cityslug} >
+    //       <HeadSection titleSection={item.cityname} slug={item.cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
+    //       {item.allEditions.length > 0 &&  
+    //       <SlideCarouselCountry 
+    //       todayEdition={item.allEditions[0]} 
+    //       widthItem={widthItem} 
+    //       content={dataSlidePostCountry} 
+    //       bigimages={bigimages} 
+    //       data={item}
+    //       />
+    //       }
+    //     </SectionBox>
     //   )
+
     // })
 
+
+
     useEffect(()=>{
-        //console.log('ciudad:', city, 'edition:',edition, 'page:', page)
 
       if(page != undefined && edition != undefined && city != undefined ){
         setOpenModal(true)
@@ -169,15 +305,15 @@ function Landing(props) {
         setOpenModal(false)
       }
 
-      // if(country != undefined) {
-      //   setTitleHead(`Title country ${country}`)
-      // }
-    
-      // if(country != undefined && city != undefined ) {
-      //   setTitleHead(`Title ciudad ${city}`)
-      // }
-
     })
+
+    const downloadPDF = () => {
+      const limpiaFecha = dialogDatesState.fecha.replaceAll('/','')
+      const rutaPdf = `https://rm.metrolatam.com/pdf/${dialogDatesState.fecha}/${limpiaFecha}_${dialogDatesState.edicion}.pdf`
+      router.push(rutaPdf)
+    }
+
+
 
   return (
     <>
@@ -195,24 +331,41 @@ function Landing(props) {
           ogType={"article"}
       />
      
-      <h6>Idioma: {lang}</h6>
+      {/* <h6>Idioma: {lang}</h6>
       <h6>Pais: {country}</h6>
       <h6>Ciudad: {city}</h6>
       <h6>Edicion: {edition}</h6>
-      <h6>Pagina: {page}</h6>
+      <h6>Pagina: {page}</h6> */}
 
       
 
  
-        {data ? listsections : 'Cargando'}
+        {data ? newlistsections : 'Cargando'}
      
         <Dialogmodal openModal={openModal} onCloseModal={()=>handleCloseModal()}>
-            <h3>Modal de dialogo...</h3>
+            <Box sx={{display:'flex', p:'.5rem'}}>
+              <Button variant="outlined"  size="small" endIcon={<ShareIcon />} sx={{mr:'.5rem'}}>
+                Compartir
+              </Button>
+             
+                <a href={`https://rm.metrolatam.com/pdf/${dialogDatesState.fecha}/${dialogDatesState.fecha.replaceAll('/','')}_${dialogDatesState.edicion}.pdf`}
+                target="_blank"
+                rel="noopener noreferrer">
+                  <Button  variant="outlined"  size="small" endIcon={<PictureAsPdfIcon />}>
+                Descargar
+              </Button>
+
+                </a>
+              
+             
+              
+            </Box>
+            {/* https://rm.metrolatam.com/pdf/2022/09/22/20220922_santiago.pdf */}
             {dialogImagesArrayState.map((item, i)=>(
                 <NewspaperBox 
                 foto={item.foto} 
-                width={1354} 
-                height={1500} 
+                width={item.width  } 
+                height={item.height } 
                 link={item.link} 
                 key={`newspaper-${i}`} 
                 pagina={i+1}
@@ -240,88 +393,7 @@ export async function getServerSideProps({ params }) {
   }}
 }
 
-// export const getStaticPaths = async (context) => {
-//   //const countries = ['chile', 'brasil', 'mexico', 'argentina']
-  
-//     console.log( '////el context:', context.params)
-//     const res = await fetch('https://api.readmetro.com/country.json')
-//     const data = await res.json();
-//     const paths = data.map(({countryslug}) => ({params: { country: [`${countryslug}`] }}));
 
-
-//     return {
-//       paths,
-//       fallback: 'blocking',
-//     };
-  
-//   // try {
-//   //   const res = await fetch('https://api.readmetro.com/country.json')
-//   //   const data = await res.json();
-//   //   const paths = data.map(({countryslug}) => ({params: { country: [`${countryslug}`] }}));
-    
-    
-//   //   console.log('el B:', data)
-//   //   //const a = data.map(({countryslug}) => ({params: { country: [`${countryslug}`] }}));
-    
-
-    
-
-//   //   //const country = ['chile', 'brasil', 'mexico', 'argentina']
-//   //   //const lang = ['es', 'en']
-
-//   //   // const paths = [
-//   //   //   ['lang','country','city','date','page'],
-//   //   // ]
-
-   
-//   //   //   const paths = [
-//   //   //     {
-//   //   //       params: { country: [] },
-//   //   //     },
-//   //   //     // {
-//   //   //     //   params: { country: ["lang"] },
-//   //   //     // },
-//   //   //     // {
-//   //   //     //   params: { country: ["lang", "country"] },
-//   //   //     // },
-//   //   //     // {
-//   //   //     //   params: { country: ["lang", "country", "city"] },
-//   //   //     // },
-//   //   //     // {
-//   //   //     //   params: { country: ["lang", "country", "city", "date"] },
-//   //   //     // },
-//   //   //     // {
-//   //   //     //   params: { country: ["lang", "country", "city", "date", "page"] },
-//   //   //     // },
-      
-//   //   // ]
-
-//   //   //console.log('el C:', params, paths)
-//   //   return {
-//   //     paths,
-//   //     fallback: true,
-//   //   };
-//   // } catch (error) {
-//   //   console.log(error)
-//   // }
-// }
-
-// export async function getStaticProps({params}) {
-//   // Call an external API endpoint to get posts.
-//   // You can use any data fetching library
-//   //console.log('paramxxxx:', params.country[1])
-//   const res = await fetch(`https://api.readmetro.com/${params.country[1]}/index.json`)
-//   const data = await res.json()
-
-//   return {
-//     props: {
-//       data,
-//       country: params.country
-//     },
-//     revalidate: 10,
-   
-//   }
-// }
 
 
 

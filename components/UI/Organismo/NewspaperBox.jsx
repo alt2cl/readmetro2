@@ -1,18 +1,26 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from 'next/image';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import HeadphonesIcon from '@mui/icons-material/Headphones';
 import Button from '@mui/material/Button';
+import AudioPlayer from '@/components/UI/Organismo/AudioPlayer'
+import AudioPlayList from '@/components/UI/Organismo/AudioPlayList'
 
 const NewspaperBox = (props) => {
     const [imageError, setImageError] = useState(false);
     const {width, height, foto, link, title,audioContents, pagina} = props
+    //const audioRef = useRef(null)
 
-  
-    const pinpagina =  audioContents.map((item, i)=>{
+    console.log('audioContents:::', audioContents)
+
+    let pinpagina = []
+    const listAudios = []
+
+    if(audioContents){
+        audioContents.map((item, i)=>{
             if (item.pagina == pagina) {
-                return(
+                pinpagina.push(
                     <Box key={`chip-${i}`}>
                         <Chip sx={{
                         position: 'absolute',
@@ -26,42 +34,42 @@ const NewspaperBox = (props) => {
                         
                     }} 
                     icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} 
-                    label={Number(item.recorte) + 1 } />
+                    label={pagina +'.'+(Number(item.recorte) + 1)  } />
 
                     </Box>
                     
-                    )}
+                    )
+
+                listAudios.push({
+                    url: item.audio,
+                    numitem: `${pagina}.${Number(item.recorte)+1}`,
+                })
+                
+                }
         })
 
-    const audios =  audioContents.map((item, i)=>{
-        if (item.pagina == pagina) {
-            return(
-                <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem',position: 'relative', pl: {xs:'1rem', md: '0' }}} key={`audiochip-${i}`} >
-                <Chip sx={{backgroundColor: (theme) => theme.palette.primary.main ,color: 'white', position: 'absolute',top: '0',zIndex:' 2',left:'10px',width: '22px',height: '22px',textAlign: 'center', '& .MuiChip-label': {padding:'0'} }} 
-                label={Number(item.recorte) + 1 } 
-                />
-                    <audio controls >
-                        <source src={item.audio} type="audio/mpeg" />
-                    </audio>
+        
 
-                </Box>
+    }
+  
 
-            )
-            
-        }
-    })
+        
+
+       
+
+    
+    
+
+    
+ 
 
 
     return(
-        <Box sx={{position: 'relative'}} key={foto}>
+        <Box sx={{position: 'relative'}}>
 
-            <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: 'linear-gradient(to bottom, rgba(58,58,70,1) 20%,rgba(58,58,70,0))', p: '5px 0 2rem 5px', marginLeft: '-5px',width: 'calc(100% + 10px)'  }}>
-                <Button size="small" variant="contained" sx={{height: '50px',minWidth:'140px',fontSize: '11px',width: '132px',textAlign: 'left',lineHeight: '18px'}} 
-                startIcon={<HeadphonesIcon />}>Escuchar esta página
-                </Button>
-                <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}}}>
-                {audios}
-                </Box>
+            <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: listAudios.length > 0 ? 'linear-gradient(to bottom, rgba(58,58,70,1) 20%,rgba(58,58,70,0))': 'linear-gradient(to bottom, rgba(58,58,70,0.3) 20%,rgba(58,58,70,0))', p: '5px 0 2rem 5px', marginLeft: '-5px',width: 'calc(100% + 10px)'  }}>
+                 <AudioPlayList urls={listAudios} />
+                 <AudioPlayer urls={listAudios}  />
             </Box>
             <Box sx={{position: 'relative'}}>
                 <Image src={foto} 
@@ -71,7 +79,7 @@ const NewspaperBox = (props) => {
                     alt={link}
                     onError={() => setImageError(true)}
                     />
-                    {pinpagina}
+                    {audioContents && audioContents.length > 0 && pinpagina}
             </Box>
         </Box>
 

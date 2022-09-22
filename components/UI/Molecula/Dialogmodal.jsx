@@ -7,7 +7,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
-
+import CloseIcon from '@mui/icons-material/Close';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 
 export default function Dialogmodal(props) {
@@ -35,9 +36,12 @@ export default function Dialogmodal(props) {
             
           {/* </DialogContentText> */}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={()=>onCloseModal()} autoFocus>
-            Cerrar
+        <DialogActions sx={{display: 'flex', justifyContent: 'space-between',  boxShadow: '0px -6px 10px 2px #8f91955e', position: 'relative'}}>
+          <Button onClick={()=>onCloseModal()} endIcon={<ArrowUpwardIcon/>} autoFocus>
+            Ir al audio en curso
+          </Button>
+          <Button onClick={()=>onCloseModal()} endIcon={<CloseIcon/>} autoFocus>
+            Cerrar 
           </Button>
         </DialogActions>
       </Dialog>

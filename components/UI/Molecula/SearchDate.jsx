@@ -14,6 +14,7 @@ import { css } from '@emotion/react';
 import { useSelector, useDispatch } from 'react-redux'
 import { decrement, increment } from '@/redux/features/counter/counterSlice'
 import { update } from '@/redux/features/country/countrySlice'
+import { updateDateSlice } from '@/redux/features/date/dateSlice'
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useRouter } from 'next/router'
@@ -99,19 +100,32 @@ const textfielddate = (theme) => ({
 const SearchDate = (props) => {
 
   const {data} = props
-
+  const dispatch = useDispatch()
 
     const [anchorEl, setAnchorEl] = useState(null);
     const router = useRouter();
     const [open, setOpen] = useState(false);
-
     const [valueDate, setValueDate] = useState(new Date());
 
-    console.log('date value', valueDate)
+    
 
     const handleChangeDate = (newValue) => {
+      //const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+      const formatDate = newValue.toLocaleDateString('es-CL', { year: 'numeric',month: '2-digit',day: '2-digit' })
+
+      console.log('aldito formate date:', formatDate)
+     
+
+      //let setingDate = `${newValue}`
+      //console.log('setingDate',setingDate )
+      const arrayDate = formatDate.split("-")
+      const dateString = arrayDate.length > 2 ? `${arrayDate[2]}/${arrayDate[1]}/${arrayDate[0]}` : null
+      console.log('aldito formatDate::', arrayDate)
       setValueDate(newValue);
+      dispatch(updateDateSlice(dateString))
     };
+
+    //console.log('date value', valueDate)
 
 
     //console.log('router:::', ' - ', router.query.country ,' - ', router.asPath)
@@ -126,7 +140,7 @@ const SearchDate = (props) => {
 
     
 
-    const dispatch = useDispatch()
+    
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
