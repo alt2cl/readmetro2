@@ -7,12 +7,12 @@ function Layout( {children} ) {
     return (
         <>
             <Header />
-            
+
             <main>
             <Container  maxWidth="xl">
                 {children}
             </Container>
-                
+
             </main>
 
             <footer>
@@ -21,16 +21,16 @@ function Layout( {children} ) {
                 target="_blank"
                 rel="noopener noreferrer"
                 >
-                Powered by{' '}
+                Poweredddd by{' '}
                 <span>
                     <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
                 </span>
                 </a>
             </footer>
-        
+
         </>
-        
+
       );
 }
 
-export default Layout;  
+export default Layout;
