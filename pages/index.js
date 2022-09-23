@@ -15,14 +15,14 @@ import fallback from '@/public/img/fallback.jpg'
 export default function Home({data}) {
 
   const [imageError, setImageError] = useState(false);
-  
+
 
     const listCountry = data.map((item) => {
 
-        console.log('valor item desde el index:', item.cities)
+
 
         const dataSlidePost = item.cities.map((item, i) => {
-          
+
           const date = item.allEditions  && item.allEditions[0] && item.allEditions[0].date ? item.allEditions[0].date : null;
           const fecha = date != null ? date.replaceAll("-","/") : null;
           let foto = null
@@ -34,19 +34,19 @@ export default function Home({data}) {
             }
           return (
               //item slide homepage
-            
+
                   <Box sx={{  borderRadius:'5px', background: 'white' }} key={item.cityname}>
-                      <Typography 
+                      <Typography
                           variant="button"
                           noWrap
                           component="h6"
                           sx={{pl: '1rem', pt:'0.5rem'}}
                            >
-                      {item.cityname} 
+                      {item.cityname}
                       </Typography>
-                      
-                      {fecha != null ? 
-                           <Image src={imageError ? fallback.blurDataURL : foto} 
+
+                      {fecha != null ?
+                           <Image src={imageError ? fallback.blurDataURL : foto}
                            layout="responsive"
                            width={200}
                            height={250}
@@ -56,28 +56,28 @@ export default function Home({data}) {
                            }}
                            onError={() => setImageError(true)}
                             />
-                      : <Image src={fallback.src} 
+                      : <Image src={fallback.src}
                           layout="responsive"
                           width={fallback.width}
                           height={fallback.height}
                           alt={'error'}
                           />
                           }
-                      
+
                       {/* <Box sx={{display:'flex', position: 'absolute', bottom: '19px', left: '19px'}}>
                           <Box css={slideCSS.counter}>
                               {i}
                           </Box>
                       </Box> */}
-                      
+
                   </Box>
-              
+
               )
           })
-      
+
         return(<SectionBox key={item.countryname}>
-          <HeadSection titleSection={item.countryname} slug={item.countryslug} linksite={item.website} linkedition  
-          colorBullet={'green'} 
+          <HeadSection titleSection={item.countryname} slug={item.countryslug} linksite={item.website} linkedition
+          colorBullet={'green'}
           data={item}
           pretext={'Hoy en: '}
           />
@@ -101,7 +101,7 @@ export default function Home({data}) {
     // You can use any data fetching library
     const res = await fetch('https://api.readmetro.com/country.json');
     const data = await res.json()
-  
+
     // By returning { props: { posts } }, the Blog component
     // will receive `posts` as a prop at build time
     return {
