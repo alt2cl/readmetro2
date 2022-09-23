@@ -8,6 +8,7 @@ function IdiomaLanding(ssrData) {
   const {lang} = router.query
 
 
+
   return (
     <>
       <Header />
