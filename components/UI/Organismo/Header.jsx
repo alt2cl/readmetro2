@@ -27,13 +27,11 @@ import { css } from '@emotion/react';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ElevationScroll from '@/components/CustomHooks/ElevationScroll';
+import { useRouter } from 'next/router'
 
 
 
 import configsite from '@/src/configSite'
-
-
-
 
 
 const elevationFixedWrap = css({
@@ -68,6 +66,19 @@ export default function Header(props) {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const menupaises = configsite.routeCountry;
   const langOptions = configsite.langOptions;
+  const router = useRouter()
+
+  console.log('router header', router.query.country)
+
+
+  const country = router.query.countr ? router.query.country[0] : null
+  const edicion = router.query.countr ? router.query.country[1] : null
+  const ano = router.query.countr ? router.query.country[2] : null
+  const mes = router.query.countr ? router.query.country[3] : null
+  const dia = router.query.countr ? router.query.country[4] : null
+  const pagina = router.query.countr ? router.query.country[5] : null
+
+  console.log('router menu', country, edicion, ano, mes, dia, pagina)
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -192,14 +203,9 @@ const [age, setAge] = React.useState('Español');
 
   const langOptionsRender = langOptions.map((item)=>{
     return(
-     
       <MenuItem value={item.name} key={item.name}>
         <Image src={item.flagUrl} alt={item.name} width={20} height={15}/>
       </MenuItem>
-      
-
-        
-      
     )
     })
 
@@ -208,6 +214,7 @@ const [age, setAge] = React.useState('Español');
       <AppBar color="inherit" position="relative" sx={{ boxShadow: 1 }} >
         <Toolbar>
             <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
+              <Link href={'/'}>
                 <IconButton
                     size="large"
                     edge="start"
@@ -215,8 +222,12 @@ const [age, setAge] = React.useState('Español');
                     aria-label="Read Metro Logo"
                     sx={{ mr: 2 }}
                 >
-                    <Image src={Logo} alt="Read Metro Logo"/>
+                  
+                  <Image src={Logo} alt="Read Metro Logo"/>
+                  
+                    
                 </IconButton>
+                </Link>
             </Box>
 
             <Box sx={{flexGrow:1}}>

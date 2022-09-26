@@ -63,10 +63,10 @@ function Landing(props) {
 
 
     const handleCloseModal = () => {
-      console.log('router values: click modal')
-      router.push(`/${lang}/${country}`)
+      //console.log('router values: click modal')
+      //router.push(`/${lang}/${country}`)
       //dispatch(closeDialog())
-      //router.back();
+      router.back();
     };
 
     let listsections
@@ -78,7 +78,7 @@ function Landing(props) {
     let arrayEditions = []
 
     
-      console.log('aldito entre porque hay fecha', stringDateState)
+      //console.log('aldito entre porque hay fecha', stringDateState)
       //recorro las ediciones santiago, nuevamujer ..
       data.cities.map((city, index) => {
         //entre a santiago
@@ -331,11 +331,11 @@ function Landing(props) {
           ogType={"article"}
       />
      
-      {/* <h6>Idioma: {lang}</h6>
+      <h6>Idioma: {lang}</h6>
       <h6>Pais: {country}</h6>
       <h6>Ciudad: {city}</h6>
       <h6>Edicion: {edition}</h6>
-      <h6>Pagina: {page}</h6> */}
+      <h6>Pagina: {page}</h6>
 
       
 
@@ -347,18 +347,13 @@ function Landing(props) {
               <Button variant="outlined"  size="small" endIcon={<ShareIcon />} sx={{mr:'.5rem'}}>
                 Compartir
               </Button>
-             
                 <a href={`https://rm.metrolatam.com/pdf/${dialogDatesState.fecha}/${dialogDatesState.fecha.replaceAll('/','')}_${dialogDatesState.edicion}.pdf`}
                 target="_blank"
                 rel="noopener noreferrer">
                   <Button  variant="outlined"  size="small" endIcon={<PictureAsPdfIcon />}>
                 Descargar
               </Button>
-
                 </a>
-              
-             
-              
             </Box>
             {/* https://rm.metrolatam.com/pdf/2022/09/22/20220922_santiago.pdf */}
             {dialogImagesArrayState.map((item, i)=>(
