@@ -58,27 +58,27 @@ const configSite = {
     "langOptions": [
         {
             "flagUrl":ESflag,
-            "slug":"/ES/",
+            "slug":"ES",
             "name": "Español"
         },
         {
             "flagUrl":FRflag,
-            "slug":"/FR/",
+            "slug":"FR",
             "name": "Frances"
         },
         {
             "flagUrl":NEflag,
-            "slug":"/NE/",
+            "slug":"NE",
             "name": "Nederlans"
         },
         {
             "flagUrl":PTflag,
-            "slug":"/PT/",
+            "slug":"PT",
             "name": "Portugues"
         },
         {
             "flagUrl":USflag,
-            "slug":"/EN/",
+            "slug":"EN",
             "name": "English"
         }
 

@@ -28,6 +28,11 @@ export default function Home({data}) {
 
         const countryslug = item.countryslug
 
+
+        
+
+        
+
         const dataSlidePost = item.cities.map((item, i) => {
           
           const date = item.allEditions  && item.allEditions[0] && item.allEditions[0].date ? item.allEditions[0].date : null;
@@ -102,7 +107,7 @@ export default function Home({data}) {
           <HeadSection titleSection={item.countryname} slug={item.countryslug} linksite={item.website} linkedition  
           colorBullet={'green'} 
           data={item}
-          pretext={'Hoy en: '}
+          pretext={'Lo último en: '}
           />
 
           <SlideCarouselCountry citySlug={item.countryslug} widthItem={250} content={dataSlidePost} optionsbtnsoff goeditionon/>

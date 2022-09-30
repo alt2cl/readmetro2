@@ -3,24 +3,27 @@ import { createSlice } from '@reduxjs/toolkit'
 export const dateSlice = createSlice({
   name: 'date',
   initialState: {
-    startDate: new Date(),
-    stringDate: ''
+    starDate: new Date(),
+    stringDate: '',
+    arrayEnableDates: []
     
   },
   
   reducers: {
     updateDateSlice: (state, action) => {
-        console.log('action payload', action.payload)
       state.stringDate = action.payload
-    }
+    },
+    updateEnableDatesSlice: (state, action) => {
+      state.arrayEnableDates = action.payload
+    },
   }
   
 
 })
 
-console.log('action payload 1:', dateSlice.state)
+//console.log('arrayEnableDates:', dateSlice.state)
 
 // Action creators are generated for each case reducer function
-export const { updateDateSlice } = dateSlice.actions
+export const { updateDateSlice, updateEnableDatesSlice } = dateSlice.actions
 
 export default dateSlice.reducer

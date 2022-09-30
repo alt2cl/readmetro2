@@ -34,6 +34,16 @@ export default function SlideCarouselCountry(props){
     const router = useRouter();
     //const [openModal, setOpenModal] = useState(false);
 
+    const lang = router.query.lang ? router.query.lang : null
+    const country = router.query.country ? router.query.country : null
+    const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
+    const edition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
+    const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
+    const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
+
+    const archivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
+    const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
+
 
     //const [scrollTarget, setScrollTarget] = useState(undefined) 
     // const scrollTrigger = useScrollTrigger({ 
@@ -192,11 +202,22 @@ export default function SlideCarouselCountry(props){
         scrollElement.current.scrollLeft -= widthItem;
     };
 
-    console.log('la data desde [...country] ', data)
+    //console.log('la data desde [...country] ', data)
 
     const handleOpenPage =(i, data)=> {
+        //console.log('landingEdition', landingEdition ,router, router.query.edicion[1])
+
+        if(archivo) {
+            router.push(`/${lang}/${country}/${edition}/${data.date.replaceAll('/', '')}/${i}`)
+        } else if (landingEdition) 
+        {
+            router.push(`/${lang}/${country}/${edition}/${data.date.replaceAll('/', '')}/${i}`)
+        }else {
+            
+            router.push(`/${lang}/${country}/${data.cityslug}/${data.date.replaceAll('/', '')}/${i}`)
+        }
         
-        router.push(`${router.asPath}/${data.cityslug}/${data.date}/${i}`)
+        
         dispatch(updateDialogSlice({
             arrayimages: bigimages,
             pagina: i,
@@ -320,17 +341,7 @@ export default function SlideCarouselCountry(props){
                         </>
                     }
 
-                    {/* {goeditionon ? 
-                        <Box css={slideCSS.counterOptions} sx={{display:'flex',justifyContent:'center', mb:'1rem'}}>
-                            <Link href={'/es/'+citySlug+'/'}>
-                            <Button variant="contained" endIcon={<ArrowForwardOutlinedIcon />}>
-                            Ir a la edición
-                            </Button>
-                            </Link>
-                        </Box>
-
-                        : null
-                    } */}
+                 
                     
                 </Box>
                 

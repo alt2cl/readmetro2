@@ -65,9 +65,9 @@ const NewspaperBox = (props) => {
 
 
     return(
-        <Box sx={{position: 'relative'}}>
+        <Box sx={{position: 'relative', pb: '1rem'}}>
 
-            <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: listAudios.length > 0 ? 'linear-gradient(to bottom, rgba(58,58,70,1) 20%,rgba(58,58,70,0))': 'linear-gradient(to bottom, rgba(58,58,70,0.3) 20%,rgba(58,58,70,0))', p: '5px 0 2rem 5px', marginLeft: '-5px',width: 'calc(100% + 10px)'  }}>
+            <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: listAudios.length > 0 ? 'linear-gradient(to bottom, rgba(58,58,70,1) 20%,rgba(58,58,70,0))': 'linear-gradient(to bottom, rgba(58,58,70,0.3) 20%,rgba(58,58,70,0))', p: '5px 0 1rem 5px', marginLeft: '-5px',width: 'calc(100% + 10px)'  }}>
                  <AudioPlayList urls={listAudios} />
                  <AudioPlayer urls={listAudios}  />
             </Box>

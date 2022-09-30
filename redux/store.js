@@ -4,6 +4,7 @@ import countryReducer from '@/redux/features/country/countrySlice'
 import dialogReducer from '@/redux/features/dialog/dialogSlice'
 import metatagsReducer from '@/redux/features/metatags/metatagsSlice'
 import dateReducer from '@/redux/features/date/dateSlice'
+import langReducer from '@/redux/features/lang/langSlice'
 
 export default configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export default configureStore({
     metatags: metatagsReducer,
     dialog: dialogReducer,
     date: dateReducer,
+    lang: langReducer,
     
   }
 })

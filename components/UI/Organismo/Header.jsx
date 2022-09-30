@@ -28,6 +28,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ElevationScroll from '@/components/CustomHooks/ElevationScroll';
 import { useRouter } from 'next/router'
+import { useSelector, useDispatch } from 'react-redux'
+import { updateLangSlice  } from '@/redux/features/lang/langSlice'
+
 
 
 
@@ -66,29 +69,35 @@ export default function Header(props) {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const menupaises = configsite.routeCountry;
   const langOptions = configsite.langOptions;
+  const dispatch = useDispatch()
   const router = useRouter()
 
-  console.log('router header', router.query.country)
+  const lang = router.query.lang ? router.query.lang : null
+  const country = router.query.country ? router.query.country : null
+  const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
+  const edicion = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
+  const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
+  const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
+
+  const landingHome = !router.query.country ? true : false
+  const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
+  const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
+  const landingCountry = router.query.country && !router.query.edicion ? true : false
 
 
-  const country = router.query.countr ? router.query.country[0] : null
-  const edicion = router.query.countr ? router.query.country[1] : null
-  const ano = router.query.countr ? router.query.country[2] : null
-  const mes = router.query.countr ? router.query.country[3] : null
-  const dia = router.query.countr ? router.query.country[4] : null
-  const pagina = router.query.countr ? router.query.country[5] : null
 
-  console.log('router menu', country, edicion, ano, mes, dia, pagina)
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
 //console.log('configsite:', menupaises)
 
-const [age, setAge] = React.useState('Español');
+const [language, setLanguage] = React.useState('es');
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setLanguage(event.target.value);
+    dispatch(updateLangSlice(event.target.value))
+    
   };
 
 
@@ -136,6 +145,7 @@ const [age, setAge] = React.useState('Español');
         return(
           <MenuItem onClick={handleMenuClose} key={item.name}>
             <Link href={item.externalLink}>
+              
               {item.name} 
             </Link>
           </MenuItem>
@@ -203,7 +213,7 @@ const [age, setAge] = React.useState('Español');
 
   const langOptionsRender = langOptions.map((item)=>{
     return(
-      <MenuItem value={item.name} key={item.name}>
+      <MenuItem value={item.slug} key={item.name}>
         <Image src={item.flagUrl} alt={item.name} width={20} height={15}/>
       </MenuItem>
     )
@@ -221,11 +231,8 @@ const [age, setAge] = React.useState('Español');
                     color="inherit"
                     aria-label="Read Metro Logo"
                     sx={{ mr: 2 }}
-                >
-                  
+                > 
                   <Image src={Logo} alt="Read Metro Logo"/>
-                  
-                    
                 </IconButton>
                 </Link>
             </Box>
@@ -282,7 +289,7 @@ const [age, setAge] = React.useState('Español');
 
               <FormControl sx={{ m: 1, minWidth: 50, paddingLeft: '1rem', borderLeft: '1px dotted #ccc', background: '#fff' }} >
                   <Select
-                    value={age}
+                    value={language}
                     onChange={handleChange}
                     //displayEmpty
                     inputprops={{ 'aria-label': 'Without label' }}

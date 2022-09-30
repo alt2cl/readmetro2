@@ -6,6 +6,8 @@ import HeadSection from '@/components/UI/Molecula/headSection'
 import Dialogmodal from '@/components/UI/Molecula/Dialogmodal'
 import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry'
 import { useRouter } from 'next/router'
+import {  updateEnableDatesSlice } from '@/redux/features/date/dateSlice'
+
 import { useSelector, useDispatch } from 'react-redux'
 import NewspaperBox from '@/components/UI/Organismo/NewspaperBox'
 import Box from '@mui/material/Box';
@@ -15,31 +17,52 @@ import fallback from '@/public/img/fallback.jpg'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import Button from '@mui/material/Button';
 import ShareIcon from '@mui/icons-material/Share';
-import Link from 'next/link'
+//import Link from 'next/link'
 //import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
+//import useFormatDate from '@/components/CustomHooks/useFormatDate'
+import CloseIcon from '@mui/icons-material/Close';
 
 
-function Landing(props) {
+function CountryTemplate({data}) {
 
-  const data = props.data
 
   const router = useRouter()
 
-  console.log('la data___',router)
+  //console.log('la data___',router)
 
    
-
+  const lang = router.query.lang ? router.query.lang : null
+  const country = router.query.country ? router.query.country : null
+  const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
+  const edition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
+  const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
+  const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
   
-  const lang = router.query.lang
-  const country = router.query.country[0]
-  const city = router.query.country[1]
-  const edition = router.query.country[2]
-  const date = router.query.country[2]
-  const page = router.query.country[3]
+  // const lang = router.query.lang
+  // const country = router.query.country
+  // const city = router.query.edicion[0]
+  // const edition = router.query.edicion[0]
+  // const date = router.query.ediction[1] == 'archive' ? null : router.query.ediction[1]
+  // const page = router.query.edicion[2]
+
+
+  // useEffect(()=>{
+  //   console.log('values router>', router.query)
+  //   if(page != undefined && edition != undefined && city != undefined ){
+  //     setOpenModal(true)
+  //   } else {
+  //     setOpenModal(false)
+  //   }
+  // })
+
+
+
+
+
   //return false
   //const {slug} = router.query || []
   //const [lang, country, city, edition, page] = slug
-  const routervalues = { lang: lang, country: country, city:city, edition:edition, page:page}
+  const routervalues = { lang: lang, country: country }
   const widthItem = 250
   const [imageError, setImageError] = useState(false);
   const [openModal, setOpenModal] = useState(false)
@@ -50,13 +73,13 @@ function Landing(props) {
 
   const dispatch = useDispatch();
   //dispatch(updateCountrySlice({countryName:country}))
-  const dialogState = useSelector(state => state.dialog.open)
+  //const dialogState = useSelector(state => state.dialog.open)
   const dialogImagesArrayState = useSelector(state => state.dialog.imagesvalues.arrayimages)
   const dialogDatesState = useSelector(state => state.dialog.imagesvalues)
-  const dialogPaginaArrayState = useSelector(state => state.dialog.imagesvalues.pagina)
-  const dialogFechaArrayState = useSelector(state => state.dialog.imagesvalues.fecha)
-  const dialogEdicionArrayState = useSelector(state => state.dialog.imagesvalues.edicion)
-  const metatagsTitleState = useSelector(state => state.metatags.title)
+  // const dialogPaginaArrayState = useSelector(state => state.dialog.imagesvalues.pagina)
+  // const dialogFechaArrayState = useSelector(state => state.dialog.imagesvalues.fecha)
+  // const dialogEdicionArrayState = useSelector(state => state.dialog.imagesvalues.edicion)
+  // const metatagsTitleState = useSelector(state => state.metatags.title)
   const stringDateState = useSelector(state => state.date.stringDate)
   //console.log('dialogImagesArrayState', dialogImagesArrayState)
   //console.log('estado openModal', dialogState)
@@ -76,6 +99,7 @@ function Landing(props) {
    
 
     let arrayEditions = []
+    let arrayDates = []
 
     
       //console.log('aldito entre porque hay fecha', stringDateState)
@@ -86,11 +110,26 @@ function Landing(props) {
           const cityslug = city.cityslug
           const cityname = city.cityname
           const vertical = city.vertical
-          console.log('aldito --',city.allEditions.length, city.cityslug)
+          //console.log('aldito --',city.allEditions.length, city.cityslug)
+
+          //fechas con ediciones vigentes enviadas a redux para leerlas en el componente SearchDate
+          city.allEditions.map((currentEdition)=> {
+            let date = currentEdition.date
+            let arrayDate = date.split('-')
+            let formatDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`
+            //let realdate = new Date(date)
+            //let formatDate = realdate.toLocaleDateString('es-CL', { year: 'numeric',month: '2-digit',day: '2-digit' })
+            //console.log('xcvbb', date, formatDate)
+            arrayDates.push(formatDate)
+          })
+
+          //console.log('los arrayDates', arrayDates)
+
           if(stringDateState){
             city.allEditions.map((currentEdition, i) => {
               let date = currentEdition.date.replaceAll('-','/')
-              console.log('aldito ---', date ,stringDateState )
+              
+              //console.log('aldito ---', date ,stringDateState )
               if(date == stringDateState) {
                 //console.log('alditoo encontre la fecha_________')
                 arrayEditions.push(
@@ -111,6 +150,9 @@ function Landing(props) {
             })
 
           } else {
+            
+            
+
             const lastEdition = city.allEditions[0]
             let date = lastEdition.date.replaceAll('-','/')
             arrayEditions.push(
@@ -132,8 +174,10 @@ function Landing(props) {
         }
       })
      
+      //console.log('aldito arrayDates', arrayDates)
+
+      dispatch(updateEnableDatesSlice(arrayDates))
     
-    //console.log('aldito thisEdition', arrayEditions)
 
     const newlistsections = arrayEditions.map((edition, i)=>{
       const pages = edition.pages
@@ -146,7 +190,11 @@ function Landing(props) {
       // const inserts = edition.inserts
       const recortes = edition.recortes
 
-      console.log('height edition', edition, height, width/12)
+      
+
+      
+
+      //console.log('height edition', edition, height, width/12)
 
       const dataSlide = () => {
         let data = []
@@ -167,7 +215,7 @@ function Landing(props) {
             </>
           )
         }
-        console.log('ardo dataslide:', data)
+        //console.log('ardo dataslide:', data)
         return data
       }
 
@@ -185,13 +233,15 @@ function Landing(props) {
               }
           )
         }
-        console.log('ardo bigimages:', data)
+        //console.log('ardo bigimages:', data)
         return data
       }
 
+     
+
       return(
         <SectionBox key={cityslug} >
-          <HeadSection titleSection={cityname} slug={cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
+          <HeadSection datesection={date} country={country} titleSection={cityname} slug={cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
           {cityslug &&  
           <SlideCarouselCountry 
           widthItem={width / 12} 
@@ -297,45 +347,31 @@ function Landing(props) {
 
 
 
-    useEffect(()=>{
+    
 
-      if(page != undefined && edition != undefined && city != undefined ){
-        setOpenModal(true)
-      } else {
-        setOpenModal(false)
-      }
-
-    })
-
-    const downloadPDF = () => {
-      const limpiaFecha = dialogDatesState.fecha.replaceAll('/','')
-      const rutaPdf = `https://rm.metrolatam.com/pdf/${dialogDatesState.fecha}/${limpiaFecha}_${dialogDatesState.edicion}.pdf`
-      router.push(rutaPdf)
-    }
+    // const downloadPDF = () => {
+    //   const limpiaFecha = dialogDatesState.fecha.replaceAll('/','')
+    //   const rutaPdf = `https://rm.metrolatam.com/pdf/${dialogDatesState.fecha}/${limpiaFecha}_${dialogDatesState.edicion}.pdf`
+    //   router.push(rutaPdf)
+    // }
 
 
 
   return (
     <>
       <HeadSeo
-          title={
-            page ?  `ReadMetro - Página ${page}. Edición ${edition}. ${city}, ${country}` : 
-            page == undefined && edition ? `ReadMetro - Edición ${edition}. ${city}, ${country}` :
-            edition == undefined && city ? `ReadMetro - Edición ${city}, ${country}` :
-            city == undefined && country ? `ReadMetro - ${country}` :
-            'Readmetro'
-          }
+          title={country ? `ReadMetro - ${country}` :'Readmetro'}
           description={`Description country`}
           canonicalUrl={siteMetadata.siteUrl}
           ogTwitterImage={siteMetadata.siteLogoSquare}
           ogType={"article"}
       />
      
-      <h6>Idioma: {lang}</h6>
+      {/* <h6>Idioma: {lang}</h6>
       <h6>Pais: {country}</h6>
       <h6>Ciudad: {city}</h6>
       <h6>Edicion: {edition}</h6>
-      <h6>Pagina: {page}</h6>
+      <h6>Pagina: {page}</h6> */}
 
       
 
@@ -353,7 +389,11 @@ function Landing(props) {
                   <Button  variant="outlined"  size="small" endIcon={<PictureAsPdfIcon />}>
                 Descargar
               </Button>
+             
                 </a>
+                <Button  variant="outlined" sx={{ml:'.5rem'}}  size="small" endIcon={<CloseIcon />} onClick={()=>handleCloseModal()}>
+                Cerrar
+              </Button>
             </Box>
             {/* https://rm.metrolatam.com/pdf/2022/09/22/20220922_santiago.pdf */}
             {dialogImagesArrayState.map((item, i)=>(
@@ -377,10 +417,14 @@ function Landing(props) {
 
 export async function getServerSideProps({ params }) {
 
+  //https://api.readmetro.com/chile/mujeres/full.json
+
 
   // Fetch data from external API
-  const res = await fetch(`https://api.readmetro.com/${params.country[0]}/index.json`)
+  const res = await fetch(`https://api.readmetro.com/${params.country}/index.json`)
+  //const res = await fetch(`https://api.readmetro.com/${params.country[0]}/${params.country[1]}/full.json`)
   const data = await res.json()
+
 
   // Pass data to the page via props
   return { props: {
@@ -397,4 +441,4 @@ export async function getServerSideProps({ params }) {
 
 
 
-export default Landing
+export default CountryTemplate
