@@ -110,7 +110,13 @@ export default function Home({data}) {
           pretext={'Lo último en: '}
           />
 
-          <SlideCarouselCountry citySlug={item.countryslug} widthItem={250} content={dataSlidePost} optionsbtnsoff goeditionon/>
+          <SlideCarouselCountry 
+          widthItem={250} 
+          content={dataSlidePost} 
+          citySlug={item.countryslug} 
+          optionsbtnsoff 
+          goeditionon
+          />
 
         </SectionBox>)
 

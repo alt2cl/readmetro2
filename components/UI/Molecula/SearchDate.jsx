@@ -126,24 +126,24 @@ const SearchDate = ({data}) => {
       dispatch(updateDateSlice(dateString))
 
       if(landingHome){
-        console.log('search estoy en el home')
+        //console.log('search estoy en el home')
         router.push(`/?_date=${dateString.replaceAll('/','')}`)
       }
 
       if (landingArchivo) {
-        console.log('search estoy en el archivo')
+        //console.log('search estoy en el archivo')
         router.push(`/${lang}/${country}/${edition}/${dateString.replaceAll('/','')}`)
 
       }
 
       if (landingCountry) {
-        console.log('search estoy en el landing pais')
+        //console.log('search estoy en el landing pais')
         router.push(`/${lang}/${country}?_date=${dateString.replaceAll('/','')}`)
 
       }
 
       if (landingEdition) {
-        console.log('search estoy en el landing edicion', router)
+        //console.log('search estoy en el landing edicion', router)
         router.push(`/${lang}/${country}/${edition}?_date=${dateString.replaceAll('/','')}`)
       }
       

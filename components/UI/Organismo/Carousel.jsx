@@ -128,7 +128,7 @@ function item(item, cantviews)
 
     let nslides = Math.ceil(item.length / cantviews)
 
-    console.log('nslides', nslides)
+    //console.log('nslides', nslides)
 
       for (let i = 0; i < item.length; i++) {
         let data = item
@@ -138,7 +138,7 @@ function item(item, cantviews)
             <Paper>
                 <h2>{data[i].name}</h2>
                 <p>{data[i].description}</p>
-                <Image src={data[i].image} width="120" height="200"/>
+                <Image src={data[i].image} width="120" height="200" alt={data[i].name} priority={i == 0 ? true : false}/>
                 <Button className="CheckButton">
                     Check it out! {i}
                 </Button>

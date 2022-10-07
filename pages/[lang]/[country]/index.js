@@ -10,6 +10,7 @@ import {  updateEnableDatesSlice } from '@/redux/features/date/dateSlice'
 
 import { useSelector, useDispatch } from 'react-redux'
 import NewspaperBox from '@/components/UI/Organismo/NewspaperBox'
+import NewsPagesList from '@/components/UI/Organismo/NewsPagesList'
 import Box from '@mui/material/Box';
 import HeadSeo from '@/components/Layout/headSeo'
 import siteMetadata from '@/src/siteMetadata'
@@ -28,32 +29,21 @@ function CountryTemplate({data}) {
 
   const router = useRouter()
 
-  //console.log('la data___',router)
+  const [dataImages,setDataImages] = useState(null)
 
    
   const lang = router.query.lang ? router.query.lang : null
   const country = router.query.country ? router.query.country : null
   const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-  const edition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
+  const routeEdition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
   const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
   const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
   
-  // const lang = router.query.lang
-  // const country = router.query.country
-  // const city = router.query.edicion[0]
-  // const edition = router.query.edicion[0]
-  // const date = router.query.ediction[1] == 'archive' ? null : router.query.ediction[1]
-  // const page = router.query.edicion[2]
+  const landingHome = !router.query.country ? true : false
+  const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
+  const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
+  const landingCountry = router.query.country && !router.query.edicion ? true : false
 
-
-  // useEffect(()=>{
-  //   console.log('values router>', router.query)
-  //   if(page != undefined && edition != undefined && city != undefined ){
-  //     setOpenModal(true)
-  //   } else {
-  //     setOpenModal(false)
-  //   }
-  // })
 
 
 
@@ -177,7 +167,8 @@ function CountryTemplate({data}) {
       //console.log('aldito arrayDates', arrayDates)
 
       dispatch(updateEnableDatesSlice(arrayDates))
-    
+
+     
 
     const newlistsections = arrayEditions.map((edition, i)=>{
       const pages = edition.pages
@@ -187,8 +178,9 @@ function CountryTemplate({data}) {
       const newcode = edition.newcode
       const width = edition.width
       const height = edition.height
-      // const inserts = edition.inserts
       const recortes = edition.recortes
+
+      let numberedition = i
 
       
 
@@ -207,7 +199,7 @@ function CountryTemplate({data}) {
                         width={width / 12}
                         height={height / 12}
                         alt={cityslug}
-                        priority = {i <= 2 ? 'true': 'false'}
+                        //priority = {i <= 2 ? 'true': 'false'}
                         onError={() => setImageError(true)}
                           />
                    
@@ -220,27 +212,45 @@ function CountryTemplate({data}) {
       }
 
       const bigimages = () => {
-        let data= []
-        for (let i = 0; i < pages; i++) {
-          data.push(
-            {
-              foto:`https://rm.metrolatam.com/${date}/${cityslug}/full_${i+1}-${newcode}.webp`,
-              fotothumb:`https://rm.metrolatam.com/${date}/${cityslug}/thumb_${i+1}-${newcode}.jpg`,
-              link: `google.com`,
-              recortes: recortes != null && recortes.length > 0 ? recortes : null,
-              width: width,
-              height: height,
-              }
-          )
+        return (
+          {
+            link: `google.com`,
+            recortes: recortes != null && recortes.length > 0 ? recortes : null,
+            width: width,
+            height: height,
+            newcode: newcode,
+            countpages: pages,
+          }
+        ) 
+      }
+
+      if(i == 0 && routeEdition ==  cityslug && dataImages == null){
+        //console.log('encontre', i, routeEdition, cityslug, dataImages, bigimages())
+          setDataImages(bigimages())
+      }
+
+      const searchEditions = (index, bigimages) => {
+        setOpenModal(true)
+        setDataImages(bigimages)
+      }
+    
+
+      const handledata =(i, dataimages)=> {
+        setDataImages(dataimages)
+        if(landingArchivo) {
+            router.push(`/${lang}/${country}/${cityslug}/${date.replaceAll('/', '')}/${i+1}`)
+        } else if (landingEdition) 
+        {
+            router.push(`/${lang}/${country}/${cityslug}/${date.replaceAll('/', '')}/${i+1}`)
+        }else {
+            router.push(`/${lang}/${country}/${cityslug}/${date.replaceAll('/', '')}/${i+1}`)
         }
-        //console.log('ardo bigimages:', data)
-        return data
       }
 
      
 
       return(
-        <SectionBox key={cityslug} >
+        <SectionBox key={`${cityslug}-${i}`} >
           <HeadSection datesection={date} country={country} titleSection={cityname} slug={cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
           {cityslug &&  
           <SlideCarouselCountry 
@@ -248,6 +258,8 @@ function CountryTemplate({data}) {
           content={dataSlide()} 
           bigimages={bigimages()} 
           data={edition}
+          handledata={handledata}
+          searchEditions={searchEditions}
           />
           }
         </SectionBox>
@@ -256,104 +268,7 @@ function CountryTemplate({data}) {
 
  
 
-    // listsections = data.cities.map((item, i) => {
-    //   //let selectOptions = []
-    //   let todayEdition = item.allEditions ? item.allEditions[0] : null;
-    //   const date = todayEdition && todayEdition.date ? todayEdition.date : null;
-    //   const fecha = date != null ? date.replaceAll("-","/") : null;
-    //   const slug = item.cityslug;
-    //   const cantPages = todayEdition && todayEdition.pages;
-    //   const imagenes = [];
-    //   const bigimages = [];
 
-      
-
-    //     for (let index = 1; index < cantPages; index++) {
-    //         imagenes.push(
-    //             {
-    //             foto:`https://rm.metrolatam.com/${fecha}/${slug}/thumb_${index}-${todayEdition.newcode}.webp`,
-    //             link: `google.com`
-    //             }
-    //         )
-    //     }
-
-    //     const dataSlidePostCountry = imagenes.map((item, i) => {
-    //         return (
-    //             //imagenes a cargar en el carrusel
-    //             <>
-    //             <Box key={`section-${i}`}>
-    //               {imagenes != null ? 
-    //                     <Image src={imageError ? fallback.src : item.foto} 
-    //                     layout="responsive"
-    //                     width={widthItem}
-    //                     height={300}
-    //                     alt={item.link}
-    //                     priority = {i <= 2 ? 'true': 'false'}
-    //                     onError={() => setImageError(true)}
-    //                       />
-    //                 : <Image src={fallback.src} 
-    //                     layout="responsive"
-    //                     width={fallback.width}
-    //                     height={fallback.height}
-    //                     alt={'error'}
-    //                 />
-    //                 }
-
-    //             </Box>
-                    
-    //         </>
-    //         )
-    //     })
-
-    //     for (let index = 1; index < cantPages; index++) {
-    //       bigimages.push(
-    //           {
-    //           foto:`https://rm.metrolatam.com/${fecha}/${slug}/full_${index}-${todayEdition.newcode}.webp`,
-    //           link: `google.com`,
-    //           recortes: item.allEditions.length > 0 && item.allEditions[0].recortes ? item.allEditions[0].recortes : null,
-    //           }
-    //       )
-    //     }
-
-
-    //     // if(city != null && edition != null && page != null) {
-    //     //   dispatch(updateDialogSlice({
-    //     //     arrayimages: bigimages,
-    //     //     pagina: i + 1,
-    //     //     fecha: item.allEditions[0].date.replaceAll('-',''),
-    //     //     edicion: item.cityslug,
-    //     //     recortes: item.allEditions[0].recortes.length > 0 ? item.allEditions[0].recortes : [],
-    //     //   }))
-    //     //   dispatch(openDialog())
-      
-    //     // }
-
-    //   return(
-    //     <SectionBox key={item.cityslug} >
-    //       <HeadSection titleSection={item.cityname} slug={item.cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
-    //       {item.allEditions.length > 0 &&  
-    //       <SlideCarouselCountry 
-    //       todayEdition={item.allEditions[0]} 
-    //       widthItem={widthItem} 
-    //       content={dataSlidePostCountry} 
-    //       bigimages={bigimages} 
-    //       data={item}
-    //       />
-    //       }
-    //     </SectionBox>
-    //   )
-
-    // })
-
-
-
-    
-
-    // const downloadPDF = () => {
-    //   const limpiaFecha = dialogDatesState.fecha.replaceAll('/','')
-    //   const rutaPdf = `https://rm.metrolatam.com/pdf/${dialogDatesState.fecha}/${limpiaFecha}_${dialogDatesState.edicion}.pdf`
-    //   router.push(rutaPdf)
-    // }
 
 
 
@@ -367,48 +282,11 @@ function CountryTemplate({data}) {
           ogType={"article"}
       />
      
-      {/* <h6>Idioma: {lang}</h6>
-      <h6>Pais: {country}</h6>
-      <h6>Ciudad: {city}</h6>
-      <h6>Edicion: {edition}</h6>
-      <h6>Pagina: {page}</h6> */}
-
-      
 
  
         {data ? newlistsections : 'Cargando'}
      
-        <Dialogmodal openModal={openModal} onCloseModal={()=>handleCloseModal()}>
-            <Box sx={{display:'flex', p:'.5rem'}}>
-              <Button variant="outlined"  size="small" endIcon={<ShareIcon />} sx={{mr:'.5rem'}}>
-                Compartir
-              </Button>
-                <a href={`https://rm.metrolatam.com/pdf/${dialogDatesState.fecha}/${dialogDatesState.fecha.replaceAll('/','')}_${dialogDatesState.edicion}.pdf`}
-                target="_blank"
-                rel="noopener noreferrer">
-                  <Button  variant="outlined"  size="small" endIcon={<PictureAsPdfIcon />}>
-                Descargar
-              </Button>
-             
-                </a>
-                <Button  variant="outlined" sx={{ml:'.5rem'}}  size="small" endIcon={<CloseIcon />} onClick={()=>handleCloseModal()}>
-                Cerrar
-              </Button>
-            </Box>
-            {/* https://rm.metrolatam.com/pdf/2022/09/22/20220922_santiago.pdf */}
-            {dialogImagesArrayState.map((item, i)=>(
-                <NewspaperBox 
-                foto={item.foto} 
-                width={item.width  } 
-                height={item.height } 
-                link={item.link} 
-                key={`newspaper-${i}`} 
-                pagina={i+1}
-                audioContents={item.recortes}
-                />
-            ))}
-
-        </Dialogmodal>
+        
     </>
   )
 }

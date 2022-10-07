@@ -92,7 +92,7 @@ export default function Header(props) {
 
 //console.log('configsite:', menupaises)
 
-const [language, setLanguage] = React.useState('es');
+const [language, setLanguage] = React.useState('ES');
 
   const handleChange = (event) => {
     setLanguage(event.target.value);
@@ -211,10 +211,10 @@ const [language, setLanguage] = React.useState('es');
 
 
 
-  const langOptionsRender = langOptions.map((item)=>{
+  const langOptionsRender = langOptions.map((item, i)=>{
     return(
       <MenuItem value={item.slug} key={item.name}>
-        <Image src={item.flagUrl} alt={item.name} width={20} height={15}/>
+        <Image src={item.flagUrl} alt={item.name} width={20} height={15} priority={i == 0 ? true : false}/>
       </MenuItem>
     )
     })

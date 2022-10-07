@@ -6,13 +6,13 @@ import HeadphonesIcon from '@mui/icons-material/Headphones';
 import Button from '@mui/material/Button';
 import AudioPlayer from '@/components/UI/Organismo/AudioPlayer'
 import AudioPlayList from '@/components/UI/Organismo/AudioPlayList'
+import fallback from '@/public/img/fallback.jpg'
 
 const NewspaperBox = (props) => {
     const [imageError, setImageError] = useState(false);
-    const {width, height, foto, link, title,audioContents, pagina} = props
+    const {width, height, foto, link,audioContents, pagina, fotothumb} = props
     //const audioRef = useRef(null)
 
-    console.log('audioContents:::', audioContents)
 
     let pinpagina = []
     const listAudios = []
@@ -53,31 +53,23 @@ const NewspaperBox = (props) => {
     }
   
 
-        
-
-       
-
-    
-    
-
-    
- 
-
 
     return(
-        <Box sx={{position: 'relative', pb: '1rem'}}>
-
+        <Box sx={{position: 'relative', pb: '1rem'}} >
             <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: listAudios.length > 0 ? 'linear-gradient(to bottom, rgba(58,58,70,1) 20%,rgba(58,58,70,0))': 'linear-gradient(to bottom, rgba(58,58,70,0.3) 20%,rgba(58,58,70,0))', p: '5px 0 1rem 5px', marginLeft: '-5px',width: 'calc(100% + 10px)'  }}>
                  <AudioPlayList urls={listAudios} />
                  <AudioPlayer urls={listAudios}  />
             </Box>
-            <Box sx={{position: 'relative'}}>
+            <Box sx={{position: 'relative'}} >
                 <Image src={foto} 
                     layout="responsive"
                     width={width}
                     height={height}
                     alt={link}
+                    blurDataURL={fotothumb}
+                    placeholder="blur"
                     onError={() => setImageError(true)}
+                    priority={pagina == 1 ? true : false}
                     />
                     {audioContents && audioContents.length > 0 && pinpagina}
             </Box>

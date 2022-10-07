@@ -8,16 +8,12 @@ export default function useFormatDate(inputDate) {
 
   let formato1 = "formato 1"
 
-if(typeof inputDate == String){
-  console.log('inputdate = string')
-} else {
-  console.log('inputdate != string', typeof inputDate)
-}
+
     
   //const formato2 = () => inputDate.toLocaleDateString('es-CL', { year: 'numeric',month: '2-digit',day: '2-digit' })
 
 
-  console.log('inputDate.type', typeof inputDate, formato1)
+  //console.log('inputDate.type', typeof inputDate, formato1)
 
   
 

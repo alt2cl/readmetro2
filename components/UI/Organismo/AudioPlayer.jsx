@@ -82,11 +82,11 @@ const useMultiAudio = urls => {
         source.audio.onended = function(){
             newPlayers[i].playing = true;
             setPlayers(newPlayers);
-            console.log('playall ended agregado')
+            //console.log('playall ended agregado')
         }
     })
 
-    console.log('playall:',sources[0].audio)
+    //console.log('playall:',sources[0].audio)
 
     if(targetIndex == 'all' ) {
         newPlayers[currentplay].playing = true;
@@ -122,16 +122,15 @@ const useMultiAudio = urls => {
  
 
   const toggle = targetIndex => () => {
-    console.log('targetIndex', targetIndex)
+    //console.log('targetIndex', targetIndex)
     const newPlayers = [...players];
 
     //si devielve -1 es porque esta detenido sino devuelve el index en el array
     const currentIndex = players.findIndex(p => p.playing === true);
 
-    console.log('current index:', currentIndex, targetIndex)
+    //console.log('current index:', currentIndex, targetIndex)
 
     if (currentIndex !== -1 && currentIndex !== targetIndex) {
-        alert('1')
         //entra si el target distinto al que esta sonanado
         //detiene al que esta sonanado
       newPlayers[currentIndex].playing = false;
@@ -139,22 +138,19 @@ const useMultiAudio = urls => {
       newPlayers[targetIndex].playing = true;
 
     } else if (currentIndex !== -1) {
-        alert('2')
         //entra si es igual el current y el target y detiene
       newPlayers[targetIndex].playing = false;
     } else if (targetIndex == 100){
-        alert('4')
         //este pone play al current
-        console.log('current->',  newPlayers[0])
+        //console.log('current->',  newPlayers[0])
         newPlayers[0].playing = true;
     } else  {
-        alert('3')
         //este pone play al current
-        console.log('current->',  targetIndex, currentIndex)
+        //console.log('current->',  targetIndex, currentIndex)
       newPlayers[targetIndex].playing = true;
     }
 
-    console.log('los new pplayers:', newPlayers)
+    //console.log('los new pplayers:', newPlayers)
     setPlayers(newPlayers);
 
     
@@ -163,7 +159,7 @@ const useMultiAudio = urls => {
   useEffect(() => {
 
     //esto recorre los players y revisa si hay cambio en el estado de de su valor playing... si alguno esta entrue, le pone play sino le pone pausa a todo
-    console.log('useEffect 1', sources , players)
+    //console.log('useEffect 1', sources , players)
     sources.forEach((source, i) => {
       players[i].playing ? source.audio.play() : source.audio.pause();
     });
@@ -174,13 +170,13 @@ const useMultiAudio = urls => {
       source.audio.addEventListener("ended", () => {
         //toma el actual estado de los players y cuendo termina el audio, setea todos lo states a false
         const newPlayers = [...players];
-        console.log('aldo newPlayers =.....', newPlayers);
+        //console.log('aldo newPlayers =.....', newPlayers);
         newPlayers[i].playing = false;
         //newPlayers[i+1].playing = true;
-        console.log('aldo newPlayers[i.playing = false].....', newPlayers[i]);
+        //console.log('aldo newPlayers[i.playing = false].....', newPlayers[i]);
         setPlayers(newPlayers);
         //playAll();
-        console.log('aldo ended audio.....', newPlayers);
+        //console.log('aldo ended audio.....', newPlayers);
       });
     });
     return () => {
@@ -226,7 +222,7 @@ const Player = ({ player, toggle }) => (
             label={player.playing ? `${player.num} Detener ` : `${player.num} Escuchar ` }
             icon={<HeadphonesIcon fontSize='small' />}
             variant="outlined"
-            iconsmall= {true}
+            size="small"
             onClick={toggle}
             />
             </Box>

@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const fecha = new Date()
+
 export const dateSlice = createSlice({
   name: 'date',
   initialState: {
-    starDate: new Date(),
+    //starDate: fecha,
     stringDate: '',
     arrayEnableDates: []
     
@@ -16,6 +18,9 @@ export const dateSlice = createSlice({
     updateEnableDatesSlice: (state, action) => {
       state.arrayEnableDates = action.payload
     },
+    // updateStarDateSlice: (state, action) => {
+    //   state.starDate = action.payload
+    // },
   }
   
 

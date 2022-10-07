@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect, useRef, useCallback } from "react";
+import {  useRef } from "react";
 import Box from '@mui/material/Box';
 import { css } from '@emotion/react';
 import Slide from '@mui/material/Slide';
@@ -10,28 +10,34 @@ import IconButton from '@mui/material/IconButton';
 import ZoomInOutlinedIcon from '@mui/icons-material/ZoomInOutlined';
 import { useRouter } from 'next/router'
 import ExpandIcon from '@mui/icons-material/Expand';
-import Link from '@/src/Link';
+//import Link from '@/src/Link';
+import Link from 'next/link'
 //import { Typography } from '@mui/material';
-import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+//import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import Button from '@mui/material/Button';
 //import Image from 'next/image';
 //import Chip from '@mui/material/Chip';
 //import HeadphonesIcon from '@mui/icons-material/Headphones';
 //import useScrollTrigger from '@mui/material/useScrollTrigger';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
+//import { useDispatch, useSelector } from 'react-redux';
+//import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
 //import Dialogmodal from '@/components/UI/Molecula/Dialogmodal'
-import { openDialog } from '@/redux/features/dialog/dialogSlice';
+//import { openDialog } from '@/redux/features/dialog/dialogSlice';
 
 
 export default function SlideCarouselCountry(props){
 
-    const {citySlug, widthItem, content, optionsbtnsoff, goeditionon, bigimages, data} = props
+    const { widthItem, content, optionsbtnsoff,  bigimages,  handledata, data, searchEditions} = props
 
-    const dispatch = useDispatch();
+    //console.log('content', data)
+
+    //return false
+
+    //const dispatch = useDispatch();
     const scrollElement = useRef(null);
     //const audioref = useRef(null)
     const router = useRouter();
+    //console.log('router', router)
     //const [openModal, setOpenModal] = useState(false);
 
     const lang = router.query.lang ? router.query.lang : null
@@ -41,7 +47,7 @@ export default function SlideCarouselCountry(props){
     const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
     const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
 
-    const archivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
+    const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
     const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
 
 
@@ -130,7 +136,9 @@ export default function SlideCarouselCountry(props){
             top:0,
             right: 0,
             backgroundImage: `linear-gradient(225deg, rgb(0 0 0) 19%, rgb(0 0 0 / 0%) 51%)`,
-            padding: '20px 20px 100px 100px',
+            padding: '20px 20px 200px 150px',
+            width: '100%',
+            height: 'calc(100% - 45px)',
             color: theme.palette.common.white,
             borderRadius: 0,
             opacity: 0.4,
@@ -176,10 +184,10 @@ export default function SlideCarouselCountry(props){
 
 
     //const handleOpenModal = () => setOpenModal(true);
-    const handleCloseModal = () => {
-        setOpenModal(false);
-        router.back();
-    };
+    // const handleCloseModal = () => {
+    //     setOpenModal(false);
+    //     router.back();
+    // };
     //const fullListImage = () => setFullListImage([]);
     //const theme = useTheme();
     //const [bigImages, setBigImages] =useState([])
@@ -204,33 +212,28 @@ export default function SlideCarouselCountry(props){
 
     //console.log('la data desde [...country] ', data)
 
-    const handleOpenPage =(i, data)=> {
-        //console.log('landingEdition', landingEdition ,router, router.query.edicion[1])
+    // const handleOpenPage =(i, data)=> {
+    //     //console.log('landingEdition', landingEdition ,router, router.query.edicion[1])
+    //     dispatch(updateDialogSlice({
+    //         arrayimages: bigimages,
+    //         pagina: i,
+    //         fecha: data.date,
+    //         edicion: data.cityslug,
+    //         recortes: data.recortes.length > 0 ? data.recortes : [],
+    //         width: data.width,
+    //         height: data.height,
+    //       }))
+    //     dispatch(openDialog())
 
-        if(archivo) {
-            router.push(`/${lang}/${country}/${edition}/${data.date.replaceAll('/', '')}/${i}`)
-        } else if (landingEdition) 
-        {
-            router.push(`/${lang}/${country}/${edition}/${data.date.replaceAll('/', '')}/${i}`)
-        }else {
-            
-            router.push(`/${lang}/${country}/${data.cityslug}/${data.date.replaceAll('/', '')}/${i}`)
-        }
-        
-        
-        dispatch(updateDialogSlice({
-            arrayimages: bigimages,
-            pagina: i,
-            fecha: data.date,
-            edicion: data.cityslug,
-            recortes: data.recortes.length > 0 ? data.recortes : [],
-            width: data.width,
-            height: data.height,
-          }))
-        dispatch(openDialog())
-
-        
-    }
+    //     if(archivo) {
+    //         router.push(`/${lang}/${country}/${edition}/${data.date.replaceAll('/', '')}/${i}`)
+    //     } else if (landingEdition) 
+    //     {
+    //         router.push(`/${lang}/${country}/${edition}/${data.date.replaceAll('/', '')}/${i}`)
+    //     }else {
+    //         router.push(`/${lang}/${country}/${data.cityslug}/${data.date.replaceAll('/', '')}/${i}`)
+    //     }
+    // }
 
     function addClass(name, element) {
         let classesString;
@@ -313,10 +316,9 @@ export default function SlideCarouselCountry(props){
       }
 
  
-      console.log('itemsss:',data)
+      //console.log('itemsss:',data)
 
       const wrapContent = content.map((item, i)=>{
-        
 
         return(
             <Box css={slideCSS.slidepost} key={`${i}-slide`}>
@@ -330,14 +332,21 @@ export default function SlideCarouselCountry(props){
                             <Button sx={{background: 'white'}} variant="outlined">
                             {i+1}
                             </Button>
-                            <Button variant="contained" onClick={()=>handleOpenPage(i+1, data)} endIcon={<ExpandIcon />}>
-                            Expandir
-                            </Button>
+                           
+                            <Link href={`/${lang}/${country}/${data.cityslug}/${data.date.replaceAll('/', '')}/${i+1}`}>
+                                <Button variant="contained" endIcon={<ExpandIcon />} onClick={()=>searchEditions(i, bigimages)} >
+                                    Expandirr
+                                </Button>
+                            </Link>
+                            
                            
                         </Box>
-                        <IconButton css={slideCSS.zoom} aria-label="zoom" onClick={()=>handleOpenPage(i+1, data)} >
-                            <ZoomInOutlinedIcon />
-                        </IconButton>
+                        <Link href={`/${lang}/${country}/${data.cityslug}/${data.date.replaceAll('/', '')}/${i+1}`} passHref>
+                            <IconButton css={slideCSS.zoom} aria-label="zoom" onClick={()=>searchEditions(i, bigimages)}  >
+                                <ZoomInOutlinedIcon />
+                            </IconButton>
+                        </Link>
+                        
                         </>
                     }
 
@@ -348,110 +357,6 @@ export default function SlideCarouselCountry(props){
             </Box>
         )
     })
-
-    // const readfull = bigimages.map((item, index)=>{
-
-    //     //console.log('item recorte:::', item.recortes.pagina, index)
-    //     let audios = [];
-    //     let audiosPoints = [];
-
-    //     let wrapAudios = [];
-
-    //     if (audios.length > 0) {
-    //         audios.map((audio, i)=>{
-    //             wrapAudios.push((
-    //                 <>
-    //                     <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem', position: 'relative', pl: {xs:'1rem', md: '0' }} } key={'audio'+ele.pagina}>
-    //                         <Chip sx={{backgroundColor: (theme) => theme.palette.primary.main ,color: 'white', position: 'absolute',top: '0',zIndex:' 2',left:'10px',width: '22px',height: '22px',textAlign: 'center', '& .MuiChip-label': {padding:'0'} }} label={i+1} />
-    //                         <audio id={'audioplay'+(i+1)} controls ref={audioref}>
-    //                             {audios[i]}
-    //                         Your browser does not support the audio element.
-    //                         </audio> 
-    //                     </Box>
-    //                 </>
-                    
-    
-    //             ))
-                
-    //         })
-            
-
-    //     }
-
-    //     if(item.recortes.length > 0) {
-    //         item.recortes.map((ele, i)=> {
-                
-    //                 //console.log('element:',i ,  ele)
-
-    //                 {ele.pagina == index +1 ?
-    //                     audios.push((
-    //                         <>
-    //                         <Box sx={{display: 'flex', alignItems: 'center', mr: '1rem', position: 'relative', pl: {xs:'1rem', md: '0' }} } key={'audio'+ele.pagina}>
-    //                             <Chip sx={{backgroundColor: (theme) => theme.palette.primary.main ,color: 'white', position: 'absolute',top: '0',zIndex:' 2',left:'10px',width: '22px',height: '22px',textAlign: 'center', '& .MuiChip-label': {padding:'0'} }} label={i+1} />
-    //                             <audio id={'audioplay'+(i+1)} controls ref={audioref}>
-    //                                 <source src={ele.audio} type="audio/mpeg" />
-    //                             Your browser does not support the audio element.
-    //                             </audio> 
-    //                         </Box>
-    //                         </>
-    //                     ))
-    //                     : null
-    //                 }
-
-    //                 {ele.pagina == index +1 ?
-    //                     audiosPoints.push((
-    //                         <>
-    //                         <Chip sx={{position: 'absolute',left: `calc(${ele.x*100/1354}% - 10px)`, top: `calc(${ele.y*100/1500}% - 10px)`,background: 'black',color: 'white',height: '20px', opacity: '0.4', '& .MuiChip-label': {paddingLeft:'10px', paddingRight:'10px'}}} icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} label={i+1} />
-    //                         </>
-    //                     ))
-    //                     : null
-    //                 }
-                    
-                    
-                   
-                
-    //         })
-    //     }
-
-    //     //console.log( 'element foto::', item)
-
-        
-
-
-    //     return(
-    //         <Box sx={{borderBottom: '1px solid #ccc', mb: '2rem', pb: '2rem', position: 'relative'}} key={`${item.foto}-${index}`} >
-    //                 {/* <Slide direction="up" in={scrollTrigger} mountOnEnter unmountOnExit> */}
-
-    //                 {audios.length > 0 ?
-    //                     <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: 'linear-gradient(to bottom, rgba(58,58,70,1) 20%,rgba(58,58,70,0))', p: '5px 0 2rem 5px', marginLeft: '-5px',width: 'calc(100% + 10px)'  }}>
-    //                         <Button size="small" variant="contained" sx={{height: '50px',minWidth:'140px',fontSize: '11px',width: '132px',textAlign: 'left',lineHeight: '18px'}} startIcon={<HeadphonesIcon />}>Escuchar esta página</Button>
-    //                         <Box sx={{display: 'inline-flex', overflowX:'auto', flexGrow: '1', pl:{xs:'0', md:'1rem'}}}>
-    //                         { audios} 
-    //                         </Box>
-    //                     </Box>
-    //                 : null
-    //                 }
-                
-
-    //             <Box sx={{position: 'relative'}}>
-    //                 <Image src={item.foto} 
-    //                     layout="responsive"
-    //                     width={1354}
-    //                     height={1500}
-    //                     alt={item.link}
-    //                     onError={() => setImageError(true)}
-    //                     />
-
-    //                 {audiosPoints}
-    //             </Box>
-                
-                  
-    //         </Box>
-            
-    //     )
-
-    // })
-
 
 
 
@@ -482,9 +387,6 @@ export default function SlideCarouselCountry(props){
 
 
 
-        {/* <Dialogmodal openModal={openModal} onCloseModal={()=>handleCloseModal()}>
-            { readfull}
-        </Dialogmodal> */}
 
 
    

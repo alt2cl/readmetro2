@@ -30,14 +30,14 @@ const AudioPLayList = (props) => {
 
     const play = (index) => {
         
-        console.log('click currentplay', index)
+        //console.log('click currentplay', index)
         sources[index].audio.play()
         //setCurrentplay(currentplay + 1)
         index = index + 1
 
         sources.map((source, i)=>(
             source.audio.onended = function(){
-                console.log('click termine ======>', i, sources.length, index)
+                //console.log('click termine ======>', i, sources.length, index)
             
                 if(sources.length > index){
                     play(index)

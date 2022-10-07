@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState,  useEffect } from "react";
+import { useState,  useEffect, useRef } from "react";
 import Image from 'next/image';
 import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
@@ -9,11 +9,12 @@ import { useRouter } from 'next/router'
 import {  updateEnableDatesSlice } from '@/redux/features/date/dateSlice'
 
 import { useSelector, useDispatch } from 'react-redux'
-import NewspaperBox from '@/components/UI/Organismo/NewspaperBox'
+//import NewspaperBox from '@/components/UI/Organismo/NewspaperBox'
+import NewsPagesList from '@/components/UI/Organismo/NewsPagesList'
+
 import Box from '@mui/material/Box';
 import HeadSeo from '@/components/Layout/headSeo'
 import siteMetadata from '@/src/siteMetadata'
-import fallback from '@/public/img/fallback.jpg'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import Button from '@mui/material/Button';
 import ShareIcon from '@mui/icons-material/Share';
@@ -21,108 +22,79 @@ import ShareIcon from '@mui/icons-material/Share';
 //import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
 //import useFormatDate from '@/components/CustomHooks/useFormatDate'
 import CloseIcon from '@mui/icons-material/Close';
+import Link from 'next/link';
+
+import Skeleton from '@mui/material/Skeleton';
 
 
-function EdicionTemplate(props) {
+function EdicionTemplate({data}) {
 
-  const data = props.data
+  const scrollRef = useRef(null)
 
   const router = useRouter()
 
-  console.log('la data___',data, router)
+  const [dataImages,setDataImages] = useState(null)
 
-   
-//return false
-  
-  // const lang = router.query.lang
-  // const country = router.query.country
-  // const city = router.query.edicion[0]
-  // const edition = router.query.edicion[0]
-  // const date = router.query.edicion[1] != 'archive' ? router.query.edicion[1] : null
-  // const page = router.query.edicion[2]
-
-
-  // const lang = router.query.lang ? router.query.lang : null
-  //   const country = router.query.country ? router.query.country : null
-  //   const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-  //   const edition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-  //   const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
-  //   const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
 
   const lang = router.query.lang ? router.query.lang : null
   const country = router.query.country ? router.query.country : null
   const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-  const edition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-  const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
+  const routeEdition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
+  const routedate = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
   const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
 
-  const landingHome = !router.query.country ? true : false
   const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
   const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
-  const landingCountry = router.query.country && !router.query.edicion ? true : false
 
   //return false
   //const {slug} = router.query || []
   //const [lang, country, city, edition, page] = slug
-  const routervalues = { lang: lang, country: country, city:city, edition:edition, page:page}
+  const routervalues = { lang: lang, country: country, city:city, edition:routeEdition, page:page}
   //const widthItem = 250
   //const [imageError, setImageError] = useState(false);
   const [openModal, setOpenModal] = useState(false)
 
-  const [titlehead, setTitleHead] = useState('')
 
-  useEffect(()=>{
-    if(page != null){
-      setOpenModal(true)
-    } 
-  })
+ 
 
 
 
   const dispatch = useDispatch();
-  //dispatch(updateCountrySlice({countryName:country}))
-  //const dialogState = useSelector(state => state.dialog.open)
+
   const dialogImagesArrayState = useSelector(state => state.dialog.imagesvalues.arrayimages)
   const dialogDatesState = useSelector(state => state.dialog.imagesvalues)
-  // const dialogPaginaArrayState = useSelector(state => state.dialog.imagesvalues.pagina)
-  // const dialogFechaArrayState = useSelector(state => state.dialog.imagesvalues.fecha)
-  // const dialogEdicionArrayState = useSelector(state => state.dialog.imagesvalues.edicion)
-  // const metatagsTitleState = useSelector(state => state.metatags.title)
-  const stringDateState = useSelector(state => state.date.stringDate)
-  const starDateState = useSelector(state => state.date.starDate)
-  //console.log('dialogImagesArrayState', dialogImagesArrayState)
-  //console.log('estado openModal', dialogState)
 
-  //console.log('starDateState', typeof starDateState)
+
+ 
+
+
+
   
 
+//   function getFormattedDate(date, separator, format) {
+//     let year = date.getFullYear();
+//     let month = (1 + date.getMonth()).toString().padStart(2, '0');
+//     let day = date.getDate().toString().padStart(2, '0');
 
-  function getFormattedDate(date, separator, format) {
-    let year = date.getFullYear();
-    let month = (1 + date.getMonth()).toString().padStart(2, '0');
-    let day = date.getDate().toString().padStart(2, '0');
-
-    if(format == 'YYYY/MM/DD') {
-      return year + separator + month + separator + day;
-    }
-    if(format == 'DD/MM/YYYY') {
-      return day + separator + month + separator + year;
-    }
+//     if(format == 'YYYY/MM/DD') {
+//       return year + separator + month + separator + day;
+//     }
+//     if(format == 'DD/MM/YYYY') {
+//       return day + separator + month + separator + year;
+//     }
   
     
-  }
+//   }
 
-const currentDate = getFormattedDate(starDateState, '/', 'YYYY/MM/DD')
-
-
+// const currentDate = getFormattedDate(starDateState, '/', 'YYYY/MM/DD')
 
 
-
-    const handleCloseModal = () => {
-      //console.log('router values: click modal')
-      //router.push(`/${lang}/${country}`)
-      //dispatch(closeDialog())
-      router.back();
+    const handleOpenModal = () => {
+      setOpenModal(true)
+    };
+    const handleCloseModal = () => { 
+      //setDataImages(null)
+      setOpenModal(false)
     };
 
 
@@ -130,21 +102,17 @@ const currentDate = getFormattedDate(starDateState, '/', 'YYYY/MM/DD')
     let arrayDates = []
     let oldArrayEditions = []
 
-    //console.log('dataalleditions',data.allEditions )
 
-
-    //return false
 
     //fechas con ediciones vigentes enviadas a redux para leerlas en el componente SearchDate
     data.allEditions.map((currentEdition)=> {
       let date = currentEdition.date
       let arrayDate = date.split('-')
       let formatDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`
-      //let realdate = new Date(date)
-      //let formatDate = realdate.toLocaleDateString('es-CL', { year: 'numeric',month: '2-digit',day: '2-digit' })
-      //console.log('xcvbb', date, formatDate)
       arrayDates.push(formatDate)
     })
+
+    dispatch(updateEnableDatesSlice(arrayDates))
 
     const cityslug = data.cityslug
     const cityname = data.cityname
@@ -153,13 +121,10 @@ const currentDate = getFormattedDate(starDateState, '/', 'YYYY/MM/DD')
     
 
 
-    //if(stringDateState || landingArchivo ){//si existe una fecha llena con esto
 
-      //console.log('stringDateState: con fecha' )
       data.allEditions.map((currentEdition, i) => {
         let date = currentEdition.date.replaceAll('-','/')
         
-        //if(date == stringDateState || landingArchivo) {
           arrayEditions.push(
             {
               cityslug: cityslug,
@@ -174,36 +139,22 @@ const currentDate = getFormattedDate(starDateState, '/', 'YYYY/MM/DD')
             }
           )
           
-        //}
+     
       })
 
-    //} 
-    // else {// si no existe una fecha llena con esto
 
-    //   console.log('stringDateState: sin fecha', stringDateState )
-   
-    //   const lastEdition = data.allEditions[0]
-    //   let date = lastEdition.date.replaceAll('-','/')
-    //   arrayEditions.push(
-    //     {
-    //       cityslug: cityslug,
-    //       cityname: cityname,
-    //       date: date,
-    //       pages: lastEdition.pages,
-    //       newcode: lastEdition.newcode,
-    //       width: lastEdition.width,
-    //       height: lastEdition.height,
-    //       inserts: lastEdition.inserts,
-    //       recortes: lastEdition.recortes,
-    //     }
-    //   )
+    const searchEditions = (index, bigimages) => {
+      setOpenModal(true)
+      setDataImages(bigimages)
+    }
 
-    // }
-
-
-
-
-    dispatch(updateEnableDatesSlice(arrayDates))
+    const handledata =(i, dataimages)=> {
+      setOpenModal(true)
+      setDataImages(dataimages)
+      router.push(`/${lang}/${country}/${cityslug}/${date.replaceAll('/', '')}/${i+1}`)
+      
+    }
+    
     
 
     const newlistsections = arrayEditions.map((edition, i)=>{
@@ -215,10 +166,17 @@ const currentDate = getFormattedDate(starDateState, '/', 'YYYY/MM/DD')
       const width = edition.width
       const height = edition.height
       const recortes = edition.recortes
+
+      //console.log('ruta newcode', i , newcode)
+
+      let numberedition = i
+
+      
       
       const dataSlide = () => {
         let data = []
         for (let i = 0; i < pages; i++) {
+         
           data.push(
             <>
                 <Box key={`section-${i}`}>
@@ -227,7 +185,7 @@ const currentDate = getFormattedDate(starDateState, '/', 'YYYY/MM/DD')
                         width={width / 12}
                         height={height / 12}
                         alt={cityslug}
-                        priority = {i <= 2 ? 'true': 'false'}
+                        //priority = {i <= 2 ? 'true': 'false'}
                         />
                 </Box>
             </>
@@ -237,27 +195,33 @@ const currentDate = getFormattedDate(starDateState, '/', 'YYYY/MM/DD')
       }
 
       const bigimages = () => {
-        let data= []
-        for (let i = 0; i < pages; i++) {
-          data.push(
-            {
-              foto:`https://rm.metrolatam.com/${date}/${cityslug}/full_${i+1}-${newcode}.webp`,
-              fotothumb:`https://rm.metrolatam.com/${date}/${cityslug}/thumb_${i+1}-${newcode}.jpg`,
-              link: `google.com`,
-              recortes: recortes != null && recortes.length > 0 ? recortes : null,
-              width: width,
-              height: height,
-              }
-          )
-        }
-        //console.log('ardo bigimages:', data)
-        return data
+        return (
+          {
+            link: `google.com`,
+            recortes: recortes != null && recortes.length > 0 ? recortes : null,
+            width: width,
+            height: height,
+            newcode: newcode,
+            countpages: pages,
+          }
+        ) 
       }
 
-     
+      //console.log('ruta edition y cityname',routeEdition, cityslug, date.replaceAll('/', '') ,routedate, i)
+
+
+      
+      if( routeEdition ==  cityslug && dataImages == null && date.replaceAll('/', '') == routedate ){
+          setDataImages(bigimages())
+      }
+
+      
+
+
+
 
       return(
-        <SectionBox key={cityslug} >
+        <SectionBox key={`${cityslug}-${i}`} >
           <HeadSection datesection={date} country={country} titleSection={cityname} slug={cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
           {cityslug &&  
           <SlideCarouselCountry 
@@ -265,24 +229,60 @@ const currentDate = getFormattedDate(starDateState, '/', 'YYYY/MM/DD')
           content={dataSlide()} 
           bigimages={bigimages()} 
           data={edition}
+          handledata={handledata}
+          searchEditions={searchEditions}
           />
           }
         </SectionBox>
       )
+
+      
     }) 
 
+    const scrolltoPosition = (itemsRef) => {
+      console.log('itemsRef', itemsRef.current)
+      if (itemsRef && itemsRef.current) {
+        itemsRef.current[page].scrollIntoView( { behavior: 'smooth', block: 'start' } );
+      } else {
+        console.log("div has NOT been mounted...");
+      }
+    }
+
+   
+
  
+    useEffect(()=>{
+      if(page != null && dataImages !== null){
+        setOpenModal(true)
+//        console.log('dataImages open', dataImages)
+      } else {
+        setOpenModal(false)
+      }
+    }, [])
 
+    const formatdatePdf = () => {
+      let YYYY =""
+      let MM =""
+      let DD =""
+      let formatDate = null
+      if(routedate) {
+        YYYY = routedate.slice(0,4) 
+        MM =  routedate.slice(4,6) 
+        DD =  routedate.slice(6,8)
+        formatDate = YYYY+'/'+MM+'/'+DD
+      }
+      return formatDate
+    }
 
-
+    
 
 
   return (
     <>
       <HeadSeo
           title={
-            page ?  `ReadMetro - Página ${page}. Edición ${edition}. ${city}, ${country}` : 
-            page == undefined && edition ? `ReadMetro - Edición ${edition}. ${city}, ${country}` :
+            page ?  `ReadMetro - Página ${page}. Edición ${routeEdition}. ${city}, ${country}` : 
+            page == undefined && routeEdition ? `ReadMetro - Edición ${routeEdition}. ${city}, ${country}` :
             edition == undefined && city ? `ReadMetro - Edición ${city}, ${country}` :
             city == undefined && country ? `ReadMetro - ${country}` :
             'Readmetro'
@@ -304,37 +304,46 @@ const currentDate = getFormattedDate(starDateState, '/', 'YYYY/MM/DD')
  
         {data ? newlistsections : 'Cargando'}
      
-        <Dialogmodal openModal={openModal} onCloseModal={()=>handleCloseModal()}>
-            <Box sx={{display:'flex', p:'.5rem'}}>
-              <Button variant="outlined"  size="small" endIcon={<ShareIcon />} sx={{mr:'.5rem'}}>
-                Compartir
-              </Button>
-                <a href={`https://rm.metrolatam.com/pdf/${dialogDatesState.fecha}/${dialogDatesState.fecha.replaceAll('/','')}_${dialogDatesState.edicion}.pdf`}
+        <Dialogmodal openModal={openModal} onCloseModal={()=>handleCloseModal()}  >
+          <Box sx={{  ml:'-5px', width:'calc(100% + 10px)'}} ref={scrollRef} id={"refdialogcontent"} >
+          <Box sx={{display:'flex', p:'.5rem', justifyContent: 'space-between'}}  >
+              <Box sx={{display: 'flex'}}>
+                <Button variant="outlined"  size="small" endIcon={<ShareIcon />} sx={{mr:'.5rem'}}>
+                  Compartir
+                </Button>
+                <a href={`https://rm.metrolatam.com/pdf/${formatdatePdf()}/${routedate}_${routeEdition}.pdf`}
                 target="_blank"
                 rel="noopener noreferrer">
                   <Button  variant="outlined"  size="small" endIcon={<PictureAsPdfIcon />}>
-                Descargar
-              </Button>
-             
+                    Descargar
+                  </Button>
                 </a>
+              </Box>
+
+
+              <Link href={`/${lang}/${country}/${routeEdition}/`} passHref>
                 <Button  variant="outlined" sx={{ml:'.5rem'}}  size="small" endIcon={<CloseIcon />} onClick={()=>handleCloseModal()}>
-                Cerrar
-              </Button>
+                  Cerrar
+                </Button>
+              </Link>
+              
+              
             </Box>
-            {/* https://rm.metrolatam.com/pdf/2022/09/22/20220922_santiago.pdf */}
-            {dialogImagesArrayState.map((item, i)=>(
-                <NewspaperBox 
-                foto={item.foto} 
-                width={item.width  } 
-                height={item.height } 
-                link={item.link} 
-                key={`newspaper-${i}`} 
-                pagina={i+1}
-                audioContents={item.recortes}
-                />
-            ))}
+            {
+              page && routedate && dataImages ?             
+              <NewsPagesList  dataImages={dataImages} date={routedate} edition={routeEdition} page={page} scrolltoPosition={scrolltoPosition}/>
+              : <>
+              <Skeleton variant="rectangular" width={"calc(100% - 1rem"} height={400} sx={{m:'1rem .5rem'}} />
+              <Skeleton variant="rectangular" width={"calc(100% - 1rem"} height={400} sx={{m:'1rem .5rem'}} />
+              <Skeleton variant="rectangular" width={"calc(100% - 1rem"} height={400} sx={{m:'1rem .5rem'}} /></>
+            }
+            
+
+          </Box>
+            
 
         </Dialogmodal>
+        
     </>
   )
 }

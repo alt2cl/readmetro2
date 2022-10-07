@@ -8,7 +8,7 @@ export default function SelectSmall(props) {
   const [city, setCity] = React.useState('');
   const {options, defaultValue} = props
 
-  console.log('defaultSelectoption', defaultValue)
+  //console.log('defaultSelectoption', defaultValue)
 
   const handleChange = (event) => {
     setCity(event.target.value);
