@@ -21,7 +21,8 @@ import siteMetadata from '@/src/siteMetadata'
 //import Link from 'next/link'
 //import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
 //import useFormatDate from '@/components/CustomHooks/useFormatDate'
-import CloseIcon from '@mui/icons-material/Close';
+import Suscription from '@/components/UI/Organismo/Suscription';
+
 
 
 function CountryTemplate({data}) {
@@ -281,6 +282,8 @@ function CountryTemplate({data}) {
           ogTwitterImage={siteMetadata.siteLogoSquare}
           ogType={"article"}
       />
+
+      <Suscription />
      
 
  

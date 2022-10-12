@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import HeadSeo from '@/components/Layout/headSeo'
 import siteMetadata from '@/src/siteMetadata'
+import Suscription from "@/components/UI/Organismo/Suscription";
 
 
 
@@ -120,6 +121,7 @@ export default function Home({data}) {
                     ogTwitterImage={siteMetadata.siteLogoSquare}
                     ogType={"website"}
                 /> 
+                <Suscription />
     {listCountry}
     </>
      
