@@ -205,7 +205,13 @@ const SearchDate = ({menupaises}) => {
 
 
     const handleChangeSelectcountry = (e) => {
-      router.push(`/${lang}/${e.target.value}`)
+      console.log('e.target.value', e.target.value)
+      if(e.target.value == '/'){
+        router.push("/")
+      } else {
+        router.push(`/${lang ? lang : 'ES'}/${e.target.value}`)
+      }
+      
     }
 
 
@@ -253,7 +259,7 @@ const SearchDate = ({menupaises}) => {
     return (
         <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
           <NativeSelect css={pullproduct}
-          defaultValue={country ?  country : 'Mundo'}
+          defaultValue={country ?  country : '/'}
           inputprops={{
             name: 'country',
             id: 'uncontrolled-native',

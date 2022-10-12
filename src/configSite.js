@@ -8,7 +8,7 @@ const configSite = {
     "routeCountry": [
         {
             "link":"/",
-            "slug": "mundo",
+            "slug": "/",
             "name": "Mundo",
             "externalLink": "/"
         },

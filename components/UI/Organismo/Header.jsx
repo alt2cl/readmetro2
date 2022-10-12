@@ -14,7 +14,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 //import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Logo from '@/public/img/logos/read-metro-color.svg';
@@ -28,8 +27,15 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ElevationScroll from '@/components/CustomHooks/ElevationScroll';
 import { useRouter } from 'next/router'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { updateLangSlice  } from '@/redux/features/lang/langSlice'
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import MenuList from '@mui/material/MenuList';
+import LaunchIcon from '@mui/icons-material/Launch';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+
 
 
 
@@ -173,38 +179,87 @@ const [language, setLanguage] = React.useState('ES');
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      {/* <MenuItem>
+      <ListItemText>
+        <a 
+          href="https://www.metroworldnews.com/about-us/" 
+          target="_blank"
+          rel="noopener noreferrer">
+            Acerca de Metro
+        </a>
+      </ListItemText>
+        
+      </MenuItem>
+      <Divider />
       <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+        
+      </MenuItem> */}
+
+      <MenuList dense>
+        <MenuItem>
+          <ListItemText>
+              <Link 
+                    href="https://www.metroworldnews.com/about-us/" 
+                    color="#000"  
+                    variant="subtitle2"
+                > 
+                     Acerca de Metro
+                </Link>
+                </ListItemText>
+        </MenuItem>
+        <Divider />
+        <MenuItem>
+          <ListItemText>NUESTROS PORTALES</ListItemText>
+        </MenuItem>
+        {menupaises.map((item)=>(
+
+          item.name != "Mundo" ?
+
+          <MenuItem>
+         
+
+          <ListItemButton>
+              <ListItemIcon>
+                <LaunchIcon />
+              </ListItemIcon>
+              <ListItemText>
+                <Link 
+                      href={item.externalLink} 
+                      color="#000"  
+                      variant="subtitle2"
+                      target="_blank"
+                  > 
+                      {item.name}
+                  </Link>
+
+              </ListItemText>
+            </ListItemButton>
+
+
+
+
+              
+            
+            
+         
+        </MenuItem>
+        : null
+            
+
+          
+          
+          
+
+        ))}
+        
+        
+        
+        
+        
+        
+        
+      </MenuList>
+      
     </Menu>
   );
 
