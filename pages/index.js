@@ -7,7 +7,8 @@ import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import Image from 'next/image';
 import fallback from '@/public/img/fallback.jpg'
-import Link from '@/src/Link';
+//import Link from '@/src/Link';
+import Link from 'next/link';
 import Button from '@mui/material/Button';
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import HeadSeo from '@/components/Layout/headSeo'
@@ -24,17 +25,9 @@ export default function Home({data}) {
 
     const listCountry = data.map((item, index) => {
 
-        //console.log('valor item desde el index:', item)
 
         const countryslug = item.countryslug
-
-
-        
-
-        
-
         const dataSlidePost = item.cities.map((item, i) => {
-          
           const date = item.allEditions  && item.allEditions[0] && item.allEditions[0].date ? item.allEditions[0].date : null;
           const fecha = date != null ? date.replaceAll("-","/") : null;
           let foto = null
@@ -42,13 +35,7 @@ export default function Home({data}) {
               foto = `https://rm.metrolatam.com/${fecha}/${item.cityslug}/thumb_1-${item.allEditions[0].newcode}.webp`
           }
 
-
-          // const myLoader = ({ src, width, quality }) => {
-          //     return `${foto}?w=${200}&q=${quality || 70}`
-          //   }
           return (
-              //item slide homepage
-
               <>    
                        
                   <Box sx={{  borderRadius:'5px', background: 'white' }} key={`listCitys-${i}`}>

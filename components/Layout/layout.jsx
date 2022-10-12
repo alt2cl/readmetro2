@@ -1,6 +1,4 @@
-import Menu from '@/components/UI/Molecula/Menu/menu';
-import Image from 'next/image'
-import { Box, Container } from '@mui/system';
+import {  Container } from '@mui/system';
 import Header from '@/components/UI/Organismo/Header'
 
 function Layout( {children} ) {

@@ -5,6 +5,7 @@ import dialogReducer from '@/redux/features/dialog/dialogSlice'
 import metatagsReducer from '@/redux/features/metatags/metatagsSlice'
 import dateReducer from '@/redux/features/date/dateSlice'
 import langReducer from '@/redux/features/lang/langSlice'
+import audioplayerReducer from '@/redux/features/audioplayer/audioplayerSlice'
 
 export default configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export default configureStore({
     dialog: dialogReducer,
     date: dateReducer,
     lang: langReducer,
+    audioplayer: audioplayerReducer
     
   }
 })

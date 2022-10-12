@@ -79,7 +79,7 @@ export default function Header(props) {
   const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
   const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
 
-  const landingHome = !router.query.country ? true : false
+  const landingHome = router.query.country ? false : true
   const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
   const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
   const landingCountry = router.query.country && !router.query.edicion ? true : false
@@ -145,7 +145,6 @@ const [language, setLanguage] = React.useState('ES');
         return(
           <MenuItem onClick={handleMenuClose} key={item.name}>
             <Link href={item.externalLink}>
-              
               {item.name} 
             </Link>
           </MenuItem>
@@ -239,7 +238,8 @@ const [language, setLanguage] = React.useState('ES');
 
             <Box sx={{flexGrow:1}}>
               <Box sx={{ display: { xs: 'none', md: 'block' }}}>
-                <SearchDate data={menupaises} />
+                <SearchDate menupaises={menupaises} landingHome={landingHome} />
+                
               </Box>
             </Box>
          
@@ -321,7 +321,7 @@ const [language, setLanguage] = React.useState('ES');
         <Box sx={{flexGrow:1}} css={elevationFixedWrap}>
           <ElevationScroll threshold={35} {...props}>
           <Box sx={{ display: { xs: 'block', md: 'none' }}}>
-              <SearchDate data={menupaises}  />
+            <SearchDate menupaises={menupaises} landingHome={landingHome}  />
           </Box>
           </ElevationScroll>
         </Box>

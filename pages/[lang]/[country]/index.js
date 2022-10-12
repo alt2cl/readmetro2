@@ -3,21 +3,21 @@ import { useState,  useEffect } from "react";
 import Image from 'next/image';
 import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
-import Dialogmodal from '@/components/UI/Molecula/Dialogmodal'
+// import Dialogmodal from '@/components/UI/Molecula/Dialogmodal'
 import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry'
 import { useRouter } from 'next/router'
 import {  updateEnableDatesSlice } from '@/redux/features/date/dateSlice'
 
 import { useSelector, useDispatch } from 'react-redux'
-import NewspaperBox from '@/components/UI/Organismo/NewspaperBox'
-import NewsPagesList from '@/components/UI/Organismo/NewsPagesList'
+// import NewspaperBox from '@/components/UI/Organismo/NewspaperBox'
+// import NewsPagesList from '@/components/UI/Organismo/NewsPagesList'
 import Box from '@mui/material/Box';
 import HeadSeo from '@/components/Layout/headSeo'
 import siteMetadata from '@/src/siteMetadata'
-import fallback from '@/public/img/fallback.jpg'
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import Button from '@mui/material/Button';
-import ShareIcon from '@mui/icons-material/Share';
+// import fallback from '@/public/img/fallback.jpg'
+// import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+// import Button from '@mui/material/Button';
+// import ShareIcon from '@mui/icons-material/Share';
 //import Link from 'next/link'
 //import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
 //import useFormatDate from '@/components/CustomHooks/useFormatDate'

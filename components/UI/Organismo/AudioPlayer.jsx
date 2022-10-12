@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import Button from '@mui/material/Button';
 import Box  from "@mui/material/Box";
 import Chip from '@mui/material/Chip';
 import HeadphonesIcon from '@mui/icons-material/Headphones';
-import { ConstructionOutlined } from "@mui/icons-material";
+import {  useDispatch } from 'react-redux'
+import {updateCurrentPlay} from '@/redux/features/audioplayer/audioplayerSlice'
+
 
 
 
 
 const useMultiAudio = urls => {
+
+  const dispatch = useDispatch()
 
     //const [currentplay, setCurrentplay] = useState(0);
     const [nextplay, setNextplay] = useState(1);
@@ -59,6 +62,7 @@ const useMultiAudio = urls => {
 
 
   const playall = targetIndex => () => {
+    console.log('targetIndex 2', targetIndex)
 
     let currentplay = 0;
     const newPlayers = [...players];
@@ -122,11 +126,12 @@ const useMultiAudio = urls => {
  
 
   const toggle = targetIndex => () => {
-    //console.log('targetIndex', targetIndex)
+    
     const newPlayers = [...players];
 
     //si devielve -1 es porque esta detenido sino devuelve el index en el array
     const currentIndex = players.findIndex(p => p.playing === true);
+
 
     //console.log('current index:', currentIndex, targetIndex)
 
@@ -142,15 +147,24 @@ const useMultiAudio = urls => {
       newPlayers[targetIndex].playing = false;
     } else if (targetIndex == 100){
         //este pone play al current
-        //console.log('current->',  newPlayers[0])
+        console.log('current-> a',  newPlayers[0])
         newPlayers[0].playing = true;
     } else  {
         //este pone play al current
-        //console.log('current->',  targetIndex, currentIndex)
+        
       newPlayers[targetIndex].playing = true;
+
+      const paginaindice = newPlayers[targetIndex].num
+      const splitpagina = paginaindice.split('.')
+
+      dispatch(updateCurrentPlay({
+        play: true,
+        title: 'Titulo 1',
+        index : splitpagina[1],
+        page: splitpagina[0]
+      }))
     }
 
-    //console.log('los new pplayers:', newPlayers)
     setPlayers(newPlayers);
 
     
@@ -158,6 +172,8 @@ const useMultiAudio = urls => {
 
   useEffect(() => {
 
+
+    //console.log('sourceee',  sources)
     //esto recorre los players y revisa si hay cambio en el estado de de su valor playing... si alguno esta entrue, le pone play sino le pone pausa a todo
     //console.log('useEffect 1', sources , players)
     sources.forEach((source, i) => {

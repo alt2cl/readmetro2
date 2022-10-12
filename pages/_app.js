@@ -25,8 +25,6 @@ function MyApp(props) {
      
     <CacheProvider value={emotionCache}>
       <Head >
-      
-
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -36,10 +34,9 @@ function MyApp(props) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Layout data={{...pageProps} }>
-        <Component {...pageProps} />
+        <Layout data={{...pageProps}}>
+          <Component {...pageProps} />
         </Layout>
-        
       </ThemeProvider>
       
     </CacheProvider>

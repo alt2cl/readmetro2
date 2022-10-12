@@ -69,6 +69,11 @@ const pullproduct = (theme) =>css ({
 
 const textfielddate = (theme) => ({
   fontSize: '14px',
+
+  '& .MuiOutlinedInput-input': {
+    padding:'13px 12px'
+
+  },
   
 
   '& .MuiInputLabel-root': {
@@ -91,7 +96,8 @@ const textfielddate = (theme) => ({
     
 
 
-const SearchDate = ({data}) => {
+const SearchDate = ({menupaises}) => {
+  
 
   //console.log('props search: ',props)
 
@@ -107,15 +113,39 @@ const SearchDate = ({data}) => {
     const country = router.query.country ? router.query.country : null
     const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
     const edition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-    const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
+    const routerdate = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
     const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
 
-    const landingHome = !router.query.country ? true : false
+    const landingHome = router.query.country ? false : true
     const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
     const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
     const landingCountry = router.query.country && !router.query.edicion ? true : false
 
     //console.log('data search', router)
+
+    const formatdatePdf = (routedate) => {
+      let YYYY =""
+      let MM =""
+      let DD =""
+      let formatDate = null
+      if(routedate) {
+        YYYY = routedate.slice(0,4) 
+        MM =  routedate.slice(4,6) 
+        DD =  routedate.slice(6,8)
+        formatDate = YYYY+'/'+MM+'/'+DD
+      }
+      return formatDate
+    }
+
+
+    useEffect(()=>{
+
+      if(routerdate) {
+        setValueDate(new Date(formatdatePdf(routerdate)))
+        console.log('valueDate inside routerdate', new Date(formatdatePdf(routerdate)))
+      }
+      
+    },[])
 
     const handleChangeDate = (newValue) => {
       const formatDate = newValue.toLocaleDateString('es-CL', { year: 'numeric',month: '2-digit',day: '2-digit' })
@@ -126,25 +156,25 @@ const SearchDate = ({data}) => {
       dispatch(updateDateSlice(dateString))
 
       if(landingHome){
-        //console.log('search estoy en el home')
+        console.log('search estoy en el home')
         router.push(`/?_date=${dateString.replaceAll('/','')}`)
       }
 
       if (landingArchivo) {
-        //console.log('search estoy en el archivo')
+        console.log('search estoy en el archivo')
         router.push(`/${lang}/${country}/${edition}/${dateString.replaceAll('/','')}`)
 
       }
 
       if (landingCountry) {
-        //console.log('search estoy en el landing pais')
+        console.log('search estoy en el landing pais')
         router.push(`/${lang}/${country}?_date=${dateString.replaceAll('/','')}`)
 
       }
 
       if (landingEdition) {
-        //console.log('search estoy en el landing edicion', router)
-        router.push(`/${lang}/${country}/${edition}?_date=${dateString.replaceAll('/','')}`)
+        console.log('search estoy en el landing edicion', router)
+        router.push(`/${lang}/${country}/${edition}/${dateString.replaceAll('/','')}`)
       }
       
     };
@@ -203,7 +233,7 @@ const SearchDate = ({data}) => {
       );
 
    
-        const dataOptions = data.map((item)=>{
+        const dataOptions = menupaises.map((item)=>{
           return(
             <option value={item.slug} key={item.slug}>{item.name}</option>
           )
@@ -223,7 +253,7 @@ const SearchDate = ({data}) => {
     return (
         <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
           <NativeSelect css={pullproduct}
-          defaultValue={country ?  country : '/'}
+          defaultValue={country ?  country : 'Mundo'}
           inputprops={{
             name: 'country',
             id: 'uncontrolled-native',
@@ -234,54 +264,49 @@ const SearchDate = ({data}) => {
        
 
         </NativeSelect>
-          
+
+        <Box sx={{height:'45px', flexGrow: '1'}}>
+
+        {!landingHome ? 
 
         
 
+            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={esLocale}>
+            <Stack spacing={3} >
+              <MobileDatePicker
+                label="Fecha de edición"
+                inputFormat="EEEE dd LLLL yyyy"
+                value={valueDate}
+                onChange={handleChangeDate}
+                renderInput={(params) => <OutlinedInput css={textfielddate} endAdornment={<InputAdornment position="end"><CalendarMonthIcon sx={{color: 'white'}} /></InputAdornment>} {...params}  />}
+                dayOfWeekFormatter={(day) => day.charAt(0).toUpperCase()}
+                toolbarFormat="dd MMMM"
+                disableFuture
+                shouldDisableDate={(dateParam) => {
+                  const m = (('0'+(dateParam.getMonth()+1))).slice(-2)
+                  const y = dateParam.getFullYear()
+                  const d = dateParam.getDate()
+                  const stringDate = `${d}-${m}-${y}`
+                  return listEnableDates.includes(stringDate) ? false : true;
+                  //console.log('shouldDisableDate(dateParam)', shouldDisableDate(dateParam))
+                  //return disableDates(dateParam)
+                }}
+              />
+              
+            </Stack>
+            </LocalizationProvider>
 
+        
 
+            
+        
+        
+        : null}
+
+        </Box>
          
 
-            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={esLocale}>
-              <Stack spacing={3} sx={{flexGrow: '1'}}>
-                <MobileDatePicker
-                  label="Fecha de edición"
-                  inputFormat="EEEE dd LLLL yyyy"
-                  value={valueDate}
-                  onChange={handleChangeDate}
-                  renderInput={(params) => <OutlinedInput css={textfielddate} endAdornment={<InputAdornment position="end"><CalendarMonthIcon sx={{color: 'white'}} /></InputAdornment>} {...params}  />}
-                  dayOfWeekFormatter={(day) => day.charAt(0).toUpperCase()}
-                  toolbarFormat="dd MMMM"
-                  disableFuture
-                  shouldDisableDate={(dateParam) => {
-                    const m = (('0'+(dateParam.getMonth()+1))).slice(-2)
-                    const y = dateParam.getFullYear()
-                    const d = dateParam.getDate()
-                    const stringDate = `${d}-${m}-${y}`
-                    return listEnableDates.includes(stringDate) ? false : true;
-                    //console.log('shouldDisableDate(dateParam)', shouldDisableDate(dateParam))
-                    //return disableDates(dateParam)
-                  }}
-                  // shouldDisableDate={(dateParam)=>{
-                  //   //const fecha1 = useFormatDate(dateParam) 
-                  //   //const fecha2 = useFormatDate(valueDate) 
-                  //   console.log('fechas: formatDateParam dateparam:', typeof dateParam )
-                  //   console.log('fechas: formatDateParam valuedate_', typeof valueDate )
-
-                  //   if(dateParam == valueDate ) {
-                  //     return true
-                  //   } else {
-                  //     return false
-                  //   }
-
-                     
-
-                  // }}
-                  
-                />
-                
-              </Stack>
-            </LocalizationProvider>
+            
 
 
             {renderMenu}

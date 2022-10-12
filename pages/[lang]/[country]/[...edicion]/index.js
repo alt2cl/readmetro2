@@ -25,6 +25,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import Link from 'next/link';
 
 import Skeleton from '@mui/material/Skeleton';
+import {updateCurrentPlay} from '@/redux/features/audioplayer/audioplayerSlice'
+import Suscription from '@/components/UI/Organismo/Suscription';
+
 
 
 function EdicionTemplate({data}) {
@@ -61,32 +64,12 @@ function EdicionTemplate({data}) {
 
   const dispatch = useDispatch();
 
-  const dialogImagesArrayState = useSelector(state => state.dialog.imagesvalues.arrayimages)
-  const dialogDatesState = useSelector(state => state.dialog.imagesvalues)
+  // const dialogImagesArrayState = useSelector(state => state.dialog.imagesvalues.arrayimages)
+  // const dialogDatesState = useSelector(state => state.dialog.imagesvalues)
 
 
  
 
-
-
-  
-
-//   function getFormattedDate(date, separator, format) {
-//     let year = date.getFullYear();
-//     let month = (1 + date.getMonth()).toString().padStart(2, '0');
-//     let day = date.getDate().toString().padStart(2, '0');
-
-//     if(format == 'YYYY/MM/DD') {
-//       return year + separator + month + separator + day;
-//     }
-//     if(format == 'DD/MM/YYYY') {
-//       return day + separator + month + separator + year;
-//     }
-  
-    
-//   }
-
-// const currentDate = getFormattedDate(starDateState, '/', 'YYYY/MM/DD')
 
 
     const handleOpenModal = () => {
@@ -95,31 +78,35 @@ function EdicionTemplate({data}) {
     const handleCloseModal = () => { 
       //setDataImages(null)
       setOpenModal(false)
+      dispatch(updateCurrentPlay({
+        show: false,
+        play: false,
+        title: 'Titulo playlist 1',
+        index : 1,
+        page: 1
+    }))
     };
 
 
     let arrayEditions = []
     let arrayDates = []
-    let oldArrayEditions = []
+    //let oldArrayEditions = []
 
 
 
-    //fechas con ediciones vigentes enviadas a redux para leerlas en el componente SearchDate
-    data.allEditions.map((currentEdition)=> {
-      let date = currentEdition.date
-      let arrayDate = date.split('-')
-      let formatDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`
-      arrayDates.push(formatDate)
-    })
+      //fechas con ediciones vigentes enviadas a redux para leerlas en el componente SearchDate
+      data.allEditions.map((currentEdition)=> {
+        let date = currentEdition.date
+        let arrayDate = date.split('-')
+        let formatDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`
+        arrayDates.push(formatDate)
+      })
 
-    dispatch(updateEnableDatesSlice(arrayDates))
+      dispatch(updateEnableDatesSlice(arrayDates))
 
-    const cityslug = data.cityslug
-    const cityname = data.cityname
-    const vertical = data.vertical
-
-    
-
+      const cityslug = data.cityslug
+      const cityname = data.cityname
+      const vertical = data.vertical
 
 
       data.allEditions.map((currentEdition, i) => {
@@ -176,7 +163,6 @@ function EdicionTemplate({data}) {
       const dataSlide = () => {
         let data = []
         for (let i = 0; i < pages; i++) {
-         
           data.push(
             <>
                 <Box key={`section-${i}`}>
@@ -206,19 +192,10 @@ function EdicionTemplate({data}) {
           }
         ) 
       }
-
-      //console.log('ruta edition y cityname',routeEdition, cityslug, date.replaceAll('/', '') ,routedate, i)
-
-
       
       if( routeEdition ==  cityslug && dataImages == null && date.replaceAll('/', '') == routedate ){
           setDataImages(bigimages())
       }
-
-      
-
-
-
 
       return(
         <SectionBox key={`${cityslug}-${i}`} >
@@ -299,7 +276,7 @@ function EdicionTemplate({data}) {
       <h6>Edicion: {edition}</h6>
       <h6>Pagina: {page}</h6> */}
 
-      
+      <Suscription />
 
  
         {data ? newlistsections : 'Cargando'}

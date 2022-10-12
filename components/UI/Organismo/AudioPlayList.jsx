@@ -1,14 +1,29 @@
 import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import HeadphonesIcon from '@mui/icons-material/Headphones';
+import { useDispatch } from 'react-redux'
+import {updateCurrentPlay} from '@/redux/features/audioplayer/audioplayerSlice'
+import { useSelector } from 'react-redux'
+
 
 
 
 
 const AudioPLayList = (props) => {
-    const {urls} = props
+    const {urls, page} = props
 
-    const [currentplay, setCurrentplay] = useState(0);
+    const checkedplay = useSelector(state => state.audioplayer.currentPlay.play)
+    const showplayer = useSelector(state => state.audioplayer.currentPlay.show)
+    const pageplayer = useSelector(state => state.audioplayer.currentPlay.page)
+    const indexplayer = useSelector(state => state.audioplayer.currentPlay.index)
+
+    
+
+    const dispatch = useDispatch()
+
+    const [encurso, setEnCurso] = useState(false);
+    const [audioIndex, setAudioIndex] = useState(0);
+    const [update, setUpdate] = useState(checkedplay);
 
     const [sources, setSources] = useState(
         urls.map(item => {
@@ -19,52 +34,88 @@ const AudioPLayList = (props) => {
           return {
             url ,
             num,
-            audio
+            audio,
+            playing : false,
+            next: false
           };
         })
       );
 
-    
-    
+    //let currentplay = 0
+    //let encurso = false
+   
+
+    const pausa = (audioIndex) => {
+        setEnCurso(false)
+        sources[audioIndex].audio.pause();
+
+        dispatch(updateCurrentPlay({
+            show: true,
+            play: false,
+            title: 'Titulo playlist 1',
+            index : audioIndex,
+            page: page
+        }))
+    }
+
+    const plai = (audioIndex) => {
+
+        setEnCurso(true)
+        sources[audioIndex].audio.play();
+
+        dispatch(updateCurrentPlay({
+            show: true,
+            play: true,
+            title: 'Titulo playlist 1',
+            index : audioIndex ,
+            page: page
+        }))
 
 
-    const play = (index) => {
-        
-        //console.log('click currentplay', index)
-        sources[index].audio.play()
-        //setCurrentplay(currentplay + 1)
-        index = index + 1
 
         sources.map((source, i)=>(
+
             source.audio.onended = function(){
-                //console.log('click termine ======>', i, sources.length, index)
-            
-                if(sources.length > index){
-                    play(index)
+                if(sources.length > audioIndex +1){
+                    setAudioIndex( audioIndex + 1)
+                    //plai(audioIndex)
+                    // dispatch(updateCurrentPlay({
+                    //     show: true,
+                    //     play: true,
+                    //     title: 'Titulo playlist 1',
+                    //     index : audioIndex + 1,
+                    //     page: page
+                    // }))
                 }
             }
-
         ))
     }
 
-    const next = () => {
-
-    }
-
-    const runplay = () => {
-        play(0)
 
 
-    }
 
-    
+    useEffect(()=>{
+        if(audioIndex != 0 && encurso ) {         
+            plai(audioIndex)
+        }
+
+        
+    },[audioIndex])
+
+   
+
 
 
     return(
         <>  
             {urls.length > 0 ? 
+                encurso ? 
                 <Button size="small" variant="contained" sx={{height: '35px',minWidth:'140px',fontSize: '11px',width: '132px',textAlign: 'left',lineHeight: '18px'}} 
-                startIcon={<HeadphonesIcon />} onClick={() => play(0)}>Escuchar todo
+                startIcon={<HeadphonesIcon />} onClick={() => pausa(audioIndex)}>Pausar todo
+                </Button>
+                :
+                <Button size="small" variant="contained" sx={{height: '35px',minWidth:'140px',fontSize: '11px',width: '132px',textAlign: 'left',lineHeight: '18px'}} 
+                startIcon={<HeadphonesIcon />} onClick={() => plai(audioIndex)}> Escuchar todo
                 </Button>
                 :
                 <Button disabled size="small" variant="contained" sx={{height: '35px',minWidth:'165px',fontSize: '11px',width: '132px',textAlign: 'left',lineHeight: '18px'}} 
