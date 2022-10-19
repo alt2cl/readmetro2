@@ -27,6 +27,8 @@ import Link from 'next/link';
 import Skeleton from '@mui/material/Skeleton';
 import {updateCurrentPlay} from '@/redux/features/audioplayer/audioplayerSlice'
 import Suscription from '@/components/UI/Organismo/Suscription';
+import Breadcumb from '@/components/UI/Molecula/Breadcumb'
+import HeadSectionCenter from '@/components/UI/Molecula/headSectionCenter';
 
 
 
@@ -56,6 +58,9 @@ function EdicionTemplate({data}) {
   //const widthItem = 250
   //const [imageError, setImageError] = useState(false);
   const [openModal, setOpenModal] = useState(false)
+
+  const [counterShow, setCounterShow] = useState(10)
+
 
 
  
@@ -95,12 +100,19 @@ function EdicionTemplate({data}) {
 
 
       //fechas con ediciones vigentes enviadas a redux para leerlas en el componente SearchDate
-      data.allEditions.map((currentEdition)=> {
-        let date = currentEdition.date
-        let arrayDate = date.split('-')
-        let formatDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`
-        arrayDates.push(formatDate)
-      })
+
+      if(arrayDates.length == 0){
+        data.allEditions.map((currentEdition, i)=> {
+          let date = currentEdition.date
+          let arrayDate = date.split('-')
+          let formatDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`
+            arrayDates.push(formatDate)
+          
+          
+        })
+
+      }
+      
 
       dispatch(updateEnableDatesSlice(arrayDates))
 
@@ -111,7 +123,8 @@ function EdicionTemplate({data}) {
 
       data.allEditions.map((currentEdition, i) => {
         let date = currentEdition.date.replaceAll('-','/')
-        
+
+        if(i < counterShow){
           arrayEditions.push(
             {
               cityslug: cityslug,
@@ -125,6 +138,10 @@ function EdicionTemplate({data}) {
               recortes: currentEdition.recortes,
             }
           )
+
+        }
+        
+          
           
      
       })
@@ -142,7 +159,7 @@ function EdicionTemplate({data}) {
       
     }
     
-    
+    let enterDate
 
     const newlistsections = arrayEditions.map((edition, i)=>{
       const pages = edition.pages
@@ -197,8 +214,79 @@ function EdicionTemplate({data}) {
           setDataImages(bigimages())
       }
 
+
+      function titleMonth(enterMonth){
+
+        let currentMonth = 'no month'
+
+        //console.log('month', String(date).slice(0,7) , enterMonth, String(enterMonth).slice(0,7) )
+
+
+        if(String(date).slice(0,7) != String(enterMonth).slice(0,7)){
+          let splitDate = date.split('/')
+          enterDate = date
+          switch (String(splitDate[1])) {
+            case '01':
+              currentMonth = "Enero" + " " + String(enterMonth).slice(0,4)
+              break;
+              case '02':
+                currentMonth = "Febrero" + " "+ String(enterMonth).slice(0,4)
+                break;
+                case '03':
+                  currentMonth = "Marzo" + " "+ String(enterMonth).slice(0,4)
+                  break;
+                  case '04':
+                    currentMonth = "Abril" + " "+ String(enterMonth).slice(0,4)
+                    break;
+                    case '05':
+                      currentMonth = "Mayo" + " "+ String(enterMonth).slice(0,4)
+                      break;
+                      case '06':
+                        currentMonth = "Junio" + " "+ String(enterMonth).slice(0,4)
+                        break;
+                        case '07':
+                          currentMonth = "Julio" + " "+ String(enterMonth).slice(0,4)
+                          break;
+                          case '08':
+                            currentMonth = "Agosto" + " "+ String(enterMonth).slice(0,4)
+                            break;
+                            case '09':
+                              currentMonth = "Septiembre" + " "+ String(enterMonth).slice(0,4)
+                              break;
+                              case '10':
+                                currentMonth = "Octubre" + " "+ String(enterMonth).slice(0,4)
+                                break;
+                                case '11':
+                                  
+                                  currentMonth = "Noviembre"+ " "+ String(enterMonth).slice(0,4)
+                                  break;
+                                  case '12':
+                                  currentMonth = "Diciembre" + " "+ String(enterMonth).slice(0,4)
+                                  break;
+            default:
+              currentMonth = "No Month"
+              break;
+          }
+          
+        } else {
+          currentMonth = null
+        }       
+
+    return currentMonth
+
+      }
+
+
+
+      const month = titleMonth(enterDate)
+
       return(
+        <>
+
+        {month != null && i > 0 && <HeadSectionCenter title={month} />}
+
         <SectionBox key={`${cityslug}-${i}`} >
+
           <HeadSection datesection={date} country={country} titleSection={cityname} slug={cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
           {cityslug &&  
           <SlideCarouselCountry 
@@ -211,6 +299,9 @@ function EdicionTemplate({data}) {
           />
           }
         </SectionBox>
+        
+        
+        </>
       )
 
       
@@ -276,10 +367,18 @@ function EdicionTemplate({data}) {
       <h6>Edicion: {edition}</h6>
       <h6>Pagina: {page}</h6> */}
 
+      
+
       <Suscription />
+
+      <Breadcumb router={router} />
 
  
         {data ? newlistsections : 'Cargando'}
+
+        <Box sx={{display:'flex', justifyContent:'center', pb: '4rem'}}>
+          <Button variant="outlined" onClick={()=>setCounterShow(counterShow + 10)}>Cargar ediciones anteriores</Button>
+        </Box>
      
         <Dialogmodal openModal={openModal} onCloseModal={()=>handleCloseModal()}  >
           <Box sx={{  ml:'-5px', width:'calc(100% + 10px)'}} ref={scrollRef} id={"refdialogcontent"} >
@@ -333,8 +432,8 @@ export async function getServerSideProps({ params }) {
 
   // Fetch data from external API
   //const res = await fetch(`https://api.readmetro.com/${params.archivo}/index.json`)
-  const res = await fetch(`https://api.readmetro.com/${params.country}/${params.edicion[0]}/index.json`)
-  //const res = await fetch(`https://api.readmetro.com/${params.country[0]}/${params.country[1]}/full.json`)
+  //const res = await fetch(`https://api.readmetro.com/${params.country}/${params.edicion[0]}/index.json`)
+  const res = await fetch(`https://api.readmetro.com/${params.country}/${params.edicion[0]}/full.json`)
   const data = await res.json()
 
   // Pass data to the page via props

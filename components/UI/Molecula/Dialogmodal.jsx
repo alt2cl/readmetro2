@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import Badge from '@mui/material/Badge';
+// import Badge from '@mui/material/Badge';
 import Typography from '@mui/material/Typography';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useSelector } from 'react-redux'
@@ -30,28 +30,66 @@ export default function Dialogmodal(props) {
     const pageplayer = useSelector(state => state.audioplayer.currentPlay.page)
     const indexplayer = useSelector(state => state.audioplayer.currentPlay.index)
 
+    const playList = useSelector(state => state.audioplayer.playList)
+
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     const handlePauseAudio = () => {
+      //console.log('contador handle pause:', pageplayer, indexplayer, playList[pageplayer][indexplayer].audio.pause() )
+      playList[pageplayer][indexplayer].audio.pause()
       dispatch(updateCurrentPlay({
         show: showplayer,
         play: false,
-        title: "",
+        title: `Página ${pageplayer}`,
         index: indexplayer,
         page: pageplayer,
       }))
     }
 
     const handlePlayAudio = () => {
+
+      playList[pageplayer][indexplayer].audio.play()
       dispatch(updateCurrentPlay({
         show: showplayer,
         play: true,
-        title: "",
+        title: `Página ${pageplayer}`,
         index: indexplayer,
         page: pageplayer,
       }))
+      
+
+      // let myPlaylist = [...playList]
+
+      // console.log('contador playList pageplayer', myPlaylist[pageplayer][indexplayer].audio.play())
+      // myPlaylist[pageplayer][indexplayer].audio.play()
+
+      // if(pageplayer != 0) {
+      //   myPlaylist[pageplayer]
+
+      // }
+
+      
+
+      // console.log('playList', playList[0].find(audio => audio.num === '1.1'))
+      // const first = playList[0].find(audio => audio.num === '1.1')
+      // //first.playing = true
+      // first.audio.play()
+
+      
+
+      // dispatch(updateCurrentPlay({
+      //   show: showplayer,
+      //   play: true,
+      //   title: "",
+      //   index: indexplayer,
+      //   page: pageplayer,
+      // }))
     }
+
+    useEffect(()=>{
+      
+    }, [])
 
 
 
@@ -84,32 +122,30 @@ export default function Dialogmodal(props) {
             position: 'relative'}}>
 
             <Box sx={{display: 'flex', width: '100%', justifyContent:'space-between', alignItems: 'center'}}>
-              
-              <Box sx={{display: 'flex'}}>
-                <IconButton color="secondary" aria-label="Previo Audio" size="large">
-                  <SkipPreviousIcon  fontSize="inherit" />
-                </IconButton>
-                {checkedplay ? 
-                <IconButton color="primary" aria-label="Pause Audio" size="large" onClick={() => handlePauseAudio()}>
-                  <PauseCircleOutlineIcon  fontSize="inherit" />
-                </IconButton>
-              :
-                <IconButton color="primary" aria-label="Play Audio" size="large" onClick={() => handlePlayAudio()}>
-                  <PlayCircleOutlineIcon  fontSize="inherit" />
-                </IconButton>
-                }
-
-                <IconButton color="primary" aria-label="Siguiente Audio" size="large">
-                  <SkipNextIcon  fontSize="inherit" />
-                </IconButton>
-                
-                
-              </Box>
-              <Box>
+              <Box sx={{display:'flex', alignItems: 'center'}}>
+                <Box sx={{display: 'flex'}}>
+                    <IconButton color="secondary" aria-label="Previo Audio" size="large">
+                      <SkipPreviousIcon  fontSize="inherit" />
+                    </IconButton>
+                    {checkedplay ? 
+                    <IconButton color="primary" aria-label="Pause Audio" size="large" onClick={() => handlePauseAudio()}>
+                      <PauseCircleOutlineIcon  fontSize="inherit" />
+                    </IconButton>
+                    :
+                    <IconButton color="primary" aria-label="Play Audio" size="large" onClick={() => handlePlayAudio()}>
+                      <PlayCircleOutlineIcon  fontSize="inherit" />
+                    </IconButton>
+                    }
+                    <IconButton color="primary" aria-label="Siguiente Audio" size="large">
+                      <SkipNextIcon  fontSize="inherit" />
+                    </IconButton>
+                </Box>
                 <Box>
-                  <Typography variant="caption" display="block" >
-                    Página: {pageplayer} / Audio: {indexplayer + 1}
-                  </Typography>
+                  <Box>
+                    <Typography variant="caption" display="block" >
+                      Página: {pageplayer + 1} / Audio: {pageplayer + 1}.{indexplayer + 1}
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
               

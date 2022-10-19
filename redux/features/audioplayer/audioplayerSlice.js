@@ -8,17 +8,19 @@ export const audioplayerSlice = createSlice({
       show: false,
       play: false,
       title: "",
-      index: 1,
-      page: 1,
-    }
-    
-    
-
+      index: 0,
+      page: 0,
+    },
+    playList: []
   },
   reducers: {
     updateCurrentPlay: (state, action) => {
+      console.log('el dispach', action.payload)
       state.currentPlay = action.payload
-      //console.log('current play',action.payload)
+    },
+    updatePlayList: (state, action) => {
+      //console.log('action.payload', action.payload)
+      state.playList.push(action.payload) 
     }
     
   }
@@ -27,6 +29,6 @@ export const audioplayerSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const {updateCurrentPlay } = audioplayerSlice.actions
+export const {updateCurrentPlay, updatePlayList } = audioplayerSlice.actions
 
 export default audioplayerSlice.reducer

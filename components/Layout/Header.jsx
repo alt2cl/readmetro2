@@ -1,6 +1,6 @@
 
-import * as React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from "react";
+// import PropTypes from 'prop-types';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -9,24 +9,22 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import Badge from '@mui/material/Badge';
+// import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 //import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+// import AccountCircle from '@mui/icons-material/AccountCircle';
+// import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Logo from '@/public/img/logos/read-metro-color.svg';
 import Image from 'next/image'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import Link from '@/src/Link';
-import SearchDate from '@/components/UI/Molecula/SearchDate';
+import Link from 'next/link';
 import { css } from '@emotion/react';
 
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ElevationScroll from '@/components/CustomHooks/ElevationScroll';
-import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
 import { updateLangSlice  } from '@/redux/features/lang/langSlice'
 import ListItemText from '@mui/material/ListItemText';
@@ -35,7 +33,6 @@ import MenuList from '@mui/material/MenuList';
 import LaunchIcon from '@mui/icons-material/Launch';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-
 
 
 
@@ -71,27 +68,15 @@ const selectLang = css({
 })
 
 export default function Header(props) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  //console.log('props  del header', props)
+  const dispatch = useDispatch()
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const menupaises = configsite.routeCountry;
   const langOptions = configsite.langOptions;
-  const dispatch = useDispatch()
-  const router = useRouter()
 
-  const lang = router.query.lang ? router.query.lang : null
-  const country = router.query.country ? router.query.country : null
-  const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-  const edicion = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-  const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
-  const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
-
-  const landingHome = router.query.country ? false : true
-  const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
-  const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
-  const landingCountry = router.query.country && !router.query.edicion ? true : false
-
-
-
+  const{ searchInput} = props
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -147,9 +132,9 @@ const [language, setLanguage] = React.useState('ES');
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {menupaises.map((item) => {
+      {menupaises.map((item, index) => {
         return(
-          <MenuItem onClick={handleMenuClose} key={item.name}>
+          <MenuItem onClick={handleMenuClose} key={index+item.name}>
             <Link href={item.externalLink}>
               {item.name} 
             </Link>
@@ -215,7 +200,7 @@ const [language, setLanguage] = React.useState('ES');
 
           item.name != "Mundo" ?
 
-          <MenuItem>
+          <MenuItem key={'menuitem-'+item.name}>
          
 
           <ListItemButton>
@@ -235,20 +220,9 @@ const [language, setLanguage] = React.useState('ES');
               </ListItemText>
             </ListItemButton>
 
-
-
-
-              
-            
-            
          
         </MenuItem>
         : null
-            
-
-          
-          
-          
 
         ))}
         
@@ -267,11 +241,14 @@ const [language, setLanguage] = React.useState('ES');
 
   const langOptionsRender = langOptions.map((item, i)=>{
     return(
-      <MenuItem value={item.slug} key={item.name}>
+      <MenuItem value={item.slug} key={item.name+i}>
         <Image src={item.flagUrl} alt={item.name} width={20} height={15} priority={i == 0 ? true : false}/>
       </MenuItem>
     )
     })
+
+
+
 
   return (
     <>
@@ -293,7 +270,7 @@ const [language, setLanguage] = React.useState('ES');
 
             <Box sx={{flexGrow:1}}>
               <Box sx={{ display: { xs: 'none', md: 'block' }}}>
-                <SearchDate menupaises={menupaises} landingHome={landingHome} />
+                {searchInput}
                 
               </Box>
             </Box>
@@ -376,7 +353,7 @@ const [language, setLanguage] = React.useState('ES');
         <Box sx={{flexGrow:1}} css={elevationFixedWrap}>
           <ElevationScroll threshold={35} {...props}>
           <Box sx={{ display: { xs: 'block', md: 'none' }}}>
-            <SearchDate menupaises={menupaises} landingHome={landingHome}  />
+            {searchInput}
           </Box>
           </ElevationScroll>
         </Box>

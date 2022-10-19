@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import Layout from '@/components/Layout/layout'
+// import Layout from '@/components/Layout/layout'
 import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
 import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry'

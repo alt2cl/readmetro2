@@ -34,7 +34,6 @@ const useMultiAudio = urls => {
     urls.map(item => {
       const  url = item.url
       const num = item.numitem
-
       return {
         url,
         num,
@@ -235,7 +234,7 @@ const Player = ({ player, toggle }) => (
             textAlign: 'center', 
             background: player.playing ? '#fff!important': '#ccc!important',
             }} 
-            label={player.playing ? `${player.num} Detener ` : `${player.num} Escuchar ` }
+            label={player.playing ? `${player.num} Detener ` : `Audio ${player.num}` }
             icon={<HeadphonesIcon fontSize='small' />}
             variant="outlined"
             size="small"

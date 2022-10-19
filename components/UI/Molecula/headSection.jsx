@@ -4,7 +4,7 @@ import Divider from '@mui/material/Divider';
 import { css } from '@emotion/react';
 import MoreOptions from '@/components/UI/Atomo/MoreOptions'
 import { useRouter } from 'next/router'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 
 

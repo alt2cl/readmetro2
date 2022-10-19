@@ -96,7 +96,9 @@ const textfielddate = (theme) => ({
     
 
 
-const SearchDate = ({menupaises}) => {
+const SearchDate = (props) => {
+
+  const {defaultValueCountry, menupaises, lang } = props
   
 
   //console.log('props search: ',props)
@@ -105,77 +107,33 @@ const SearchDate = ({menupaises}) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const router = useRouter();
-    const [open, setOpen] = useState(false);
-    const [todayDate, setTodayDate] = useState(new Date())
+ 
     const [valueDate, setValueDate] = useState(new Date());
 
-    const lang = router.query.lang ? router.query.lang : null
-    const country = router.query.country ? router.query.country : null
-    const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-    const edition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-    const routerdate = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
-    const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
-
-    const landingHome = router.query.country ? false : true
-    const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
-    const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
-    const landingCountry = router.query.country && !router.query.edicion ? true : false
-
-    //console.log('data search', router)
-
-    const formatdatePdf = (routedate) => {
-      let YYYY =""
-      let MM =""
-      let DD =""
-      let formatDate = null
-      if(routedate) {
-        YYYY = routedate.slice(0,4) 
-        MM =  routedate.slice(4,6) 
-        DD =  routedate.slice(6,8)
-        formatDate = YYYY+'/'+MM+'/'+DD
-      }
-      return formatDate
-    }
-
-
-    useEffect(()=>{
-
-      if(routerdate) {
-        setValueDate(new Date(formatdatePdf(routerdate)))
-        console.log('valueDate inside routerdate', new Date(formatdatePdf(routerdate)))
-      }
-      
-    },[])
 
     const handleChangeDate = (newValue) => {
+      setValueDate(newValue);
       const formatDate = newValue.toLocaleDateString('es-CL', { year: 'numeric',month: '2-digit',day: '2-digit' })
       const arrayDate = formatDate.split("-")
       const dateString = arrayDate.length > 2 ? `${arrayDate[2]}/${arrayDate[1]}/${arrayDate[0]}` : null
-      //console.log('aldito formatDate::', dateString)
-      setValueDate(newValue);
+      
       dispatch(updateDateSlice(dateString))
 
-      if(landingHome){
-        console.log('search estoy en el home')
+      if(defaultValueCountry == "/"){
+        //console.log('search estoy en el home')
         router.push(`/?_date=${dateString.replaceAll('/','')}`)
       }
 
-      if (landingArchivo) {
-        console.log('search estoy en el archivo')
-        router.push(`/${lang}/${country}/${edition}/${dateString.replaceAll('/','')}`)
+      // if (landingArchivo) {
+      //   //console.log('search estoy en el archivo')
+      //   router.push(`/${lang}/${country}/${edition}/${dateString.replaceAll('/','')}`)
 
-      }
+      // }
 
-      if (landingCountry) {
-        console.log('search estoy en el landing pais')
-        router.push(`/${lang}/${country}?_date=${dateString.replaceAll('/','')}`)
-
-      }
-
-      if (landingEdition) {
-        console.log('search estoy en el landing edicion', router)
-        router.push(`/${lang}/${country}/${edition}/${dateString.replaceAll('/','')}`)
-      }
+      // if (landingEdition) {
+      //   //console.log('search estoy en el landing edicion', router)
+      //   router.push(`/${lang}/${country}/${edition}/${dateString.replaceAll('/','')}`)
+      // }
       
     };
 
@@ -189,19 +147,13 @@ const SearchDate = ({menupaises}) => {
     const isMenuOpen = Boolean(anchorEl);
 
     const listEnableDates = useSelector(state => state.date.arrayEnableDates)
-
-    
-    //console.log('listEnableDates', listEnableDates)
     
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
       };
     
-      const handleMenuClose = () => {
-        setAnchorEl(null);
-        handleMobileMenuClose();
-      };
+
 
 
     const handleChangeSelectcountry = (e) => {
@@ -214,69 +166,58 @@ const SearchDate = ({menupaises}) => {
       
     }
 
-
-
-
-      const renderMenu = (
-        <Menu
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          id={menuId}
-          keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          open={isMenuOpen}
-          onClose={handleMenuClose}
-        >
-          <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-          <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        </Menu>
-      );
-
    
-        const dataOptions = menupaises.map((item)=>{
-          return(
-            <option value={item.slug} key={item.slug}>{item.name}</option>
-          )
-        })
+    const dataOptions = menupaises.map((item)=>{
+      return(
+        <option value={item.slug} key={item.slug}>{item.name}</option>
+      )
+    })
 
 
+    const countrySelect = (countryvalue) => {
 
+      return(
 
-      
-
-
-
-      
-//console.log('router desde searchbox', router.query.country[0])
-        
-
-    return (
-        <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
-          <NativeSelect css={pullproduct}
-          defaultValue={country ?  country : '/'}
+        <NativeSelect css={pullproduct}
+          defaultValue={countryvalue}
           inputprops={{
             name: 'country',
             id: 'uncontrolled-native',
           }}
           onChange={handleChangeSelectcountry}
         >
-          {dataOptions}
-       
+          {
+            menupaises.map((item)=>(
+                <option value={item.slug} key={item.slug}>{item.name}</option>
+              )
+            )
+          }
 
+          
         </NativeSelect>
+
+      )
+    }
+
+
+
+
+      
+
+
+
+      
+console.log('defaultValueCountry currentSection', defaultValueCountry)
+        
+
+    return (
+        <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
+
+          {countrySelect(defaultValueCountry)}
 
         <Box sx={{height:'45px', flexGrow: '1'}}>
 
-        {!landingHome ? 
-
-        
-
+        {defaultValueCountry != "/" ? 
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={esLocale}>
             <Stack spacing={3} >
               <MobileDatePicker
@@ -289,9 +230,10 @@ const SearchDate = ({menupaises}) => {
                 toolbarFormat="dd MMMM"
                 disableFuture
                 shouldDisableDate={(dateParam) => {
+                  
                   const m = (('0'+(dateParam.getMonth()+1))).slice(-2)
                   const y = dateParam.getFullYear()
-                  const d = dateParam.getDate()
+                  const d =  ("0" + dateParam.getDate()).slice(-2);
                   const stringDate = `${d}-${m}-${y}`
                   return listEnableDates.includes(stringDate) ? false : true;
                   //console.log('shouldDisableDate(dateParam)', shouldDisableDate(dateParam))
@@ -301,11 +243,6 @@ const SearchDate = ({menupaises}) => {
               
             </Stack>
             </LocalizationProvider>
-
-        
-
-            
-        
         
         : null}
 
@@ -315,7 +252,6 @@ const SearchDate = ({menupaises}) => {
             
 
 
-            {renderMenu}
 
             <div>
       <div>
