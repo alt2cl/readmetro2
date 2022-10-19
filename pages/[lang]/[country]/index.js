@@ -22,6 +22,7 @@ import siteMetadata from '@/src/siteMetadata'
 //import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
 //import useFormatDate from '@/components/CustomHooks/useFormatDate'
 import Suscription from '@/components/UI/Organismo/Suscription';
+import Breadcumb from '@/components/UI/Molecula/Breadcumb'
 
 
 
@@ -35,15 +36,15 @@ function CountryTemplate({data}) {
    
   const lang = router.query.lang ? router.query.lang : null
   const country = router.query.country ? router.query.country : null
-  const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
+  //const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
   const routeEdition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-  const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
-  const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
+  //const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
+  //const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
   
-  const landingHome = !router.query.country ? true : false
+  //const landingHome = !router.query.country ? true : false
   const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
   const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
-  const landingCountry = router.query.country && !router.query.edicion ? true : false
+  //const landingCountry = router.query.country && !router.query.edicion ? true : false
 
 
 
@@ -55,10 +56,10 @@ function CountryTemplate({data}) {
   //const [lang, country, city, edition, page] = slug
   const routervalues = { lang: lang, country: country }
   const widthItem = 250
-  const [imageError, setImageError] = useState(false);
+  //const [imageError, setImageError] = useState(false);
   const [openModal, setOpenModal] = useState(false)
 
-  const [titlehead, setTitleHead] = useState('')
+  //const [titlehead, setTitleHead] = useState('')
 
 
 
@@ -114,7 +115,7 @@ function CountryTemplate({data}) {
             arrayDates.push(formatDate)
           })
 
-          //console.log('los arrayDates', arrayDates)
+          console.log('stringDateState', stringDateState)
 
           if(stringDateState){
             city.allEditions.map((currentEdition, i) => {
@@ -141,9 +142,6 @@ function CountryTemplate({data}) {
             })
 
           } else {
-            
-            
-
             const lastEdition = city.allEditions[0]
             let date = lastEdition.date.replaceAll('-','/')
             arrayEditions.push(
@@ -201,7 +199,7 @@ function CountryTemplate({data}) {
                         height={height / 12}
                         alt={cityslug}
                         //priority = {i <= 2 ? 'true': 'false'}
-                        onError={() => setImageError(true)}
+                        //onError={() => setImageError(true)}
                           />
                    
                 </Box>
@@ -283,7 +281,11 @@ function CountryTemplate({data}) {
           ogType={"article"}
       />
 
+      
+
       <Suscription />
+
+      <Breadcumb router={router} />
      
 
  

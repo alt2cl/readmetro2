@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore , getDefaultMiddleware } from '@reduxjs/toolkit'
 import counterReducer from '@/redux/features/counter/counterSlice'
 import countryReducer from '@/redux/features/country/countrySlice'
 import dialogReducer from '@/redux/features/dialog/dialogSlice'
@@ -17,5 +17,12 @@ export default configureStore({
     lang: langReducer,
     audioplayer: audioplayerReducer
     
-  }
+  },
+  middleware: [
+    ...getDefaultMiddleware({
+        serializableCheck: false
+    }),
+    
+],
+//devTools: process.env.NODE_ENV !== 'production' ? { CONFIG_GOES_HERE } : false
 })

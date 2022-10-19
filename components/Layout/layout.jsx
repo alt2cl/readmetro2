@@ -1,10 +1,39 @@
 import {  Container } from '@mui/system';
-import Header from '@/components/UI/Organismo/Header'
+import Header from '@/components/Layout/Header'
 
-function Layout( {children} ) {
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react';
+import configsite from '@/src/configSite'
+import SearchDate from '@/components/Layout/SearchDate';
+
+
+
+function Layout( props ) {
+
+    const {children} = props
+
+    const router = useRouter()
+    const landingHome = router.query.country ? false : true
+    const landingCountry = router.query.country && !router.query.edicion ? true : false
+    const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
+    const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
+    const lang = router.query.lang ? router.query.lang : null
+
+    const menupaises = configsite.routeCountry;
+
+
+    const [thisSection, setThisSection] = useState('/')
+
+    useEffect(()=>{
+        setThisSection(landingHome ? '/' : router.query.country)
+
+    })
+
     return (
         <>
-            <Header />
+            <Header searchInput={
+                <SearchDate lang={lang}  menupaises={menupaises} defaultValueCountry={landingHome ? `/` : `${router.query.country}`} />
+            } />
             
             <main>
             <Container  maxWidth="xl">
@@ -14,16 +43,7 @@ function Layout( {children} ) {
             </main>
 
             <footer>
-                {/* <a
-                href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                target="_blank"
-                rel="noopener noreferrer"
-                >
-                Powered by{' '}
-                <span>
-                    <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-                </span>
-                </a> */}
+              
             </footer>
         
         </>

@@ -140,7 +140,7 @@ export default  function Suscription() {
                         </Box>
                         <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>      
                             <TextField id="inputTelefono" label="Telefono" variant="outlined"  fullWidth
-                            InputProps={{
+                            inputprops={{
                                 startAdornment: <InputAdornment position="start">+56 9</InputAdornment>,
                             }} />
                         </Box>
