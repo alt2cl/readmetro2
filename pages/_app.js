@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
-import Layout from '@/components/Layout/Layout';
+import Layout from '@/components/Layout/layout';
 import theme from '@/src/theme';
 import createEmotionCache from '../src/createEmotionCache';
 import { Provider } from 'react-redux'
