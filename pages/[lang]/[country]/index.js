@@ -32,14 +32,14 @@ function CountryTemplate({data}) {
 
   const [dataImages,setDataImages] = useState(null)
 
-   
+
   const lang = router.query.lang ? router.query.lang : null
   const country = router.query.country ? router.query.country : null
   const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
   const routeEdition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
   const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
   const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
-  
+
   const landingHome = !router.query.country ? true : false
   const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
   const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
@@ -87,12 +87,12 @@ function CountryTemplate({data}) {
 
 
 
-   
+
 
     let arrayEditions = []
     let arrayDates = []
 
-    
+
       //console.log('aldito entre porque hay fecha', stringDateState)
       //recorro las ediciones santiago, nuevamujer ..
       data.cities.map((city, index) => {
@@ -119,7 +119,7 @@ function CountryTemplate({data}) {
           if(stringDateState){
             city.allEditions.map((currentEdition, i) => {
               let date = currentEdition.date.replaceAll('-','/')
-              
+
               //console.log('aldito ---', date ,stringDateState )
               if(date == stringDateState) {
                 //console.log('alditoo encontre la fecha_________')
@@ -136,13 +136,13 @@ function CountryTemplate({data}) {
                     recortes: currentEdition.recortes,
                   }
                 )
-                
+
               }
             })
 
           } else {
-            
-            
+
+
 
             const lastEdition = city.allEditions[0]
             let date = lastEdition.date.replaceAll('-','/')
@@ -161,15 +161,15 @@ function CountryTemplate({data}) {
             )
 
           }
-          
+
         }
       })
-     
+
       //console.log('aldito arrayDates', arrayDates)
 
       dispatch(updateEnableDatesSlice(arrayDates))
 
-     
+
 
     const newlistsections = arrayEditions.map((edition, i)=>{
       const pages = edition.pages
@@ -183,9 +183,9 @@ function CountryTemplate({data}) {
 
       let numberedition = i
 
-      
 
-      
+
+
 
       //console.log('height edition', edition, height, width/12)
 
@@ -195,7 +195,7 @@ function CountryTemplate({data}) {
           data.push(
             <>
                 <Box key={`section-${i}`}>
-                        <Image src={`https://rm.metrolatam.com/${date}/${cityslug}/thumb_${i+1}-${newcode}.webp`} 
+                        <Image src={`https://rm.metrolatam.com/${date}/${cityslug}/thumb_${i+1}-${newcode}.webp`}
                         layout="responsive"
                         width={width / 12}
                         height={height / 12}
@@ -203,7 +203,7 @@ function CountryTemplate({data}) {
                         //priority = {i <= 2 ? 'true': 'false'}
                         onError={() => setImageError(true)}
                           />
-                   
+
                 </Box>
             </>
           )
@@ -222,7 +222,7 @@ function CountryTemplate({data}) {
             newcode: newcode,
             countpages: pages,
           }
-        ) 
+        )
       }
 
       if(i == 0 && routeEdition ==  cityslug && dataImages == null){
@@ -234,13 +234,13 @@ function CountryTemplate({data}) {
         setOpenModal(true)
         setDataImages(bigimages)
       }
-    
+
 
       const handledata =(i, dataimages)=> {
         setDataImages(dataimages)
         if(landingArchivo) {
             router.push(`/${lang}/${country}/${cityslug}/${date.replaceAll('/', '')}/${i+1}`)
-        } else if (landingEdition) 
+        } else if (landingEdition)
         {
             router.push(`/${lang}/${country}/${cityslug}/${date.replaceAll('/', '')}/${i+1}`)
         }else {
@@ -248,16 +248,16 @@ function CountryTemplate({data}) {
         }
       }
 
-     
+
 
       return(
         <SectionBox key={`${cityslug}-${i}`} >
           <HeadSection datesection={date} country={country} titleSection={cityname} slug={cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
-          {cityslug &&  
-          <SlideCarouselCountry 
-          widthItem={width / 12} 
-          content={dataSlide()} 
-          bigimages={bigimages()} 
+          {cityslug &&
+          <SlideCarouselCountry
+          widthItem={width / 12}
+          content={dataSlide()}
+          bigimages={bigimages()}
           data={edition}
           handledata={handledata}
           searchEditions={searchEditions}
@@ -265,9 +265,9 @@ function CountryTemplate({data}) {
           }
         </SectionBox>
       )
-    }) 
+    })
 
- 
+
 
 
 
@@ -283,13 +283,13 @@ function CountryTemplate({data}) {
           ogType={"article"}
       />
 
-      <Suscription />
-     
+      <Suscription data={data} />
 
- 
+
+
         {data ? newlistsections : 'Cargando'}
-     
-        
+
+
     </>
   )
 }
