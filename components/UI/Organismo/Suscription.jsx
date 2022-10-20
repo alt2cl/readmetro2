@@ -25,7 +25,7 @@ export default  function Suscription(data) {
 
     const [state, setState] = React.useState({ mail: false, telegram: false});
     const [suscripcion, setSuscripcion] = React.useState({});
-    const [pais, setPais] = React.useState(data.data.countryslug);
+    const [pais, setPais] = React.useState(typeof(data.data.countryslug) != "undefined" ? data.data.countryslug : data.data.country.countryslug);
     const [errorNombre, setErrorNombre] = React.useState(false);
     const [errorCorreo, setErrorCorreo] = React.useState(false);
     const [errorEdition, setErrorEdition] = React.useState(false);
@@ -114,32 +114,55 @@ export default  function Suscription(data) {
     var tuDate1 = new Date();
     tuDate1.setMonth(tuDate1.getMonth() - 3);
     let listado = [];
-    data.data.cities.forEach((city, i) => {
-      // console.log("gg",city);
+    if(data.data.cities != undefined){
+      data.data.cities.forEach((city, i) => {
+        // console.log("gg",city);
 
-      const fechapub = city.allEditions[0].date+ ' 00:00:00';
-      var tuDate2 = new Date(fechapub);
+        const fechapub = city.allEditions[0].date+ ' 00:00:00';
+        var tuDate2 = new Date(fechapub);
 
-      var a = new Date(tuDate1.getFullYear(),tuDate1.getMonth(),tuDate1.getDate(),tuDate1.getUTCDate());
-      var b = new Date(tuDate2.getFullYear(),tuDate2.getMonth(),tuDate2.getDate(),tuDate1.getUTCDate());
+        var a = new Date(tuDate1.getFullYear(),tuDate1.getMonth(),tuDate1.getDate(),tuDate1.getUTCDate());
+        var b = new Date(tuDate2.getFullYear(),tuDate2.getMonth(),tuDate2.getDate(),tuDate1.getUTCDate());
 
-      if(a <= b){
-        listado.push(<FormControlLabel
-            control={
-            <Checkbox onChange={handleChangeSub} name={city.cityslug}  />
-            }
-            label={city.cityname}
-        />);
-      }else{
-        console.log(city.cityname,"tiene que tener fecha mayor a",a.toLocaleDateString(),"y tiene",b.toLocaleDateString());
-      }
-
-
-
-    });
+        if(a <= b){
+          listado.push(<FormControlLabel
+              control={
+              <Checkbox onChange={handleChangeSub} name={city.cityslug}  />
+              }
+              label={city.cityname}
+          />);
+        }else{
+          console.log(city.cityname,"tiene que tener fecha mayor a",a.toLocaleDateString(),"y tiene",b.toLocaleDateString());
+        }
 
 
 
+      });
+    }
+    if(data.data.cityslug != undefined){
+          const city = data.data;
+          const fechapub = city.allEditions[0].date+ ' 00:00:00';
+          var tuDate2 = new Date(fechapub);
+
+          var a = new Date(tuDate1.getFullYear(),tuDate1.getMonth(),tuDate1.getDate(),tuDate1.getUTCDate());
+          var b = new Date(tuDate2.getFullYear(),tuDate2.getMonth(),tuDate2.getDate(),tuDate1.getUTCDate());
+
+          if(a <= b){
+            listado.push(<FormControlLabel
+                control={
+                <Checkbox onChange={handleChangeSub} name={city.cityslug}  />
+                }
+                label={city.cityname}
+            />);
+          }else{
+            console.log(city.cityname,"tiene que tener fecha mayor a",a.toLocaleDateString(),"y tiene",b.toLocaleDateString());
+          }
+    }
+
+
+    if(listado.length === 0){
+      return null;
+    }
     return (
         <Accordion sx={{mt:'2rem', mb: '3rem'}}>
             <AccordionSummary

@@ -58,7 +58,7 @@ function EdicionTemplate({data}) {
   const [openModal, setOpenModal] = useState(false)
 
 
- 
+
 
 
 
@@ -68,14 +68,14 @@ function EdicionTemplate({data}) {
   // const dialogDatesState = useSelector(state => state.dialog.imagesvalues)
 
 
- 
+
 
 
 
     const handleOpenModal = () => {
       setOpenModal(true)
     };
-    const handleCloseModal = () => { 
+    const handleCloseModal = () => {
       //setDataImages(null)
       setOpenModal(false)
       dispatch(updateCurrentPlay({
@@ -111,7 +111,7 @@ function EdicionTemplate({data}) {
 
       data.allEditions.map((currentEdition, i) => {
         let date = currentEdition.date.replaceAll('-','/')
-        
+
           arrayEditions.push(
             {
               cityslug: cityslug,
@@ -125,8 +125,8 @@ function EdicionTemplate({data}) {
               recortes: currentEdition.recortes,
             }
           )
-          
-     
+
+
       })
 
 
@@ -139,10 +139,10 @@ function EdicionTemplate({data}) {
       setOpenModal(true)
       setDataImages(dataimages)
       router.push(`/${lang}/${country}/${cityslug}/${date.replaceAll('/', '')}/${i+1}`)
-      
+
     }
-    
-    
+
+
 
     const newlistsections = arrayEditions.map((edition, i)=>{
       const pages = edition.pages
@@ -158,15 +158,15 @@ function EdicionTemplate({data}) {
 
       let numberedition = i
 
-      
-      
+
+
       const dataSlide = () => {
         let data = []
         for (let i = 0; i < pages; i++) {
           data.push(
             <>
                 <Box key={`section-${i}`}>
-                        <Image src={`https://rm.metrolatam.com/${date}/${cityslug}/thumb_${i+1}-${newcode}.webp`} 
+                        <Image src={`https://rm.metrolatam.com/${date}/${cityslug}/thumb_${i+1}-${newcode}.webp`}
                         layout="responsive"
                         width={width / 12}
                         height={height / 12}
@@ -190,9 +190,9 @@ function EdicionTemplate({data}) {
             newcode: newcode,
             countpages: pages,
           }
-        ) 
+        )
       }
-      
+
       if( routeEdition ==  cityslug && dataImages == null && date.replaceAll('/', '') == routedate ){
           setDataImages(bigimages())
       }
@@ -200,11 +200,11 @@ function EdicionTemplate({data}) {
       return(
         <SectionBox key={`${cityslug}-${i}`} >
           <HeadSection datesection={date} country={country} titleSection={cityname} slug={cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
-          {cityslug &&  
-          <SlideCarouselCountry 
-          widthItem={width / 12} 
-          content={dataSlide()} 
-          bigimages={bigimages()} 
+          {cityslug &&
+          <SlideCarouselCountry
+          widthItem={width / 12}
+          content={dataSlide()}
+          bigimages={bigimages()}
           data={edition}
           handledata={handledata}
           searchEditions={searchEditions}
@@ -213,8 +213,8 @@ function EdicionTemplate({data}) {
         </SectionBox>
       )
 
-      
-    }) 
+
+    })
 
     const scrolltoPosition = (itemsRef) => {
       console.log('itemsRef', itemsRef.current)
@@ -225,9 +225,9 @@ function EdicionTemplate({data}) {
       }
     }
 
-   
 
- 
+
+
     useEffect(()=>{
       if(page != null && dataImages !== null){
         setOpenModal(true)
@@ -243,22 +243,22 @@ function EdicionTemplate({data}) {
       let DD =""
       let formatDate = null
       if(routedate) {
-        YYYY = routedate.slice(0,4) 
-        MM =  routedate.slice(4,6) 
+        YYYY = routedate.slice(0,4)
+        MM =  routedate.slice(4,6)
         DD =  routedate.slice(6,8)
         formatDate = YYYY+'/'+MM+'/'+DD
       }
       return formatDate
     }
 
-    
 
+console.log("jano eqiis",data);
 
   return (
     <>
       <HeadSeo
           title={
-            page ?  `ReadMetro - Página ${page}. Edición ${routeEdition}. ${city}, ${country}` : 
+            page ?  `ReadMetro - Página ${page}. Edición ${routeEdition}. ${city}, ${country}` :
             page == undefined && routeEdition ? `ReadMetro - Edición ${routeEdition}. ${city}, ${country}` :
             edition == undefined && city ? `ReadMetro - Edición ${city}, ${country}` :
             city == undefined && country ? `ReadMetro - ${country}` :
@@ -269,18 +269,18 @@ function EdicionTemplate({data}) {
           ogTwitterImage={siteMetadata.siteLogoSquare}
           ogType={"article"}
       />
-     
+
       {/* <h6>Idioma: {lang}</h6>
       <h6>Pais: {country}</h6>
       <h6>Ciudad: {city}</h6>
       <h6>Edicion: {edition}</h6>
       <h6>Pagina: {page}</h6> */}
 
-      <Suscription />
+      <Suscription data={data} />
 
- 
+
         {data ? newlistsections : 'Cargando'}
-     
+
         <Dialogmodal openModal={openModal} onCloseModal={()=>handleCloseModal()}  >
           <Box sx={{  ml:'-5px', width:'calc(100% + 10px)'}} ref={scrollRef} id={"refdialogcontent"} >
           <Box sx={{display:'flex', p:'.5rem', justifyContent: 'space-between'}}  >
@@ -303,24 +303,24 @@ function EdicionTemplate({data}) {
                   Cerrar
                 </Button>
               </Link>
-              
-              
+
+
             </Box>
             {
-              page && routedate && dataImages ?             
+              page && routedate && dataImages ?
               <NewsPagesList  dataImages={dataImages} date={routedate} edition={routeEdition} page={page} scrolltoPosition={scrolltoPosition}/>
               : <>
               <Skeleton variant="rectangular" width={"calc(100% - 1rem"} height={400} sx={{m:'1rem .5rem'}} />
               <Skeleton variant="rectangular" width={"calc(100% - 1rem"} height={400} sx={{m:'1rem .5rem'}} />
               <Skeleton variant="rectangular" width={"calc(100% - 1rem"} height={400} sx={{m:'1rem .5rem'}} /></>
             }
-            
+
 
           </Box>
-            
+
 
         </Dialogmodal>
-        
+
     </>
   )
 }
@@ -353,5 +353,3 @@ export async function getServerSideProps({ params }) {
 
 
 export default EdicionTemplate
-
-
