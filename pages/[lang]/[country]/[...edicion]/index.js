@@ -34,6 +34,12 @@ import HeadSectionCenter from '@/components/UI/Molecula/headSectionCenter';
 
 function EdicionTemplate({data}) {
 
+  data = data[0] == undefined ? data : data[0].cities[0]
+
+  //console.log('data del data', typeof data, data[0])
+
+  //return false
+
   const scrollRef = useRef(null)
 
   const router = useRouter()
@@ -59,7 +65,8 @@ function EdicionTemplate({data}) {
   //const [imageError, setImageError] = useState(false);
   const [openModal, setOpenModal] = useState(false)
 
-  const [counterShow, setCounterShow] = useState(10)
+  const [counterShow, setCounterShow] = useState(20)
+  const [noData,setNoData] = useState('')
 
 
 
@@ -107,8 +114,6 @@ function EdicionTemplate({data}) {
           let arrayDate = date.split('-')
           let formatDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`
             arrayDates.push(formatDate)
-          
-          
         })
 
       }
@@ -161,6 +166,8 @@ function EdicionTemplate({data}) {
     
     let enterDate
 
+    //console.log('arrayEditions>', arrayEditions)
+
     const newlistsections = arrayEditions.map((edition, i)=>{
       const pages = edition.pages
       const cityslug = edition.cityslug
@@ -209,10 +216,12 @@ function EdicionTemplate({data}) {
           }
         ) 
       }
+
       
+
       if( routeEdition ==  cityslug && dataImages == null && date.replaceAll('/', '') == routedate ){
           setDataImages(bigimages())
-      }
+      } 
 
 
       function titleMonth(enterMonth){
@@ -320,13 +329,14 @@ function EdicionTemplate({data}) {
 
  
     useEffect(()=>{
+      //console.log('dataImages open', dataImages , page )
       if(page != null && dataImages !== null){
         setOpenModal(true)
-//        console.log('dataImages open', dataImages)
+        
       } else {
         setOpenModal(false)
       }
-    }, [])
+    }, [dataImages, page, routedate])
 
     const formatdatePdf = () => {
       let YYYY =""
@@ -431,15 +441,31 @@ export async function getServerSideProps({ params }) {
   //https://api.readmetro.com/chile/mujeres/full.json
 
   // Fetch data from external API
-  //const res = await fetch(`https://api.readmetro.com/${params.archivo}/index.json`)
-  //const res = await fetch(`https://api.readmetro.com/${params.country}/${params.edicion[0]}/index.json`)
-  const res = await fetch(`https://api.readmetro.com/${params.country}/${params.edicion[0]}/full.json`)
+  console.log('les params', params.edicion)
+  
+  let res = ""
+  if(params.edicion[1] || params.edicion[1] && params.edicion[2] && params.edicion[2] != 'archivo') {
+    const YYYY = params.edicion[1].slice(0,4)
+    const MM = params.edicion[1].slice(4,6)
+    const DD = params.edicion[1].slice(6,8)
+    const formatDate = `${YYYY}-${MM}-${DD}`
+    res = await fetch(`https://pdfserv2.readmetro.com/readmetro.php?country=${params.country}&editions=${params.edicion[0]}&date=${formatDate}`)
+ 
+  } else {
+    res = await fetch(`https://api.readmetro.com/${params.country}/${params.edicion[0]}/full.json`)
+    
+  }
+
   const data = await res.json()
 
-  // Pass data to the page via props
-  return { props: {
-    data
-  }}
+    // Pass data to the page via props
+    return { props: {
+      data
+    }}
+  //const res = await fetch(`https://api.readmetro.com/${params.archivo}/index.json`)
+  //const res = await fetch(`https://api.readmetro.com/${params.country}/${params.edicion[0]}/full.json`)
+  //const res = await fetch(`https://api.readmetro.com/${params.country}/${params.edicion[0]}/full.json`)
+  
 }
 
 

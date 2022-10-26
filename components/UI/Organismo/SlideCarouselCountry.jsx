@@ -335,7 +335,7 @@ export default function SlideCarouselCountry(props){
                            
                             <Link href={`/${lang}/${country}/${data.cityslug}/${data.date.replaceAll('/', '')}/${i+1}`}>
                                 <Button variant="contained" endIcon={<ExpandIcon />} onClick={()=>searchEditions(i, bigimages)} >
-                                    Expandirr
+                                    Expandir
                                 </Button>
                             </Link>
                             

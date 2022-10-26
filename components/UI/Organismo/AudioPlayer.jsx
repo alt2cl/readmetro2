@@ -130,11 +130,14 @@ const useMultiAudio = urls => {
 
     //si devielve -1 es porque esta detenido sino devuelve el index en el array
     const currentIndex = players.findIndex(p => p.playing === true);
+    const paginaindice = newPlayers[targetIndex].num
+    const splitpagina = paginaindice.split('.')
 
 
     //console.log('current index:', currentIndex, targetIndex)
 
     if (currentIndex !== -1 && currentIndex !== targetIndex) {
+      console.log('entre 01')
         //entra si el target distinto al que esta sonanado
         //detiene al que esta sonanado
       newPlayers[currentIndex].playing = false;
@@ -142,26 +145,39 @@ const useMultiAudio = urls => {
       newPlayers[targetIndex].playing = true;
 
     } else if (currentIndex !== -1) {
+      console.log('entre 02')
         //entra si es igual el current y el target y detiene
       newPlayers[targetIndex].playing = false;
+      dispatch(updateCurrentPlay({
+        show: false,
+        play: false,
+        title: 'Titulo 1',
+        index : splitpagina[1] - 1,
+        page: splitpagina[0] - 1
+      }))
     } else if (targetIndex == 100){
         //este pone play al current
-        console.log('current-> a',  newPlayers[0])
+        console.log('entre 03')
         newPlayers[0].playing = true;
     } else  {
         //este pone play al current
+        console.log('entre 04')
         
       newPlayers[targetIndex].playing = true;
 
-      const paginaindice = newPlayers[targetIndex].num
-      const splitpagina = paginaindice.split('.')
+      
+
+      console.log('data audio player targetIndex', splitpagina[1] - 1, splitpagina[0] - 1 )
 
       dispatch(updateCurrentPlay({
+        show: false,
         play: true,
         title: 'Titulo 1',
-        index : splitpagina[1],
-        page: splitpagina[0]
+        index : splitpagina[1] - 1,
+        page: splitpagina[0] - 1
       }))
+
+      
     }
 
     setPlayers(newPlayers);
@@ -192,6 +208,13 @@ const useMultiAudio = urls => {
         setPlayers(newPlayers);
         //playAll();
         //console.log('aldo ended audio.....', newPlayers);
+        dispatch(updateCurrentPlay({
+          show: false,
+          play: false,
+          title: 'Titulo 1',
+          index : i ,
+          page:  Number(source.num.slice(0,1)) - 1
+        }))
       });
     });
     return () => {

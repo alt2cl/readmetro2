@@ -28,6 +28,9 @@ import Breadcumb from '@/components/UI/Molecula/Breadcumb'
 
 function CountryTemplate({data}) {
 
+  data = data[0] == undefined ? data : data[0]
+
+
 
   const router = useRouter()
 
@@ -298,13 +301,27 @@ function CountryTemplate({data}) {
 
 
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params, query }) {
 
   //https://api.readmetro.com/chile/mujeres/full.json
 
+let res=""
+
+console.log('loxx params:', params , query._date)
+
+if(query._date != undefined){
+  const YYYY = query._date.slice(0,4)
+    const MM = query._date.slice(4,6)
+    const DD = query._date.slice(6,8)
+    const formatDate = `${YYYY}-${MM}-${DD}`
+    res = await fetch(`https://pdfserv2.readmetro.com/readmetro.php?country=${params.country}&date=${formatDate}`) 
+} else {
+  res = await fetch(`https://api.readmetro.com/${params.country}/index.json`)
+}
+  
+
 
   // Fetch data from external API
-  const res = await fetch(`https://api.readmetro.com/${params.country}/index.json`)
   //const res = await fetch(`https://api.readmetro.com/${params.country[0]}/${params.country[1]}/full.json`)
   const data = await res.json()
 

@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['rm.metrolatam.com'],
+    domains: ['rm.metrolatam.com', 'pdfserv2.readmetro.com'],
   },
   // experimental: {
   //   optionalCatchAll: true,

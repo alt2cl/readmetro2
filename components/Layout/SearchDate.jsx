@@ -98,7 +98,9 @@ const textfielddate = (theme) => ({
 
 const SearchDate = (props) => {
 
-  const {defaultValueCountry, menupaises, lang } = props
+  const {defaultValueCountry, menupaises, lang, landingCountry, landingEdition, landingArchivo, router } = props
+
+
   
 
   //console.log('props search: ',props)
@@ -106,34 +108,39 @@ const SearchDate = (props) => {
   const dispatch = useDispatch()
 
     const [anchorEl, setAnchorEl] = useState(null);
-    const router = useRouter();
  
     const [valueDate, setValueDate] = useState(new Date());
 
+    const [fechasCalendario, setFechasCalendario] = useState([]);
+
 
     const handleChangeDate = (newValue) => {
+
+      console.log('datepicker', newValue)
       setValueDate(newValue);
       const formatDate = newValue.toLocaleDateString('es-CL', { year: 'numeric',month: '2-digit',day: '2-digit' })
       const arrayDate = formatDate.split("-")
       const dateString = arrayDate.length > 2 ? `${arrayDate[2]}/${arrayDate[1]}/${arrayDate[0]}` : null
+
+      console.log('datepicker 2', dateString , defaultValueCountry, router)
       
       dispatch(updateDateSlice(dateString))
 
       if(defaultValueCountry == "/"){
-        //console.log('search estoy en el home')
+        console.log('search estoy en el home')
         router.push(`/?_date=${dateString.replaceAll('/','')}`)
       }
 
-      // if (landingArchivo) {
-      //   //console.log('search estoy en el archivo')
-      //   router.push(`/${lang}/${country}/${edition}/${dateString.replaceAll('/','')}`)
+      if (landingArchivo || landingEdition ) {
+        console.log('search estoy en el archivo')
+        router.push(`/${lang}/${router.query.country}/${router.query.edicion[0]}/${dateString.replaceAll('/','')}`)
 
-      // }
+      }
 
-      // if (landingEdition) {
-      //   //console.log('search estoy en el landing edicion', router)
-      //   router.push(`/${lang}/${country}/${edition}/${dateString.replaceAll('/','')}`)
-      // }
+      if (landingCountry) {
+        console.log('search estoy en el landing edicion', router)
+        router.push(`/${lang}/${router.query.country}/?_date=${dateString.replaceAll('/','')}`)
+      }
       
     };
 
@@ -146,18 +153,23 @@ const SearchDate = (props) => {
     const menuId = 'primary-search-account-menu';
     const isMenuOpen = Boolean(anchorEl);
 
-    const listEnableDates = useSelector(state => state.date.arrayEnableDates)
+    // const listEnableDates = useSelector(state => state.date.arrayEnableDates)
+
+    // console.log('listEnableDates',listEnableDates)
+
+
     
 
-    const handleMobileMenuClose = () => {
-        setMobileMoreAnchorEl(null);
-      };
+    // const handleMobileMenuClose = () => {
+    //     setMobileMoreAnchorEl(null);
+    //   };
     
 
 
 
     const handleChangeSelectcountry = (e) => {
-      console.log('e.target.value', e.target.value)
+      dispatch(updateDateSlice(null))
+      //console.log('e.target.value', e.target.value)
       if(e.target.value == '/'){
         router.push("/")
       } else {
@@ -167,19 +179,21 @@ const SearchDate = (props) => {
     }
 
    
-    const dataOptions = menupaises.map((item)=>{
-      return(
-        <option value={item.slug} key={item.slug}>{item.name}</option>
-      )
-    })
+    // const dataOptions = menupaises.map((item)=>{
+    //   return(
+    //     <option value={item.slug} key={item.slug}>{item.name}</option>
+    //   )
+    // })
 
 
-    const countrySelect = (countryvalue) => {
+    const countrySelect = () => {
+      // console.log('countryvalue',countryvalue )
+     
 
       return(
 
         <NativeSelect css={pullproduct}
-          defaultValue={countryvalue}
+          defaultValue={router.query.country ? router.query.country : '/'}
           inputprops={{
             name: 'country',
             id: 'uncontrolled-native',
@@ -199,21 +213,61 @@ const SearchDate = (props) => {
       )
     }
 
+    
 
 
+    useEffect(()=>{
+
+      fetch(`https://api.readmetro.com/${router.query.country}/dates_editions_by_country.json`)
+      .then((response)=>response.json())
+      .then((fechas=>{
+
+        let arrayfechas = []
+        let arrayfechasCountry = []
+
+        console.log('valor router', router.query.edicion)
+
+        for (const key in fechas) {
+            if (fechas.hasOwnProperty(key) && router.query.edicion && router.query.edicion[0] && fechas[key].indexOf(router.query.edicion[0]) > -1) {
+              const YYYY = key.slice(0,4)
+              const MM = key.slice(5,7)
+              const DD = key.slice(8,10)
+              arrayfechas.push(`${DD}-${MM}-${YYYY}`)
+            } else if ( fechas.hasOwnProperty(key)) {
+              const YYYY = key.slice(0,4)
+              const MM = key.slice(5,7)
+              const DD = key.slice(8,10)
+              arrayfechasCountry.push(`${DD}-${MM}-${YYYY}`)
+
+            }
+        }
+
+        if(router.query.edicion == undefined){
+          setFechasCalendario(arrayfechasCountry)
+        } else {
+          setFechasCalendario(arrayfechas)
+        }
+
+
+        // if(arrayfechas.ediciones.includes('mujeres')) {
+          
+        // }
+        
+      }))
+
+    },[router.query.country])
 
       
 
 
-
-      
-console.log('defaultValueCountry currentSection', defaultValueCountry)
+console.log('fechas del calendario:', fechasCalendario)
+ 
         
 
     return (
         <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
 
-          {countrySelect(defaultValueCountry)}
+          {countrySelect()}
 
         <Box sx={{height:'45px', flexGrow: '1'}}>
 
@@ -230,12 +284,11 @@ console.log('defaultValueCountry currentSection', defaultValueCountry)
                 toolbarFormat="dd MMMM"
                 disableFuture
                 shouldDisableDate={(dateParam) => {
-                  
                   const m = (('0'+(dateParam.getMonth()+1))).slice(-2)
                   const y = dateParam.getFullYear()
                   const d =  ("0" + dateParam.getDate()).slice(-2);
                   const stringDate = `${d}-${m}-${y}`
-                  return listEnableDates.includes(stringDate) ? false : true;
+                  return fechasCalendario.includes(stringDate) ? false : true;
                   //console.log('shouldDisableDate(dateParam)', shouldDisableDate(dateParam))
                   //return disableDates(dateParam)
                 }}
