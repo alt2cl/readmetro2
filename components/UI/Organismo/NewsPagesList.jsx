@@ -109,7 +109,7 @@ const NewsPagesList = (props) => {
         newsPage.push(
             <Box sx={{position: 'relative', pb: '1rem'}} key={`itemNewspaper${index}`} id={`page-${index}`} ref={el => itemsRef.current[index] = el}>
                 <Box sx={{alignItems: 'center',display:'flex', position: 'sticky', top: '0px', zIndex: '20', background: getListAudios(index).length > 0 ? 'linear-gradient(to bottom, rgba(58,58,70,1) 20%,rgba(58,58,70,0))': 'linear-gradient(to bottom, rgba(58,58,70,0.3) 20%,rgba(58,58,70,0))', p: '5px 0 1rem 5px' }}>
-                    <AudioPlayList urls={getListAudios(index)} page={index}/>
+                    <AudioPlayList urls={getListAudios(index)} page={index} cantPages={dataImages.countpages}/>
                     <AudioPlayer urls={getListAudios(index)} page={index} />
                 </Box>
                 <Box sx={{position: 'relative'}}>

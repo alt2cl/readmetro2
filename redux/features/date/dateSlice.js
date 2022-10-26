@@ -6,7 +6,7 @@ export const dateSlice = createSlice({
   name: 'date',
   initialState: {
     //starDate: fecha,
-    stringDate: '',
+    stringDate: null,
     arrayEnableDates: []
     
   },

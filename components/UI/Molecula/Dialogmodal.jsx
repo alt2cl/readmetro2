@@ -40,11 +40,62 @@ export default function Dialogmodal(props) {
       playList[pageplayer][indexplayer].audio.pause()
       dispatch(updateCurrentPlay({
         show: showplayer,
-        play: false,
+        play: true,
         title: `Página ${pageplayer}`,
         index: indexplayer,
         page: pageplayer,
       }))
+    }
+
+    const handleNextAudio = () => {
+
+      //console.log('playListtt', playList)
+
+
+      if(playList[pageplayer][indexplayer]){
+        playList[pageplayer][indexplayer].audio.pause();
+        playList[pageplayer][indexplayer].audio.currentTime = 0
+      }
+
+      
+      if(playList[pageplayer][indexplayer + 1]) {
+        console.log('no hay entre al 1', pageplayer, indexplayer + 1 , playList[pageplayer])
+        
+        playList[pageplayer][indexplayer + 1].audio.play()
+
+        dispatch(updateCurrentPlay({
+          show: showplayer,
+          play: true,
+          title: `Página ${pageplayer}`,
+          index: indexplayer + 1,
+          page: pageplayer,
+        }))
+      } else {
+        
+        console.log('no hay entre al 2', pageplayer, indexplayer, playList[pageplayer + 1])
+
+        // playList[pageplayer][indexplayer].audio.pause()
+        // playList[pageplayer][indexplayer].audio.currentTime = 0
+
+
+        if (playList[pageplayer + 1][0]) {
+            //playList[pageplayer + 1][0].audio.play()
+
+            dispatch(updateCurrentPlay({
+              show: showplayer,
+              play: true,
+              title: `Página ${pageplayer + 1}`,
+              index: -1,
+              page: pageplayer + 1,
+            }))
+
+        } 
+        
+      }
+      
+
+      
+
     }
 
     const handlePlayAudio = () => {
@@ -136,7 +187,7 @@ export default function Dialogmodal(props) {
                       <PlayCircleOutlineIcon  fontSize="inherit" />
                     </IconButton>
                     }
-                    <IconButton color="primary" aria-label="Siguiente Audio" size="large">
+                    <IconButton color="primary" aria-label="Siguiente Audio" size="large" onClick={() => handleNextAudio()}>
                       <SkipNextIcon  fontSize="inherit" />
                     </IconButton>
                 </Box>

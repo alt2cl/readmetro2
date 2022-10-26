@@ -11,9 +11,8 @@ import { ConstructionOutlined } from "@mui/icons-material";
 
 
 const AudioPLayList = (props) => {
-    const {urls, page} = props
+    const {urls, page, cantPages} = props
 
-    
 
     const checkedplay = useSelector(state => state.audioplayer.currentPlay.play)
     const showplayer = useSelector(state => state.audioplayer.currentPlay.show)
@@ -21,11 +20,9 @@ const AudioPLayList = (props) => {
     const indexplayer = useSelector(state => state.audioplayer.currentPlay.index)
     const playList = useSelector(state => state.audioplayer.playList)
 
-    console.log('page::',pageplayer, page)
+    console.log('urls',cantPages)
 
     const dispatch = useDispatch()
-
-    
 
     let sources = []
 
@@ -35,18 +32,23 @@ const AudioPLayList = (props) => {
         const num = item.numitem
         const audio = new Audio(url)
         //audio.addEventListener("ended",(event) => {})
-        sources.push(
-            {
-                id: `id-audio-${num}`,
-                url: url,
-                num: num,
-                audio: audio,
-                playing : false,
-                next: false
-              }
-        )
+            sources.push(
+                {
+                    id: `id-${index}-audio-${num}`,
+                    url: url,
+                    num: num,
+                    audio: audio,
+                    playing : false,
+                    next: false
+                  }
+            )
+
+        
+        
     }
 
+
+console.log('sources por cada render', page, sources)
 
 
     // if(checkedplay == false && indexplayer == audioIndex && indexplayer != 0) {
@@ -74,6 +76,7 @@ const AudioPLayList = (props) => {
         //console.log('myPlaylist[currentPage]', myPlaylist[currentPage])
         myPlaylist[pageplayer][indexplayer].audio.pause()
         myPlaylist[pageplayer][indexplayer].audio.currentTime = 0
+
         
         if(counter < lengtlist) {
             dispatch(updateCurrentPlay({
@@ -109,24 +112,34 @@ const AudioPLayList = (props) => {
             }
         ))
 
+        
+
     }
-
-
-    
-
-   
-
-
 
 
 
     useEffect(()=>{
-  
 
-        if(sources.length > 0) {
+        if(sources.length > 0){
             dispatch(updatePlayList(sources))
+
         }
 
+        
+
+        return ()=>{
+            sources.forEach((source, i) => {
+                //quita todos los event listener del dom html
+                source.audio.removeEventListener("ended", (event) => {
+                    plaiall()
+                });
+              });
+
+            //   {sources.length > 0 && dispatch(updatePlayList(sources))}            
+              
+        }
+
+        
     },[])
 
    

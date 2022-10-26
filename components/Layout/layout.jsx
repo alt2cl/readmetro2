@@ -15,7 +15,7 @@ function Layout( props ) {
     const router = useRouter()
     const landingHome = router.query.country ? false : true
     const landingCountry = router.query.country && !router.query.edicion ? true : false
-    const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
+    const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] != 'archivo' ? true : false
     const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
     const lang = router.query.lang ? router.query.lang : null
 
@@ -25,14 +25,15 @@ function Layout( props ) {
     const [thisSection, setThisSection] = useState('/')
 
     useEffect(()=>{
-        setThisSection(landingHome ? '/' : router.query.country)
+        console.log('countryvalue de entreda',thisSection )
+        setThisSection(router.query.country)
 
-    })
+    },[thisSection])
 
     return (
         <>
             <Header searchInput={
-                <SearchDate lang={lang}  menupaises={menupaises} defaultValueCountry={landingHome ? `/` : `${router.query.country}`} />
+                <SearchDate lang={lang} router={router}  menupaises={menupaises} defaultValueCountry={thisSection} landingCountry={landingCountry} landingEdition ={landingEdition } landingArchivo={landingArchivo}/>
             } />
             
             <main>
