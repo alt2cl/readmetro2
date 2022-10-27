@@ -218,7 +218,8 @@ const SearchDate = (props) => {
 
     useEffect(()=>{
 
-      fetch(`https://api.readmetro.com/${router.query.country}/dates_editions_by_country.json`)
+      if(router.query.country){
+        fetch(`https://api.readmetro.com/${router.query.country}/dates_editions_by_country.json`)
       .then((response)=>response.json())
       .then((fechas=>{
 
@@ -255,12 +256,15 @@ const SearchDate = (props) => {
         
       }))
 
+      }
+
+      
+
     },[router.query.country])
 
       
 
 
-console.log('fechas del calendario:', fechasCalendario)
  
         
 

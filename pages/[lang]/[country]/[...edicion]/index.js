@@ -29,6 +29,7 @@ import {updateCurrentPlay} from '@/redux/features/audioplayer/audioplayerSlice'
 import Suscription from '@/components/UI/Organismo/Suscription';
 import Breadcumb from '@/components/UI/Molecula/Breadcumb'
 import HeadSectionCenter from '@/components/UI/Molecula/headSectionCenter';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 
@@ -36,7 +37,7 @@ function EdicionTemplate({data}) {
 
   data = data[0] == undefined ? data : data[0].cities[0]
 
-  //console.log('data del data', typeof data, data[0])
+  console.log('data del data', data, data.allEditions)
 
   //return false
 
@@ -65,7 +66,7 @@ function EdicionTemplate({data}) {
   //const [imageError, setImageError] = useState(false);
   const [openModal, setOpenModal] = useState(false)
 
-  const [counterShow, setCounterShow] = useState(20)
+  const [counterShow, setCounterShow] = useState(10)
   const [noData,setNoData] = useState('')
 
 
@@ -81,22 +82,27 @@ function EdicionTemplate({data}) {
 
 
  
-
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  };
 
 
     const handleOpenModal = () => {
       setOpenModal(true)
     };
-    const handleCloseModal = () => { 
+   
+
+    const handleBackModal = () => { 
       //setDataImages(null)
-      setOpenModal(false)
+      router.back()
       dispatch(updateCurrentPlay({
-        show: false,
-        play: false,
-        title: 'Titulo playlist 1',
-        index : 1,
-        page: 1
-    }))
+          show: false,
+          play: false,
+          title: 'Titulo playlist 1',
+          index : 1,
+          page: 1
+      }))
+    
     };
 
 
@@ -153,7 +159,7 @@ function EdicionTemplate({data}) {
 
 
     const searchEditions = (index, bigimages) => {
-      setOpenModal(true)
+      //setOpenModal(true)
       setDataImages(bigimages)
     }
 
@@ -332,11 +338,10 @@ function EdicionTemplate({data}) {
       //console.log('dataImages open', dataImages , page )
       if(page != null && dataImages !== null){
         setOpenModal(true)
-        
       } else {
         setOpenModal(false)
       }
-    }, [dataImages, page, routedate])
+    }, [dataImages, page, routedate, openModal])
 
     const formatdatePdf = () => {
       let YYYY =""
@@ -387,12 +392,18 @@ function EdicionTemplate({data}) {
         {data ? newlistsections : 'Cargando'}
 
         <Box sx={{display:'flex', justifyContent:'center', pb: '4rem'}}>
-          <Button variant="outlined" onClick={()=>setCounterShow(counterShow + 10)}>Cargar ediciones anteriores</Button>
+          {routedate ? <Button variant="outlined" onClick={()=>router.push(`/${lang}/${country}/${cityslug}`)}>Ir a las últimas ediciones</Button> 
+          :<Button variant="outlined" onClick={()=>setCounterShow(counterShow + 10)}>Cargar ediciones anteriores</Button>
+          }
+          
         </Box>
      
-        <Dialogmodal openModal={openModal} onCloseModal={()=>handleCloseModal()}  >
-          <Box sx={{  ml:'-5px', width:'calc(100% + 10px)'}} ref={scrollRef} id={"refdialogcontent"} >
+        <Dialogmodal openModal={openModal} onCloseModal={handleBackModal}  >
+          <Box sx={{  ml:'-5px', width:'calc(100% + 10px)'}} ref={scrollRef} >
           <Box sx={{display:'flex', p:'.5rem', justifyContent: 'space-between'}}  >
+          <Button  variant="outlined" sx={{ml:'.5rem'}}  size="small" startIcon={<ArrowBackIcon />} onClick={handleBackModal}>
+                  Volver
+                </Button>
               <Box sx={{display: 'flex'}}>
                 <Button variant="outlined"  size="small" endIcon={<ShareIcon />} sx={{mr:'.5rem'}}>
                   Compartir
@@ -407,11 +418,8 @@ function EdicionTemplate({data}) {
               </Box>
 
 
-              <Link href={`/${lang}/${country}/${routeEdition}/`} passHref>
-                <Button  variant="outlined" sx={{ml:'.5rem'}}  size="small" endIcon={<CloseIcon />} onClick={()=>handleCloseModal()}>
-                  Cerrar
-                </Button>
-              </Link>
+                
+             
               
               
             </Box>
@@ -441,10 +449,10 @@ export async function getServerSideProps({ params }) {
   //https://api.readmetro.com/chile/mujeres/full.json
 
   // Fetch data from external API
-  console.log('les params', params.edicion)
+  console.log('les paramszzz', params.edicion, params.edicion[0], params.edicion[1], params.edicion[2])
   
   let res = ""
-  if(params.edicion[1] || params.edicion[1] && params.edicion[2] && params.edicion[2] != 'archivo') {
+  if(params.edicion[0] && params.edicion[1] && params.edicion[1] != 'archivo') {
     const YYYY = params.edicion[1].slice(0,4)
     const MM = params.edicion[1].slice(4,6)
     const DD = params.edicion[1].slice(6,8)

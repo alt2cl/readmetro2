@@ -139,7 +139,7 @@ const landingEdition = router.query.edicion && router.query.edicion[0] && router
                         variant="h6"
                         noWrap
                         component="div"
-                        sx={{ display: { xs: 'block', sm: 'block' } }}
+                        sx={{ display: { xs: 'block', sm: 'block', cursor: 'pointer' } }}
                     >
                     {pretext}
                     {titleSection}
