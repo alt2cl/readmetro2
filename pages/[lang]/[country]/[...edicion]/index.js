@@ -153,7 +153,7 @@ function EdicionTemplate({data}) {
 
 
     const searchEditions = (index, bigimages) => {
-      setOpenModal(true)
+      //setOpenModal(true)
       setDataImages(bigimages)
     }
 

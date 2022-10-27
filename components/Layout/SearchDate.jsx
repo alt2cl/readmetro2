@@ -260,7 +260,6 @@ const SearchDate = (props) => {
       
 
 
-console.log('fechas del calendario:', fechasCalendario)
  
         
 
