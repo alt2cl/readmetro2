@@ -307,7 +307,6 @@ export async function getServerSideProps({ params, query }) {
 
 let res=""
 
-console.log('loxx params:', params , query._date)
 
 if(query._date != undefined){
   const YYYY = query._date.slice(0,4)
