@@ -23,10 +23,11 @@ import axios from 'axios';
 export default  function Suscription(data) {
 
 
-    const [state, setState] = React.useState({ mail: false, telegram: false});
+    const [state, setState] = React.useState({ mail: true});
     const [suscripcion, setSuscripcion] = React.useState({});
     const [pais, setPais] = React.useState(typeof(data.data.countryslug) != "undefined" ? data.data.countryslug : data.data.country.countryslug);
     const [errorNombre, setErrorNombre] = React.useState(false);
+    const [errorApellido, setErrorApellido] = React.useState(false);
     const [errorCorreo, setErrorCorreo] = React.useState(false);
     const [errorEdition, setErrorEdition] = React.useState(false);
     const [errorPlataforma, setErrorPlataforma] = React.useState(false);
@@ -60,6 +61,12 @@ export default  function Suscription(data) {
       }else{
           setErrorNombre(false);
       }
+      if(event.target.name == "apellido" && event.target.value.length <= 3){
+          setErrorApellido(true);
+          return false;
+      }else{
+          setErrorApellido(false);
+      }
       setState({
         ...state,
         [event.target.name]: event.target.value,
@@ -75,16 +82,13 @@ export default  function Suscription(data) {
         setErrorNombre(true);
         return false;
       }
+      if(state.apellido == undefined){
+        setErrorApellido(true);
+        return false;
+      }
       if(state.correo == undefined){
         setErrorCorreo(true);
         return false;
-      }
-
-      if(!state.mail && !state.telegram){
-        setErrorPlataforma(true);
-        return false;
-      }else{
-        setErrorPlataforma(false);
       }
 
       if(Object.keys(suscripcion).length === 0){
@@ -92,8 +96,8 @@ export default  function Suscription(data) {
       }else{
         setErrorEdition(false);
 
-        if(!errorNombre && !errorCorreo){
-          console.log("enviando",errorNombre,errorCorreo);
+        if(!errorNombre && !errorApellido && !errorCorreo){
+          console.log("enviando",errorNombre,errorApellido,errorCorreo);
           axios.post('https://sub.readmetro.com/', {  suscripcion: suscripcion, state: state, pais:pais  } )
           .then(res => {
             console.log('res', res.data);
@@ -190,35 +194,15 @@ export default  function Suscription(data) {
                         </FormControl>
                     </Box>
                 </Box>
-                <Box sx={{border: '1px dashed #ccc', borderRadius: {xs: ' 0px 0px 5px 5px', sm: '5px'} , p: '10px', ml: {xs:'0px', sm: '1rem'} , flexGrow: '1'}}>
-                    <Box>Selecciona tus plataformas favoritas</Box>
-                    <Box>
-                        <FormControl sx={{ m: 3 }} error={errorPlataforma} component="fieldset" variant="standard">
-                            <FormGroup sx={{display: 'flex', flexDirection: {xs: 'row', sm: 'column'}}}>
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox  name="mail" onChange={handleChange} />
-                                    }
-                                    label="Mail"
-                                />
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox  name="telegram" onChange={handleChange} />
-                                    }
-                                    label="Telegram"
-                                />
 
-                            </FormGroup>
-                            <FormHelperText>{errorPlataforma ? 'Error: Selecciona al menos una plataforma.' : ''}</FormHelperText>
-                        </FormControl>
-
-                    </Box>
-                </Box>
             </Box>
             <Box>
                 <Box sx={{display:'flex', flexDirection: {xs:'column', sm:'row'}}} component="form" noValidate autoComplete="off">
                         <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>
                             <TextField id="inputNombre" error={errorNombre} helperText={errorNombre ? 'Error: Ingresa un nombre valido.' : ''} label="Nombre" variant="outlined" name="nombre" fullWidth onChange={handleChangeInfo} />
+                        </Box>
+                        <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>
+                            <TextField id="inputApellido" error={errorApellido} helperText={errorApellido ? 'Error: Ingresa un apellido valido.' : ''} label="Apellido" variant="outlined" name="apellido" fullWidth onChange={handleChangeInfo} />
                         </Box>
                         <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>
                             <TextField id="inputMail" error={errorCorreo} helperText={errorCorreo ? 'Error: Ingresa un correo valido.' : ''} label="Mail" variant="outlined" name="correo" fullWidth onChange={handleChangeInfo} />
