@@ -8,6 +8,8 @@ import HeadphonesIcon from '@mui/icons-material/Headphones';
 import AudioPlayer from '@/components/UI/Organismo/AudioPlayer'
 import AudioPlayList from '@/components/UI/Organismo/AudioPlayList'
 import fallback from '@/public/img/fallback.jpg'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import Link from 'next/link'
 
 
 const NewsPagesList = (props) => {
@@ -20,8 +22,9 @@ const NewsPagesList = (props) => {
 
 
     const audioContents = dataImages.recortes
+    const postLink = dataImages.link
 
-    console.log('audioContents', audioContents)
+    console.log('audioContents', dataImages)
 
     const itemsRef = useRef([])
 
@@ -41,13 +44,9 @@ const NewsPagesList = (props) => {
     let newsPage = []
 
     const getPinPagina = (pagina) => {
-
-        let pinpagina = []
-
-        if(audioContents){
-            audioContents.map((item, i)=>{
+        const pinpagina =  audioContents.map((item, i)=>{
                 if (item.pagina == pagina) {
-                    pinpagina.push(
+                    return(
                         <Box key={`chip-${i}`}>
                             <Chip sx={{
                             position: 'absolute',
@@ -59,23 +58,46 @@ const NewsPagesList = (props) => {
                             opacity: '0.6', 
                             '& .MuiChip-label': {paddingLeft:'10px', paddingRight:'10px'}
                             
-                        }} 
-                        icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} 
-                        label={pagina +'.'+(Number(item.recorte) + 1)  } />
-    
+                            }} 
+                            icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} 
+                            label={pagina +'.'+(Number(item.recorte) + 1)  } 
+                            />
                         </Box>
-                        
                         )
-    
-                  
                     }
             })
-        }
-
-
-
         return pinpagina
+    }
 
+    const getPinLink = (pagina) => {
+        const pinlink =  audioContents.map((item, i)=>{
+                if (item.pagina == pagina && item.url != "") {
+                    console.log('valor de item', item)
+                    return (
+                        <Box key={`chiplink-${i}`}>
+                            <Link href={item.url}>
+                                <Chip sx={{
+                                position: 'absolute',
+                                left: `calc(${item.x*100/1354}% - 10px)`, 
+                                top: `calc(${item.y*100/1500}% + 20px)`,
+                                background: 'black',
+                                color: 'white',
+                                height: '20px', 
+                                opacity: '0.6', 
+                                '& .MuiChip-label': {paddingLeft:'10px', paddingRight:'10px'}
+                                
+                                }} 
+                                icon={<OpenInNewIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} 
+                                label={"Leer..."  } 
+                                />
+
+                            </Link>
+                            
+                        </Box>
+                        )
+                    }
+            })
+        return pinlink
     }
 
     const getListAudios = (pagina) => {
@@ -124,6 +146,7 @@ const NewsPagesList = (props) => {
                         priority={index == 1 ? true : false}
                         />
                         {audioContents && audioContents.length > 0 && getPinPagina(index)}
+                        {audioContents && audioContents.length > 0 && getPinLink(index)}
                 </Box>
             </Box>
 
