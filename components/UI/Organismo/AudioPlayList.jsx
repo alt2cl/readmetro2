@@ -4,7 +4,6 @@ import HeadphonesIcon from '@mui/icons-material/Headphones';
 import { useDispatch } from 'react-redux'
 import {updateCurrentPlay, updatePlayList} from '@/redux/features/audioplayer/audioplayerSlice'
 import { useSelector } from 'react-redux'
-import { ConstructionOutlined } from "@mui/icons-material";
 
 
 
@@ -19,8 +18,9 @@ const AudioPLayList = (props) => {
     const pageplayer = useSelector(state => state.audioplayer.currentPlay.page)
     const indexplayer = useSelector(state => state.audioplayer.currentPlay.index)
     const playList = useSelector(state => state.audioplayer.playList)
+    const langCurrent = useSelector(state => state.lang.currentLang)
+    const langData = useSelector(state => state.lang.dataCurrentLang)
 
-    console.log('urls',cantPages)
 
     const dispatch = useDispatch()
 
@@ -48,7 +48,6 @@ const AudioPLayList = (props) => {
     }
 
 
-console.log('sources por cada render', page, sources)
 
 
     // if(checkedplay == false && indexplayer == audioIndex && indexplayer != 0) {
@@ -152,14 +151,14 @@ console.log('sources por cada render', page, sources)
 
                 checkedplay && pageplayer + 1 == page ?
                 <Button size="small" variant="contained" sx={{height: '35px',minWidth:'180px',fontSize: '11px',textAlign: 'left',lineHeight: '18px'}} 
-                startIcon={<HeadphonesIcon />}>  { `Escuchando página ${page}`}
+                startIcon={<HeadphonesIcon />}>  { `${langData.listWords.audio.listening} ${langData.listWords.audio.page} ${page}`}
                 </Button>
                 :<Button size="small" variant="contained" sx={{height: '35px',minWidth:'165px',fontSize: '11px',textAlign: 'left',lineHeight: '18px'}} 
-                startIcon={<HeadphonesIcon />} onClick={() => plaiall()}>  { `Escuchar página ${page}`}
+                startIcon={<HeadphonesIcon />} onClick={() => plaiall()}>  { `${langData.listWords.audio.listen} ${langData.listWords.audio.page} ${page}`}
                 </Button>
                 :
                 <Button disabled size="small" variant="contained" sx={{height: '35px',minWidth:'165px',fontSize: '11px',width: '132px',textAlign: 'left',lineHeight: '18px'}} 
-                startIcon={<HeadphonesIcon />}>Audio no disponible
+                startIcon={<HeadphonesIcon />}>{langData.listWords.audio.noAudio}
                 </Button>
             }
         </>

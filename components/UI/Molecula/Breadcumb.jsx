@@ -1,36 +1,42 @@
 import * as React from 'react';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+import Link from 'next/link';
 import Stack from '@mui/material/Stack';
+import { useSelector } from 'react-redux'
 
 function handleClick(event) {
   event.preventDefault();
-  console.info('You clicked a breadcrumb.');
 }
 
 
 const Breadcumb = (props) => {
 
+
     const {router} = props
 
-    const breadcrumbs = [
-        <Link underline="hover" key="1" color="inherit" href="/" onClick={handleClick}>
-          Home
-        </Link>,
-        <Link
-          underline="hover"
-          key="2"
-          color="inherit"
-          href="/material-ui/getting-started/installation/"
-          onClick={handleClick}
-        >
-          Country
-        </Link>,
-        <Typography key="3" color="text.primary">
-          Edition
-        </Typography>,
-      ];
+    const langCurrent = useSelector(state => state.lang.currentLang)
+
+   
+
+      let editionRouter
+      let countryRouter
+
+
+      
+
+      if(router.query.country){
+        const countryRouterValue = String(router.query.country)
+        countryRouter = countryRouterValue.charAt(0).toUpperCase() + countryRouterValue.slice(1)
+
+      }
+
+      if(router.query.edicion && router.query.edicion[0]){
+        const editionRouterValue = String(router.query.edicion[0])
+        editionRouter = editionRouterValue.charAt(0).toUpperCase() + editionRouterValue.slice(1)
+      }
+
+      
+      
 
       return (
         <Stack spacing={2}>
@@ -43,9 +49,9 @@ const Breadcumb = (props) => {
                 underline="hover"
                 key="2"
                 color="inherit"
-                href={router.query.edicion ? `/${router.query.lang}/${router.query.country}` : null }
+                href={`/${langCurrent}/${router.query.country}/` }
               >
-                {router.query.country}
+                {countryRouter}
               </Link>
             : null
             }
@@ -54,9 +60,9 @@ const Breadcumb = (props) => {
                 underline="hover"
                 key="2"
                 color="inherit"
-                href={router.query.edicion[1] ? `/${router.query.lang}/${router.query.country}/${router.query.edicion[0]}` : null }
+                href={ `/${langCurrent}/${router.query.country}/${router.query.edicion[0]}/`}
               >
-                {router.query.edicion[0]}
+                {editionRouter}
               </Link>
             : null
             }

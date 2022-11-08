@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState } from "react";
 // import Layout from '@/components/Layout/layout'
 import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
@@ -14,6 +14,8 @@ import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import HeadSeo from '@/components/Layout/headSeo'
 import siteMetadata from '@/src/siteMetadata'
 import Suscription from "@/components/UI/Organismo/Suscription";
+import IntroText from "@/components/UI/Molecula/IntroText";
+import { useSelector } from 'react-redux'
 
 
 
@@ -22,6 +24,9 @@ import Suscription from "@/components/UI/Organismo/Suscription";
 export default function Home({data}) {
 
   const [imageError, setImageError] = useState(false);
+
+  const langData = useSelector(state => state.lang.dataCurrentLang)
+  const langCurrent = useSelector(state => state.lang.currentLang)
   
 
     const listCountry = data.map((item, index) => {
@@ -77,9 +82,9 @@ export default function Home({data}) {
                   </Box>
 
                   <Box  sx={{position: 'absolute',bottom: '4px',left: '4px',right: '4px',display:'flex',justifyContent:'center', mb:'1rem'}}>
-                            <Link href={'/es/'+countryslug+'/'+item.cityslug}>
+                            <Link href={'/'+langCurrent+'/'+countryslug+'/'+item.cityslug}>
                             <Button variant="contained" endIcon={<ArrowForwardOutlinedIcon />}>
-                            Ir a la edición
+                            {langData.listWords.headSection.goEdition}
                             </Button>
                             </Link>
                         </Box>
@@ -95,7 +100,7 @@ export default function Home({data}) {
           <HeadSection titleSection={item.countryname} slug={item.countryslug} linksite={item.website} linkedition  
           colorBullet={'green'} 
           data={item}
-          pretext={'Lo último en: '}
+          pretext={langData.listWords.headSection.lastIn}
           />
 
           <SlideCarouselCountry 
@@ -121,6 +126,7 @@ export default function Home({data}) {
                     ogTwitterImage={siteMetadata.siteLogoSquare}
                     ogType={"website"}
                 /> 
+                <IntroText />
                 <Suscription />
     {listCountry}
     </>

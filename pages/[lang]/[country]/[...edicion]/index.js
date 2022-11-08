@@ -21,8 +21,8 @@ import ShareIcon from '@mui/icons-material/Share';
 //import Link from 'next/link'
 //import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
 //import useFormatDate from '@/components/CustomHooks/useFormatDate'
-import CloseIcon from '@mui/icons-material/Close';
-import Link from 'next/link';
+// import CloseIcon from '@mui/icons-material/Close';
+// import Link from 'next/link';
 
 import Skeleton from '@mui/material/Skeleton';
 import {updateCurrentPlay} from '@/redux/features/audioplayer/audioplayerSlice'
@@ -37,7 +37,11 @@ function EdicionTemplate({data}) {
 
   data = data[0] == undefined ? data : data[0].cities[0]
 
-  console.log('data del data', data, data.allEditions)
+  const langData = useSelector(state => state.lang.dataCurrentLang)
+  const langCurrent = useSelector(state => state.lang.currentLang)
+  
+
+  //console.log('data del data', data, data.allEditions)
 
   //return false
 
@@ -55,8 +59,8 @@ function EdicionTemplate({data}) {
   const routedate = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
   const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
 
-  const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
-  const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
+  // const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
+  // const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
 
   //return false
   //const {slug} = router.query || []
@@ -67,7 +71,7 @@ function EdicionTemplate({data}) {
   const [openModal, setOpenModal] = useState(false)
 
   const [counterShow, setCounterShow] = useState(10)
-  const [noData,setNoData] = useState('')
+  //const [noData,setNoData] = useState('')
 
 
 
@@ -82,14 +86,14 @@ function EdicionTemplate({data}) {
 
 
  
-  const handleCloseModal = () => {
-    setOpenModal(false)
-  };
+  // const handleCloseModal = () => {
+  //   setOpenModal(false)
+  // };
 
 
-    const handleOpenModal = () => {
-      setOpenModal(true)
-    };
+    // const handleOpenModal = () => {
+    //   setOpenModal(true)
+    // };
    
 
     const handleBackModal = () => { 
@@ -129,7 +133,7 @@ function EdicionTemplate({data}) {
 
       const cityslug = data.cityslug
       const cityname = data.cityname
-      const vertical = data.vertical
+      //const vertical = data.vertical
 
 
       data.allEditions.map((currentEdition, i) => {
@@ -166,7 +170,7 @@ function EdicionTemplate({data}) {
     const handledata =(i, dataimages)=> {
       setOpenModal(true)
       setDataImages(dataimages)
-      router.push(`/${lang}/${country}/${cityslug}/${date.replaceAll('/', '')}/${i+1}`)
+      router.push(`/${langCurrent}/${country}/${cityslug}/${date.replaceAll('/', '')}/${i+1}`)
       
     }
     
@@ -242,41 +246,40 @@ function EdicionTemplate({data}) {
           enterDate = date
           switch (String(splitDate[1])) {
             case '01':
-              currentMonth = "Enero" + " " + String(enterMonth).slice(0,4)
+              currentMonth = langData.listWords.months.january + " " + String(enterMonth).slice(0,4)
               break;
               case '02':
-                currentMonth = "Febrero" + " "+ String(enterMonth).slice(0,4)
+                currentMonth = langData.listWords.months.february + " "+ String(enterMonth).slice(0,4)
                 break;
                 case '03':
-                  currentMonth = "Marzo" + " "+ String(enterMonth).slice(0,4)
+                  currentMonth = langData.listWords.months.march + " "+ String(enterMonth).slice(0,4)
                   break;
                   case '04':
-                    currentMonth = "Abril" + " "+ String(enterMonth).slice(0,4)
+                    currentMonth = langData.listWords.months.april + " "+ String(enterMonth).slice(0,4)
                     break;
                     case '05':
-                      currentMonth = "Mayo" + " "+ String(enterMonth).slice(0,4)
+                      currentMonth = langData.listWords.months.may + " "+ String(enterMonth).slice(0,4)
                       break;
                       case '06':
-                        currentMonth = "Junio" + " "+ String(enterMonth).slice(0,4)
+                        currentMonth = langData.listWords.months.june + " "+ String(enterMonth).slice(0,4)
                         break;
                         case '07':
-                          currentMonth = "Julio" + " "+ String(enterMonth).slice(0,4)
+                          currentMonth = langData.listWords.months.july + " "+ String(enterMonth).slice(0,4)
                           break;
                           case '08':
-                            currentMonth = "Agosto" + " "+ String(enterMonth).slice(0,4)
+                            currentMonth = langData.listWords.months.august + " "+ String(enterMonth).slice(0,4)
                             break;
                             case '09':
-                              currentMonth = "Septiembre" + " "+ String(enterMonth).slice(0,4)
+                              currentMonth = langData.listWords.months.september + " "+ String(enterMonth).slice(0,4)
                               break;
                               case '10':
-                                currentMonth = "Octubre" + " "+ String(enterMonth).slice(0,4)
+                                currentMonth = langData.listWords.months.octuber + " "+ String(enterMonth).slice(0,4)
                                 break;
                                 case '11':
-                                  
-                                  currentMonth = "Noviembre"+ " "+ String(enterMonth).slice(0,4)
+                                  currentMonth = langData.listWords.months.november + " "+ String(enterMonth).slice(0,4)
                                   break;
                                   case '12':
-                                  currentMonth = "Diciembre" + " "+ String(enterMonth).slice(0,4)
+                                  currentMonth = langData.listWords.months.december + " "+ String(enterMonth).slice(0,4)
                                   break;
             default:
               currentMonth = "No Month"
@@ -335,7 +338,9 @@ function EdicionTemplate({data}) {
 
  
     useEffect(()=>{
-      //console.log('dataImages open', dataImages , page )
+      
+
+
       if(page != null && dataImages !== null){
         setOpenModal(true)
       } else {
@@ -392,36 +397,36 @@ function EdicionTemplate({data}) {
         {data ? newlistsections : 'Cargando'}
 
         <Box sx={{display:'flex', justifyContent:'center', pb: '4rem'}}>
-          {routedate ? <Button variant="outlined" onClick={()=>router.push(`/${lang}/${country}/${cityslug}`)}>Ir a las últimas ediciones</Button> 
-          :<Button variant="outlined" onClick={()=>setCounterShow(counterShow + 10)}>Cargar ediciones anteriores</Button>
+          {routedate ? <Button variant="outlined" onClick={()=>router.push(`/${lang}/${country}/${cityslug}`)}>{langData.listWords.bottons.goLastEditions}</Button> 
+          :<Button variant="outlined" onClick={()=>setCounterShow(counterShow + 10)}>{langData.listWords.bottons.loadEditions}</Button>
           }
           
         </Box>
      
-        <Dialogmodal openModal={openModal} onCloseModal={handleBackModal}  >
-          <Box sx={{  ml:'-5px', width:'calc(100% + 10px)'}} ref={scrollRef} >
-          <Box sx={{display:'flex', p:'.5rem', justifyContent: 'space-between'}}  >
-          <Button  variant="outlined" sx={{ml:'.5rem'}}  size="small" startIcon={<ArrowBackIcon />} onClick={handleBackModal}>
-                  Volver
+        <Dialogmodal openModal={openModal} onCloseModal={handleBackModal}   >
+          <Box sx={{  }} ref={scrollRef} >
+            <Box sx={{display:'flex', p:'.5rem', justifyContent: 'space-between', position: 'sticky',
+                top: '-20',
+                width: '100%',
+                zIndex: '999',
+                background: '#fff',
+                boxShadow: '0 4px 10px #5c5c5c',
+                ml:['-5px', '-25px'], width:['calc(100% + 10px)','calc(100% + 49px)' ]}}  >
+                <Button  variant="outlined" size="small" startIcon={<ArrowBackIcon />} onClick={handleBackModal}>
+                    {langData.listWords.bottons.back}
                 </Button>
-              <Box sx={{display: 'flex'}}>
-                <Button variant="outlined"  size="small" endIcon={<ShareIcon />} sx={{mr:'.5rem'}}>
-                  Compartir
-                </Button>
-                <a href={`https://rm.metrolatam.com/pdf/${formatdatePdf()}/${routedate}_${routeEdition}.pdf`}
-                target="_blank"
-                rel="noopener noreferrer">
-                  <Button  variant="outlined"  size="small" endIcon={<PictureAsPdfIcon />}>
-                    Descargar
+                <Box sx={{display: 'flex'}}>
+                  <Button variant="outlined"  size="small" endIcon={<ShareIcon />} sx={{mr:'.5rem'}}>
+                    {langData.listWords.bottons.share}
                   </Button>
-                </a>
-              </Box>
-
-
-                
-             
-              
-              
+                  <a href={`https://rm.metrolatam.com/pdf/${formatdatePdf()}/${routedate}_${routeEdition}.pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer">
+                    <Button  variant="outlined"  size="small" endIcon={<PictureAsPdfIcon />}>
+                      {langData.listWords.bottons.download}
+                    </Button>
+                  </a>
+                </Box>
             </Box>
             {
               page && routedate && dataImages ?             

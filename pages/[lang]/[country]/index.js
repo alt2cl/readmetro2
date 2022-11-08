@@ -253,7 +253,14 @@ function CountryTemplate({data}) {
 
       return(
         <SectionBox key={`${cityslug}-${i}`} >
-          <HeadSection datesection={date} country={country} titleSection={cityname} slug={cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
+          <HeadSection 
+          datesection={date} 
+          country={country} 
+          titleSection={cityname} 
+          slug={cityslug} 
+          linksite={data.website} 
+          routervalues={routervalues}
+          />
           {cityslug &&  
           <SlideCarouselCountry 
           widthItem={width / 12} 

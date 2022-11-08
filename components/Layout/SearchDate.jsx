@@ -31,6 +31,8 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 
 import enLocale from 'date-fns/locale/en-US';
 import esLocale from 'date-fns/locale/es';
+import ptLocale from 'date-fns/locale/pt-BR';
+import frLocale from 'date-fns/locale/fr';
 import bgLocale from 'date-fns/locale/bg';
 
 
@@ -100,8 +102,32 @@ const SearchDate = (props) => {
 
   const {defaultValueCountry, menupaises, lang, landingCountry, landingEdition, landingArchivo, router } = props
 
+  const langCurrent = useSelector(state=> state.lang.currentLang)
 
+  let langDatePicker 
+
+console.log('langCurrent>', langCurrent)
+  switch (langCurrent) {
+    case 'ES':
+      langDatePicker = esLocale
+      break;
+    case 'EN':
+      langDatePicker = enLocale
+      break;
+    case 'NE':
+      langDatePicker = enLocale
+      break;
+    case 'PT':
+      langDatePicker = ptLocale
+      break;
+    case 'FR':
+      langDatePicker = frLocale
+      break;
   
+    default:
+      langDatePicker = esLocale
+      break;
+  }
 
   //console.log('props search: ',props)
 
@@ -133,13 +159,13 @@ const SearchDate = (props) => {
 
       if (landingArchivo || landingEdition ) {
         console.log('search estoy en el archivo')
-        router.push(`/${lang}/${router.query.country}/${router.query.edicion[0]}/${dateString.replaceAll('/','')}`)
+        router.push(`/${router.query.lang}/${router.query.country}/${router.query.edicion[0]}/${dateString.replaceAll('/','')}`)
 
       }
 
       if (landingCountry) {
         console.log('search estoy en el landing edicion', router)
-        router.push(`/${lang}/${router.query.country}/?_date=${dateString.replaceAll('/','')}`)
+        router.push(`/${router.query.lang}/${router.query.country}/?_date=${dateString.replaceAll('/','')}`)
       }
       
     };
@@ -218,6 +244,10 @@ const SearchDate = (props) => {
 
     useEffect(()=>{
 
+
+
+      
+
       if(router.query.country){
         fetch(`https://api.readmetro.com/${router.query.country}/dates_editions_by_country.json`)
       .then((response)=>response.json())
@@ -276,7 +306,7 @@ const SearchDate = (props) => {
         <Box sx={{height:'45px', flexGrow: '1'}}>
 
         {defaultValueCountry != "/" ? 
-            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={esLocale}>
+            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={langDatePicker}>
             <Stack spacing={3} >
               <MobileDatePicker
                 label="Fecha de edición"

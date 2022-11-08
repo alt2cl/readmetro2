@@ -32,7 +32,7 @@ function Layout( props ) {
 
     return (
         <>
-            <Header searchInput={
+            <Header router={router} searchInput={
                 <SearchDate lang={lang} router={router}  menupaises={menupaises} defaultValueCountry={thisSection} landingCountry={landingCountry} landingEdition ={landingEdition } landingArchivo={landingArchivo}/>
             } />
             
