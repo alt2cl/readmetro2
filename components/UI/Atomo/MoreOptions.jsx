@@ -23,11 +23,11 @@ export default function BasicMenu(props) {
     <div>
       <Button
         id="basic-button"
-        variant="outlined"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
+        sx={{minWidth: '40px'}}
       >
         < MoreVertIcon />
       </Button>

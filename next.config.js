@@ -1,9 +1,16 @@
 /** @type {import('next').NextConfig} */
+
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
     domains: ['rm.metrolatam.com', 'pdfserv2.readmetro.com'],
+  },
+  experimental: {
+    fontLoaders: [
+      { loader: '@next/font/google', options: { subsets: ['latin'] } },
+    ],
   },
   // experimental: {
   //   optionalCatchAll: true,

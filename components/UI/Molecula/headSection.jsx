@@ -51,8 +51,10 @@ const HeadSection = (props) => {
     const router = useRouter();
 
     const langRedux = useSelector(state => state.lang.currentLang)
+    const langData = useSelector(state => state.lang.dataCurrentLang)
 
-    const lang = router.query.lang ? router.query.lang : null
+
+
 //const country = router.query.country ? router.query.country : null
 // const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
 // const edition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
@@ -66,34 +68,35 @@ const landingEdition = router.query.edicion && router.query.edicion[0] && router
 
 
 
-    const {slug, colorBullet, titleSection, options, pretext, linksite, linkedition, data, datesection, country} = props;
+    const {slug, colorBullet, titleSection, options, pretext, linksite, datesection, country} = props;
 
     const todaydate = new Date
 
-    //console.log('data headsection', data)
+
+    //return false
 
     const arrayOptions = []
 
     if(linksite) {
         arrayOptions.push(
-            {item:'Ir al sitio', link: linksite, target: '_blank'}
+            {item: langData.listWords.headSection.goWeb, link: linksite, target: '_blank'}
         )
     }
 
     if(!landingHome) {
         arrayOptions.push(
-            {item:'Ir a la Edición', link: '/'+langRedux+'/'+country+'/'+slug, target: '_top'}
+            {item:langData.listWords.headSection.goEdition , link: '/'+langRedux+'/'+country+'/'+slug, target: '_top'}
         )
     } else {
         arrayOptions.push(
-            {item:'Ir a la Edición', link: '/'+langRedux+'/'+slug, target: '_top'}
+            {item: langData.listWords.headSection.goEdition, link: '/'+langRedux+'/'+slug, target: '_top'}
         )
 
     }
  
     if(!landingHome) {
         arrayOptions.push(
-            {item:'Ver Archivo', link: '/'+langRedux+'/'+country +'/'+slug+'/archivo/', target: '_top'}
+            {item: langData.listWords.headSection.archive, link: '/'+langRedux+'/'+country +'/'+slug+'/archivo/', target: '_top'}
         )
     }
 
@@ -108,67 +111,70 @@ const landingEdition = router.query.edicion && router.query.edicion[0] && router
 
     const titlefecha = () => {
         if(fecha2 == fechahoy) {
-            return `Hoy ${fechahoy}`
+            return `${langData.listWords.headSection.today}  ${fechahoy}`
         } else if (landingEdition) {
-            return `Edición ${fecha2}`
+            return `${langData.listWords.headSection.edition}  ${fecha2}`
         } else {
-            return `Última Edición ${fecha2}`
+            return `${langData.listWords.headSection.lastEdition} ${fecha2}`
         }
         
     }
 
-    
+    console.log('colorBullet', colorBullet)
 
     return ( 
         <>
             <Box css={headSectionCSS.headWrapper} {...props} sx={{
-                flexDirection: { xs: props.options != null ? 'column' : 'row', md: 'row' },
+                flexDirection: { xs: props.options != null ? 'column' : 'row', md: 'row'},
                 alignItems: {xs: 'flex-start', md: 'center'},
             }}>
-                <div css={headSectionCSS.titlebullet}>
-                <Box sx={{
-                    height: 10,
-                    width: 10,
-                    backgroundColor: colorBullet ? colorBullet : 'green' ,
-                    borderRadius: '50%',
-                    mr: '0.5rem'
-                }}/>
-                <Box>
-                <Link href={`/${langRedux}/${country}/${slug}`}>
+                <Box css={headSectionCSS.titlebullet}>
+                    <Box sx={{
+                        height: 10,
+                        width: 10,
+                        backgroundColor: colorBullet ? colorBullet : (theme)=> theme.palette.primary.main,
+                        borderRadius: '50%',
+                        mr: '0.5rem',
+                        mt: datesection ? '-19px': null
+                    }}/>
+                    <Box>
+                    <Link href={`/${langRedux}/${country}/${slug}`}>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ display: { xs: 'block', sm: 'block', cursor: 'pointer', fontFamily: '"Bitter", serif', } }}
+                        >
+                        {pretext ? pretext + ' ' : null}
+                        {titleSection}
+                        </Typography>
+                    </Link>
                     <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ display: { xs: 'block', sm: 'block', cursor: 'pointer' } }}
-                    >
-                    {pretext}
-                    {titleSection}
-                    </Typography>
-                </Link>
-                <Typography
-                        variant="caption"
-                        noWrap
-                        component="span"
-                        sx={{ display: { xs: 'block', sm: 'block' }, color: '#82868b' }}
-                    >
-                    {datesection ? titlefecha() : null}
-                    </Typography>
+                            variant="caption"
+                            noWrap
+                            component="span"
+                            sx={{ display: { xs: 'block', sm: 'block' }, color: '#82868b' }}
+                        >
+                        {datesection ? titlefecha() : null}
+                        </Typography>
+                    </Box>
+                    
+                    <Divider light sx={{flexGrow: 1, ml: '1rem', mr: '1rem', height: '1px'}} />
                 </Box>
-                
-                <Divider light sx={{flexGrow: 1, ml: '1rem', mr: '1rem', height: '1px'}} />
-                </div>
                 <Box css={headSectionCSS.boxOptions} {...props} sx={{
                     width: { xs: props.options != null ? '100%' : 'auto', md: 'auto' },
                 }}>
                 {options?
                 <Box css={headSectionCSS.wrapOptions} >
                     {options}
-                    
                 </Box>
                     :
                     null
                 }
-                <MoreOptions options={arrayOptions} />
+                <Box sx={{mt: datesection ? '7px': null }}>
+                    <MoreOptions options={arrayOptions} />
+                </Box>
+                
                 </Box>
                 
                 

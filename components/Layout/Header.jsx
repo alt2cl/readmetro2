@@ -25,8 +25,8 @@ import { css } from '@emotion/react';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ElevationScroll from '@/components/CustomHooks/ElevationScroll';
-import { useDispatch } from 'react-redux'
-import { updateLangSlice  } from '@/redux/features/lang/langSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateLangSlice, updateCurrentLangSlice  } from '@/redux/features/lang/langSlice'
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import MenuList from '@mui/material/MenuList';
@@ -38,6 +38,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 
 import configsite from '@/src/configSite'
+import configlang from '@/src/configLang'
 
 
 const elevationFixedWrap = css({
@@ -73,22 +74,85 @@ export default function Header(props) {
   const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [langOptions, setLangOptions] = useState(configlang.langOptions[0]);
   const menupaises = configsite.routeCountry;
-  const langOptions = configsite.langOptions;
+  //let langOptions = configlang.langOptions[2];
+  const langList = configlang.langOptions;
+  const langCurrent = useSelector(state => state.lang.currentLang)
+  
 
-  const{ searchInput} = props
+  const{ searchInput, router} = props
+  const [language, setLanguage] = useState(router.query.lang ? router.query.lang : langCurrent);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+
+
+
 //console.log('configsite:', menupaises)
 
-const [language, setLanguage] = React.useState('ES');
 
-  const handleChange = (event) => {
+
+useEffect(()=>{
+  //console.log('event.target.value 2', language.toUpperCase(), router.query.lang )
+  const langRoute = language.toUpperCase()
+  switch (langRoute) {
+    case 'ES':
+      setLangOptions(configlang.langOptions[0])
+      dispatch(updateLangSlice(configlang.langOptions[0].slug))
+      dispatch(updateCurrentLangSlice(configlang.langOptions[0]))
+      router.query.lang = "ES"
+      router.push(router)
+      break;
+    case 'FR':
+      setLangOptions(configlang.langOptions[1])
+      dispatch(updateLangSlice(configlang.langOptions[1].slug))
+      dispatch(updateCurrentLangSlice(configlang.langOptions[1]))
+      router.query.lang = "FR"
+      router.push(router)
+    break;
+    case 'NE':
+      setLangOptions(configlang.langOptions[2])
+      dispatch(updateLangSlice(configlang.langOptions[2].slug))
+      dispatch(updateCurrentLangSlice(configlang.langOptions[2]))
+      router.query.lang = "NE"
+      router.push(router)
+    break;
+    case 'PT':
+      setLangOptions(configlang.langOptions[3])
+      dispatch(updateLangSlice(configlang.langOptions[3].slug))
+      dispatch(updateCurrentLangSlice(configlang.langOptions[3]))
+      router.query.lang = "PT"
+      router.push(router)
+    break;
+    case 'EN':
+      setLangOptions(configlang.langOptions[4])
+      dispatch(updateLangSlice(configlang.langOptions[4].slug))
+      dispatch(updateCurrentLangSlice(configlang.langOptions[4]))
+      console.log('event.configlang.langOptions[4]', configlang.langOptions[4].slug)
+      router.query.lang = "EN"
+      router.push(router)
+    break;
+  
+    default:
+      setLangOptions(configlang.langOptions[0])
+      dispatch(updateLangSlice(configlang.langOptions[0].slug))
+      dispatch(updateCurrentLangSlice(configlang.langOptions[0]))
+      router.query.lang = "ES"
+      router.push(router)
+      break;
+  }
+  //setLangSelect(router.query.lang)
+
+ },[language])
+
+ 
+
+  const handleChangeLang = (event) => {
     setLanguage(event.target.value);
+    console.log('event.target.value',event.target.value)
     dispatch(updateLangSlice(event.target.value))
-    
   };
 
 
@@ -188,13 +252,13 @@ const [language, setLanguage] = React.useState('ES');
                     color="#000"  
                     variant="subtitle2"
                 > 
-                     Acerca de Metro
+                     {langOptions.listWords.menu.about}
                 </Link>
                 </ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem>
-          <ListItemText>NUESTROS PORTALES</ListItemText>
+          <ListItemText>{langOptions.listWords.menu.portals}</ListItemText>
         </MenuItem>
         {menupaises.map((item)=>(
 
@@ -238,8 +302,7 @@ const [language, setLanguage] = React.useState('ES');
   );
 
 
-
-  const langOptionsRender = langOptions.map((item, i)=>{
+  const langOptionsRender = langList.map((item, i)=>{
     return(
       <MenuItem value={item.slug} key={item.name+i}>
         <Image src={item.flagUrl} alt={item.name} width={20} height={15} priority={i == 0 ? true : false}/>
@@ -292,7 +355,7 @@ const [language, setLanguage] = React.useState('ES');
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}
                     >
-                        Nuestros Portales
+                      {langOptions.listWords.menu.portals}
                     </Typography>
                     <KeyboardArrowDownIcon />
             </Button>
@@ -312,7 +375,7 @@ const [language, setLanguage] = React.useState('ES');
                     variant="subtitle2"
                 >
                   
-                     Acerca de Metro
+                  {langOptions.listWords.menu.about}
                 </Link>
             </Button>
           </Box>
@@ -322,14 +385,14 @@ const [language, setLanguage] = React.useState('ES');
               <FormControl sx={{ m: 1, minWidth: 50, paddingLeft: '1rem', borderLeft: '1px dotted #ccc', background: '#fff' }} >
                   <Select
                     value={language}
-                    onChange={handleChange}
+                    onChange={handleChangeLang}
                     //displayEmpty
                     inputprops={{ 'aria-label': 'Without label' }}
                     variant="standard"
                     css={selectLang}
                   >
                     <MenuItem value="">
-                      <em>Idioma</em>
+                      <em>{langOptions.listWords.menu.lang} </em>
                     </MenuItem>
                     {langOptionsRender}
                   </Select>

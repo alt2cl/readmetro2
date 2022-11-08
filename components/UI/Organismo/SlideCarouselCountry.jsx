@@ -7,6 +7,7 @@ import Slide from '@mui/material/Slide';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import IconButton from '@mui/material/IconButton';
+import Chip from '@mui/material/Chip'
 import ZoomInOutlinedIcon from '@mui/icons-material/ZoomInOutlined';
 import { useRouter } from 'next/router'
 import ExpandIcon from '@mui/icons-material/Expand';
@@ -19,7 +20,7 @@ import Button from '@mui/material/Button';
 //import Chip from '@mui/material/Chip';
 //import HeadphonesIcon from '@mui/icons-material/Headphones';
 //import useScrollTrigger from '@mui/material/useScrollTrigger';
-//import { useDispatch, useSelector } from 'react-redux';
+import {useSelector } from 'react-redux';
 //import { updateDialogSlice, closeDialog } from '@/redux/features/dialog/dialogSlice/'
 //import Dialogmodal from '@/components/UI/Molecula/Dialogmodal'
 //import { openDialog } from '@/redux/features/dialog/dialogSlice';
@@ -42,13 +43,16 @@ export default function SlideCarouselCountry(props){
 
     const lang = router.query.lang ? router.query.lang : null
     const country = router.query.country ? router.query.country : null
-    const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-    const edition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
-    const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
-    const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
+    // const city = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
+    // const edition = router.query.edicion && router.query.edicion[0] ? router.query.edicion[0] : null
+    // const date = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] != 'archivo' ? router.query.edicion[1] : null
+    // const page = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
 
-    const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
-    const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
+    // const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
+    // const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] == undefined ? true : false
+
+    const langData = useSelector(state => state.lang.dataCurrentLang)
+    
 
 
     //const [scrollTarget, setScrollTarget] = useState(undefined) 
@@ -158,6 +162,7 @@ export default function SlideCarouselCountry(props){
         
     
     }
+
 
     const controlCSS = {
         btnSig: (theme) => css({
@@ -329,13 +334,14 @@ export default function SlideCarouselCountry(props){
                     {optionsbtnsoff ? null :
                         <>
                         <Box css={slideCSS.counterOptions} sx={{display:'flex',justifyContent:'space-between'}}>
-                            <Button sx={{background: 'white'}} variant="outlined">
+                        <Chip label={i+1} variant="outlined" sx={{background: '#fff', ml:'0.5rem', borderColor: (theme) => theme.palette.primary.main, color: (theme) => theme.palette.primary.main, opacity:'0.8'}} />
+                            {/* <Button sx={{background: 'white'}} variant="outlined">
                             {i+1}
-                            </Button>
+                            </Button> */}
                            
                             <Link href={`/${lang}/${country}/${data.cityslug}/${data.date.replaceAll('/', '')}/${i+1}`}>
-                                <Button variant="contained" endIcon={<ExpandIcon />} onClick={()=>searchEditions(i, bigimages)} >
-                                    Expandir
+                                <Button variant="contained" endIcon={<ExpandIcon />} onClick={()=>searchEditions(i, bigimages)} sx={{opacity:'0.8'}} >
+                                    {langData.listWords.bottons.expand}
                                 </Button>
                             </Link>
                             

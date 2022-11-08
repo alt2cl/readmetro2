@@ -18,6 +18,7 @@ const clientSideEmotionCache = createEmotionCache();
 
 function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps} = props;
+
   //const stateMetaTitle = useSelector(state => state.metatags.tags.title)
   return (
     <Provider store={store}>
@@ -29,11 +30,12 @@ function MyApp(props) {
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin/>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet"></link>
+        <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@300;400;600&display=swap" rel="stylesheet"></link>
       </Head>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Layout>
+        <Layout >
           <Component {...pageProps} />
         </Layout>
       </ThemeProvider>

@@ -5,6 +5,13 @@ import PTflag from '@/public/img/flags/PT@3x.png'
 import USflag from '@/public/img/flags/US@3x.png'
 
 const configSite = {
+    "introText": {
+        "title":"¡Bienvenido a Read Metro! ",
+        "subtitle":"Aquí encontrarás tus ediciones diarias de todos los Publimetro del mundo. ",
+        "excerpt":"Enterate de que ocurre en el mundo un día como hoy...",
+        "link":"",
+        "logo":"",
+    },
     "routeCountry": [
         {
             "link":"/",
