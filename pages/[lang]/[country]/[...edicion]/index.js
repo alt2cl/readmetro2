@@ -403,15 +403,15 @@ function EdicionTemplate({data}) {
           
         </Box>
      
-        <Dialogmodal openModal={openModal} onCloseModal={handleBackModal}   >
+        <Dialogmodal openModal={openModal} onCloseModal={handleBackModal}  >
           <Box sx={{  }} ref={scrollRef} >
             <Box sx={{display:'flex', p:'.5rem', justifyContent: 'space-between', position: 'sticky',
-                top: '-20',
+                top: '0px',
                 width: '100%',
                 zIndex: '999',
                 background: '#fff',
                 boxShadow: '0 4px 10px #5c5c5c',
-                ml:['-5px', '-25px'], width:['calc(100% + 10px)','calc(100% + 49px)' ]}}  >
+                }}  >
                 <Button  variant="outlined" size="small" startIcon={<ArrowBackIcon />} onClick={handleBackModal}>
                     {langData.listWords.bottons.back}
                 </Button>

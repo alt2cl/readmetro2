@@ -1,12 +1,12 @@
-import { useState, useRef } from "react";
+import { useState} from "react";
 import Image from 'next/image';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import HeadphonesIcon from '@mui/icons-material/Headphones';
-import Button from '@mui/material/Button';
-import AudioPlayer from '@/components/UI/Organismo/AudioPlayer'
-import AudioPlayList from '@/components/UI/Organismo/AudioPlayList'
-import fallback from '@/public/img/fallback.jpg'
+// import Button from '@mui/material/Button';
+// import AudioPlayer from '@/components/UI/Organismo/AudioPlayer'
+// import AudioPlayList from '@/components/UI/Organismo/AudioPlayList'
+// import fallback from '@/public/img/fallback.jpg'
 
 const NewspaperBox = (props) => {
     const [imageError, setImageError] = useState(false);
@@ -17,24 +17,43 @@ const NewspaperBox = (props) => {
     let pinpagina = []
     const listAudios = []
 
+    console.log('props de newspaperbox:',audioContents, )
+    console.log('props de newspaperbox 2:',audioContents, )
+
     if(audioContents){
         audioContents.map((item, i)=>{
             if (item.pagina == pagina) {
                 pinpagina.push(
                     <Box key={`chip-${i}`}>
                         <Chip sx={{
-                        position: 'absolute',
-                        left: `calc(${item.x*100/1354}% - 10px)`, 
-                        top: `calc(${item.y*100/1500}% - 10px)`,
-                        background: 'black',
-                        color: 'white',
-                        height: '20px', 
-                        opacity: '0.6', 
-                        '& .MuiChip-label': {paddingLeft:'10px', paddingRight:'10px'}
-                        
-                    }} 
-                    icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} 
-                    label={pagina +'.'+(Number(item.recorte) + 1)  } />
+                            position: 'absolute',
+                            left: `calc(${item.x*100/1354}% - 10px)`, 
+                            top: `calc(${item.y*100/1500}% - 10px)`,
+                            background: 'black',
+                            color: 'white',
+                            height: '20px', 
+                            opacity: '0.6', 
+                            '& .MuiChip-label': {paddingLeft:'10px', paddingRight:'10px'}
+                            
+                        }} 
+                        icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} 
+                        label={pagina +'.'+(Number(item.recorte) + 1)} 
+                        />
+                        <Chip sx={{
+                            position: 'absolute',
+                            left: `calc(${item.x*100/1354}% - 10px)`, 
+                            top: `calc(${item.y*100/1500}% + 20px)`,
+                            background: 'black',
+                            color: 'green',
+                            height: '20px', 
+                            opacity: '0.6', 
+                            '& .MuiChip-label': {paddingLeft:'10px', paddingRight:'10px'}
+                            
+                        }}
+                        icon={<HeadphonesIcon  sx={{width: '15px', marginLeft: '9px', marginRight: '-8px',fill: 'white', }} />} 
+                        label={'Leer...'}
+                         />
+                    
 
                     </Box>
                     
