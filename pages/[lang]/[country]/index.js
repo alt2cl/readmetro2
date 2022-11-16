@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState,  useEffect } from "react";
+import { useState,  useRef, useEffect } from "react";
 import Image from 'next/image';
 import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
@@ -7,6 +7,7 @@ import HeadSection from '@/components/UI/Molecula/headSection'
 import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry'
 import { useRouter } from 'next/router'
 import {  updateEnableDatesSlice } from '@/redux/features/date/dateSlice'
+import Button from '@mui/material/Button'
 
 import { useSelector, useDispatch } from 'react-redux'
 // import NewspaperBox from '@/components/UI/Organismo/NewspaperBox'
@@ -14,6 +15,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import Box from '@mui/material/Box';
 import HeadSeo from '@/components/Layout/headSeo'
 import siteMetadata from '@/src/siteMetadata'
+import AnchorSection from '@/components/UI/Molecula/AnchorSection'
+
 // import fallback from '@/public/img/fallback.jpg'
 // import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 // import Button from '@mui/material/Button';
@@ -23,6 +26,7 @@ import siteMetadata from '@/src/siteMetadata'
 //import useFormatDate from '@/components/CustomHooks/useFormatDate'
 import Suscription from '@/components/UI/Organismo/Suscription';
 import Breadcumb from '@/components/UI/Molecula/Breadcumb'
+import { updateAnchorrefSlice, updateAnchorsectionSlice } from '@/redux/features/anchorsection/anchorsectionSlice';
 
 
 
@@ -31,7 +35,7 @@ function CountryTemplate({data}) {
   data = data[0] == undefined ? data : data[0]
 
 
-
+  const refSection = useRef([])
   const router = useRouter()
 
   const [dataImages,setDataImages] = useState(null)
@@ -78,6 +82,7 @@ function CountryTemplate({data}) {
   const stringDateState = useSelector(state => state.date.stringDate)
   //console.log('dialogImagesArrayState', dialogImagesArrayState)
   //console.log('estado openModal', dialogState)
+  const triggerAnchor = useSelector(state => state.anchorsection.trigger)
 
 
     const handleCloseModal = () => {
@@ -96,8 +101,16 @@ function CountryTemplate({data}) {
     let arrayEditions = []
     let arrayDates = []
 
+    const listNames = data.cities.map((cityname)=>{
+      return cityname.cityname
+    })
+
+
+    dispatch(updateAnchorsectionSlice(listNames))
+
+
     
-      //console.log('aldito entre porque hay fecha', stringDateState)
+
       //recorro las ediciones santiago, nuevamujer ..
       data.cities.map((city, index) => {
         //entre a santiago
@@ -252,32 +265,48 @@ function CountryTemplate({data}) {
      
 
       return(
-        <SectionBox key={`${cityslug}-${i}`} >
-          <HeadSection 
-          datesection={date} 
-          country={country} 
-          titleSection={cityname} 
-          slug={cityslug} 
-          linksite={data.website} 
-          routervalues={routervalues}
-          />
-          {cityslug &&  
-          <SlideCarouselCountry 
-          widthItem={width / 12} 
-          content={dataSlide()} 
-          bigimages={bigimages()} 
-          data={edition}
-          handledata={handledata}
-          searchEditions={searchEditions}
-          />
-          }
-        </SectionBox>
+        <Box ref={el => refSection.current[i] = el}>
+           <SectionBox key={`${cityslug}-${i}`} >
+            <HeadSection 
+            datesection={date} 
+            country={country} 
+            titleSection={cityname} 
+            slug={cityslug} 
+            linksite={data.website} 
+            routervalues={routervalues}
+            />
+            {cityslug &&  
+            <SlideCarouselCountry 
+            widthItem={width / 12} 
+            content={dataSlide()} 
+            bigimages={bigimages()} 
+            data={edition}
+            handledata={handledata}
+            searchEditions={searchEditions}
+            />
+            }
+          </SectionBox>
+
+        </Box>
+       
       )
     }) 
 
- 
+
+    const handleAnchor = (i) => {
+      if (triggerAnchor != null && refSection && refSection.current) {
+        refSection.current[i].scrollIntoView( { behavior: 'smooth', block: 'center' } );
+      } else {
+        console.log("div has NOT been mounted...");
+      }
+    }
 
 
+
+   useEffect(()=>{
+    handleAnchor(triggerAnchor)
+
+   },[triggerAnchor])
 
 
 
@@ -292,6 +321,7 @@ function CountryTemplate({data}) {
       />
 
       
+
 
       <Suscription />
 
