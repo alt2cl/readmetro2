@@ -24,7 +24,6 @@ const NewsPagesList = (props) => {
     const audioContents = dataImages.recortes
     const postLink = dataImages.link
 
-    console.log('audioContents', dataImages)
 
     const itemsRef = useRef([])
 

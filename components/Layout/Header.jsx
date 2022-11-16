@@ -33,6 +33,7 @@ import MenuList from '@mui/material/MenuList';
 import LaunchIcon from '@mui/icons-material/Launch';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import AnchorSection from '@/components/UI/Molecula/AnchorSection'
 
 
 
@@ -79,6 +80,7 @@ export default function Header(props) {
   //let langOptions = configlang.langOptions[2];
   const langList = configlang.langOptions;
   const langCurrent = useSelector(state => state.lang.currentLang)
+  const listSections = useSelector(state => state.anchorsection.sections)
   
 
   const{ searchInput, router} = props
@@ -311,6 +313,9 @@ useEffect(()=>{
     })
 
 
+    
+
+
 
 
   return (
@@ -414,12 +419,21 @@ useEffect(()=>{
       </AppBar>
       
         <Box sx={{flexGrow:1}} css={elevationFixedWrap}>
-          <ElevationScroll threshold={35} {...props}>
-          <Box sx={{ display: { xs: 'block', md: 'none' }}}>
-            {searchInput}
-          </Box>
+          <ElevationScroll threshold={50} {...props}>
+            <Box sx={{ display: { xs: 'block', md: 'none' }}}>
+              {searchInput}
+              <AnchorSection listNames={listSections} />
+            </Box>
           </ElevationScroll>
         </Box>
+
+        
+
+        
+
+        
+
+        
       
      
      

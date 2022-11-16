@@ -7,6 +7,7 @@ import Dialogmodal from '@/components/UI/Molecula/Dialogmodal'
 import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry'
 import { useRouter } from 'next/router'
 import {  updateEnableDatesSlice } from '@/redux/features/date/dateSlice'
+import AnchorSection from '@/components/UI/Molecula/AnchorSection'
 
 import { useSelector, useDispatch } from 'react-redux'
 //import NewspaperBox from '@/components/UI/Organismo/NewspaperBox'
@@ -98,7 +99,14 @@ function EdicionTemplate({data}) {
 
     const handleBackModal = () => { 
       //setDataImages(null)
-      router.back()
+      console.log('window.history.state',window.history.state, window.history, window.history.length)
+      if(window.history.length > 2){
+        router.back()
+      } else {
+
+        router.push(`/${langCurrent}/${country}/`)
+
+      }
       dispatch(updateCurrentPlay({
           show: false,
           play: false,
@@ -303,20 +311,25 @@ function EdicionTemplate({data}) {
 
         {month != null && i > 0 && <HeadSectionCenter title={month} />}
 
+        <Box >
         <SectionBox key={`${cityslug}-${i}`} >
 
-          <HeadSection datesection={date} country={country} titleSection={cityname} slug={cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
-          {cityslug &&  
-          <SlideCarouselCountry 
-          widthItem={width / 12} 
-          content={dataSlide()} 
-          bigimages={bigimages()} 
-          data={edition}
-          handledata={handledata}
-          searchEditions={searchEditions}
-          />
-          }
+        <HeadSection datesection={date} country={country} titleSection={cityname} slug={cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
+        {cityslug &&  
+        <SlideCarouselCountry 
+        widthItem={width / 12} 
+        content={dataSlide()} 
+        bigimages={bigimages()} 
+        data={edition}
+        handledata={handledata}
+        searchEditions={searchEditions}
+        />
+        }
         </SectionBox>
+
+        </Box>
+
+        
         
         
         </>
@@ -326,7 +339,7 @@ function EdicionTemplate({data}) {
     }) 
 
     const scrolltoPosition = (itemsRef) => {
-      console.log('itemsRef', itemsRef.current)
+      console.log('itemsRef', itemsRef.current, page)
       if (itemsRef && itemsRef.current) {
         itemsRef.current[page].scrollIntoView( { behavior: 'smooth', block: 'start' } );
       } else {
@@ -334,13 +347,14 @@ function EdicionTemplate({data}) {
       }
     }
 
+
+
+    
+
    
 
  
     useEffect(()=>{
-      
-
-
       if(page != null && dataImages !== null){
         setOpenModal(true)
       } else {
@@ -362,7 +376,7 @@ function EdicionTemplate({data}) {
       return formatDate
     }
 
-    
+
 
 
   return (
@@ -380,13 +394,6 @@ function EdicionTemplate({data}) {
           ogTwitterImage={siteMetadata.siteLogoSquare}
           ogType={"article"}
       />
-     
-      {/* <h6>Idioma: {lang}</h6>
-      <h6>Pais: {country}</h6>
-      <h6>Ciudad: {city}</h6>
-      <h6>Edicion: {edition}</h6>
-      <h6>Pagina: {page}</h6> */}
-
       
 
       <Suscription />
@@ -404,7 +411,7 @@ function EdicionTemplate({data}) {
         </Box>
      
         <Dialogmodal openModal={openModal} onCloseModal={handleBackModal}  >
-          <Box sx={{  }} ref={scrollRef} >
+          <Box  ref={scrollRef} >
             <Box sx={{display:'flex', p:'.5rem', justifyContent: 'space-between', position: 'sticky',
                 top: '0px',
                 width: '100%',

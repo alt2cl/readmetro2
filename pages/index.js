@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 // import Layout from '@/components/Layout/layout'
 import SectionBox from '@/components/Layout/sectionBox'
 import HeadSection from '@/components/UI/Molecula/headSection'
@@ -15,7 +15,9 @@ import HeadSeo from '@/components/Layout/headSeo'
 import siteMetadata from '@/src/siteMetadata'
 import Suscription from "@/components/UI/Organismo/Suscription";
 import IntroText from "@/components/UI/Molecula/IntroText";
-import { useSelector } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
+import { updateAnchorsectionSlice } from '@/redux/features/anchorsection/anchorsectionSlice';
+
 
 
 
@@ -25,8 +27,22 @@ export default function Home({data}) {
 
   const [imageError, setImageError] = useState(false);
 
+  const dispatch = useDispatch()
+
   const langData = useSelector(state => state.lang.dataCurrentLang)
   const langCurrent = useSelector(state => state.lang.currentLang)
+
+  const triggerAnchor = useSelector(state => state.anchorsection.trigger)
+
+  const refSection = useRef([])
+
+  const listSections = data.map((item)=>{
+  return item.countryname
+  })
+
+
+  dispatch(updateAnchorsectionSlice(listSections))
+
   
 
     const listCountry = data.map((item, index) => {
@@ -95,6 +111,8 @@ export default function Home({data}) {
           })
       
         return(
+
+          <Box ref={el => refSection.current[index] = el}>
         
         <SectionBox key={`sectionbox-${index}`}>
           <HeadSection titleSection={item.countryname} slug={item.countryslug} linksite={item.website} linkedition  
@@ -111,10 +129,25 @@ export default function Home({data}) {
           goeditionon
           />
 
-        </SectionBox>)
+        </SectionBox>
+        </Box>
+        )
 
 
         });
+
+        const handleAnchor = (i) => {
+          if (triggerAnchor != null && refSection && refSection.current) {
+            refSection.current[i].scrollIntoView( { behavior: 'smooth', block: 'center' } );
+          } else {
+            console.log("div has NOT been mounted...");
+          }
+        }
+
+        useEffect(()=>{
+          handleAnchor(triggerAnchor)
+      
+         },[triggerAnchor])
 
   return (
     <>
