@@ -112,9 +112,9 @@ export default function Home({data}) {
       
         return(
 
-          <Box ref={el => refSection.current[index] = el}>
+          <Box ref={el => refSection.current[index] = el} key={`sectionbox-${index}`}>
         
-        <SectionBox key={`sectionbox-${index}`}>
+        <SectionBox >
           <HeadSection titleSection={item.countryname} slug={item.countryslug} linksite={item.website} linkedition  
           colorBullet={'green'} 
           data={item}

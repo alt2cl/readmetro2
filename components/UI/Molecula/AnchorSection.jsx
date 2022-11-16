@@ -18,7 +18,7 @@ const handleDispatch = (i) => {
 
     return(
         <Box sx={{ justifyContent:['left','center'],
-        display: 'flex',
+            display: 'flex',
             overflowX: 'scroll',
             overflowY: 'hidden',
             padding: '0px',
@@ -30,7 +30,7 @@ const handleDispatch = (i) => {
             backgroundImage: 'linear-gradient(to right, #f8fafd, #f1f4f8, #eaedf3, #e3e7ef, #dce1ea, #dce1ea, #dce1ea, #dce1ea, #e3e7ef, #eaedf3, #f1f4f8, #f8fafd)',
 }}>
             {listNames.map((item, i)=>{
-                return <Button onClick={()=>handleDispatch(i)} sx={{ whiteSpace: 'nowrap', flex: 'none', color: '#636465'}}>
+                return <Button onClick={()=>handleDispatch(i)} sx={{ whiteSpace: 'nowrap', flex: 'none', color: '#636465'}} key={'buttonanchor-'+i}>
                     {item}
                 </Button>
             })}

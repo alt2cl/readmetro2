@@ -265,8 +265,8 @@ function CountryTemplate({data}) {
      
 
       return(
-        <Box ref={el => refSection.current[i] = el}>
-           <SectionBox key={`${cityslug}-${i}`} >
+        <Box ref={el => refSection.current[i] = el} key={`${cityslug}-${i}`}>
+           <SectionBox  >
             <HeadSection 
             datesection={date} 
             country={country} 
