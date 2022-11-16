@@ -92,7 +92,6 @@ export default function Header(props) {
 
 
 
-//console.log('configsite:', menupaises)
 
 
 
@@ -420,10 +419,18 @@ useEffect(()=>{
       
         <Box sx={{flexGrow:1}} css={elevationFixedWrap}>
           <ElevationScroll threshold={50} {...props}>
-            <Box sx={{ display: { xs: 'block', md: 'none' }}}>
-              {searchInput}
-              <AnchorSection listNames={listSections} />
+            <Box>
+              <Box sx={{ display: { xs: 'block', md: 'none' }}}>
+                {searchInput}
+              </Box>
+              {router.query.edicion == undefined &&
+              <Box sx={{ display: { xs: 'block' }}}>
+                <AnchorSection listNames={listSections} />
+              </Box>
+              }
+              
             </Box>
+            
           </ElevationScroll>
         </Box>
 
