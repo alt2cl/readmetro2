@@ -36,11 +36,13 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 function EdicionTemplate({data}) {
 
+  const originalData = typeof(data[0]) != "undefined" ?  data[0] :  data;
+
   data = data[0] == undefined ? data : data[0].cities[0]
 
   const langData = useSelector(state => state.lang.dataCurrentLang)
   const langCurrent = useSelector(state => state.lang.currentLang)
-  
+
 
   //console.log('data del data', data, data.allEditions)
 
@@ -76,7 +78,7 @@ function EdicionTemplate({data}) {
 
 
 
- 
+
 
 
 
@@ -86,7 +88,7 @@ function EdicionTemplate({data}) {
   // const dialogDatesState = useSelector(state => state.dialog.imagesvalues)
 
 
- 
+
   // const handleCloseModal = () => {
   //   setOpenModal(false)
   // };
@@ -95,9 +97,9 @@ function EdicionTemplate({data}) {
     // const handleOpenModal = () => {
     //   setOpenModal(true)
     // };
-   
 
-    const handleBackModal = () => { 
+
+    const handleBackModal = () => {
       //setDataImages(null)
       console.log('window.history.state',window.history.state, window.history, window.history.length)
       if(window.history.length > 2){
@@ -114,7 +116,7 @@ function EdicionTemplate({data}) {
           index : 1,
           page: 1
       }))
-    
+
     };
 
 
@@ -135,7 +137,7 @@ function EdicionTemplate({data}) {
         })
 
       }
-      
+
 
       dispatch(updateEnableDatesSlice(arrayDates))
 
@@ -163,10 +165,10 @@ function EdicionTemplate({data}) {
           )
 
         }
-        
-          
-          
-     
+
+
+
+
       })
 
 
@@ -179,9 +181,9 @@ function EdicionTemplate({data}) {
       setOpenModal(true)
       setDataImages(dataimages)
       router.push(`/${langCurrent}/${country}/${cityslug}/${date.replaceAll('/', '')}/${i+1}`)
-      
+
     }
-    
+
     let enterDate
 
     //console.log('arrayEditions>', arrayEditions)
@@ -200,15 +202,15 @@ function EdicionTemplate({data}) {
 
       let numberedition = i
 
-      
-      
+
+
       const dataSlide = () => {
         let data = []
         for (let i = 0; i < pages; i++) {
           data.push(
             <>
                 <Box key={`section-${i}`}>
-                        <Image src={`https://rm.metrolatam.com/${date}/${cityslug}/thumb_${i+1}-${newcode}.webp`} 
+                        <Image src={`https://rm.metrolatam.com/${date}/${cityslug}/thumb_${i+1}-${newcode}.webp`}
                         layout="responsive"
                         width={width / 12}
                         height={height / 12}
@@ -232,14 +234,14 @@ function EdicionTemplate({data}) {
             newcode: newcode,
             countpages: pages,
           }
-        ) 
+        )
       }
 
-      
+
 
       if( routeEdition ==  cityslug && dataImages == null && date.replaceAll('/', '') == routedate ){
           setDataImages(bigimages())
-      } 
+      }
 
 
       function titleMonth(enterMonth){
@@ -293,10 +295,10 @@ function EdicionTemplate({data}) {
               currentMonth = "No Month"
               break;
           }
-          
+
         } else {
           currentMonth = null
-        }       
+        }
 
     return currentMonth
 
@@ -315,11 +317,11 @@ function EdicionTemplate({data}) {
         <SectionBox key={`${cityslug}-${i}`} >
 
         <HeadSection datesection={date} country={country} titleSection={cityname} slug={cityslug} colorBullet={"#ccc"} linksite={data.website} routervalues={routervalues}/>
-        {cityslug &&  
-        <SlideCarouselCountry 
-        widthItem={width / 12} 
-        content={dataSlide()} 
-        bigimages={bigimages()} 
+        {cityslug &&
+        <SlideCarouselCountry
+        widthItem={width / 12}
+        content={dataSlide()}
+        bigimages={bigimages()}
         data={edition}
         handledata={handledata}
         searchEditions={searchEditions}
@@ -329,14 +331,14 @@ function EdicionTemplate({data}) {
 
         </Box>
 
-        
-        
-        
+
+
+
         </>
       )
 
-      
-    }) 
+
+    })
 
     const scrolltoPosition = (itemsRef) => {
       console.log('itemsRef', itemsRef.current, page)
@@ -349,11 +351,11 @@ function EdicionTemplate({data}) {
 
 
 
-    
 
-   
 
- 
+
+
+
     useEffect(()=>{
       if(page != null && dataImages !== null){
         setOpenModal(true)
@@ -368,8 +370,8 @@ function EdicionTemplate({data}) {
       let DD =""
       let formatDate = null
       if(routedate) {
-        YYYY = routedate.slice(0,4) 
-        MM =  routedate.slice(4,6) 
+        YYYY = routedate.slice(0,4)
+        MM =  routedate.slice(4,6)
         DD =  routedate.slice(6,8)
         formatDate = YYYY+'/'+MM+'/'+DD
       }
@@ -383,7 +385,7 @@ function EdicionTemplate({data}) {
     <>
       <HeadSeo
           title={
-            page ?  `ReadMetro - Página ${page}. Edición ${routeEdition}. ${city}, ${country}` : 
+            page ?  `ReadMetro - Página ${page}. Edición ${routeEdition}. ${city}, ${country}` :
             page == undefined && routeEdition ? `ReadMetro - Edición ${routeEdition}. ${city}, ${country}` :
             edition == undefined && city ? `ReadMetro - Edición ${city}, ${country}` :
             city == undefined && country ? `ReadMetro - ${country}` :
@@ -394,22 +396,22 @@ function EdicionTemplate({data}) {
           ogTwitterImage={siteMetadata.siteLogoSquare}
           ogType={"article"}
       />
-      
 
-      <Suscription />
+
+      <Suscription data={originalData}  />
 
       <Breadcumb router={router} />
 
- 
+
         {data ? newlistsections : 'Cargando'}
 
         <Box sx={{display:'flex', justifyContent:'center', pb: '4rem'}}>
-          {routedate ? <Button variant="outlined" onClick={()=>router.push(`/${lang}/${country}/${cityslug}`)}>{langData.listWords.bottons.goLastEditions}</Button> 
+          {routedate ? <Button variant="outlined" onClick={()=>router.push(`/${lang}/${country}/${cityslug}`)}>{langData.listWords.bottons.goLastEditions}</Button>
           :<Button variant="outlined" onClick={()=>setCounterShow(counterShow + 10)}>{langData.listWords.bottons.loadEditions}</Button>
           }
-          
+
         </Box>
-     
+
         <Dialogmodal openModal={openModal} onCloseModal={handleBackModal}  >
           <Box  ref={scrollRef} >
             <Box sx={{display:'flex', p:'.5rem', justifyContent: 'space-between', position: 'sticky',
@@ -436,20 +438,20 @@ function EdicionTemplate({data}) {
                 </Box>
             </Box>
             {
-              page && routedate && dataImages ?             
+              page && routedate && dataImages ?
               <NewsPagesList  dataImages={dataImages} date={routedate} edition={routeEdition} page={page} scrolltoPosition={scrolltoPosition}/>
               : <>
               <Skeleton variant="rectangular" width={"calc(100% - 1rem"} height={400} sx={{m:'1rem .5rem'}} />
               <Skeleton variant="rectangular" width={"calc(100% - 1rem"} height={400} sx={{m:'1rem .5rem'}} />
               <Skeleton variant="rectangular" width={"calc(100% - 1rem"} height={400} sx={{m:'1rem .5rem'}} /></>
             }
-            
+
 
           </Box>
-            
+
 
         </Dialogmodal>
-        
+
     </>
   )
 }
@@ -462,7 +464,7 @@ export async function getServerSideProps({ params }) {
 
   // Fetch data from external API
   console.log('les paramszzz', params.edicion, params.edicion[0], params.edicion[1], params.edicion[2])
-  
+
   let res = ""
   if(params.edicion[0] && params.edicion[1] && params.edicion[1] != 'archivo') {
     const YYYY = params.edicion[1].slice(0,4)
@@ -470,13 +472,13 @@ export async function getServerSideProps({ params }) {
     const DD = params.edicion[1].slice(6,8)
     const formatDate = `${YYYY}-${MM}-${DD}`
     res = await fetch(`https://pdfserv2.readmetro.com/readmetro.php?country=${params.country}&editions=${params.edicion[0]}&date=${formatDate}`)
- 
+
   } else {
     res = await fetch(`https://api.readmetro.com/${params.country}/${params.edicion[0]}/full.json`)
-    
+
   }
 
-  const data = await res.json()
+  let data = await res.json()
 
     // Pass data to the page via props
     return { props: {
@@ -485,7 +487,7 @@ export async function getServerSideProps({ params }) {
   //const res = await fetch(`https://api.readmetro.com/${params.archivo}/index.json`)
   //const res = await fetch(`https://api.readmetro.com/${params.country}/${params.edicion[0]}/full.json`)
   //const res = await fetch(`https://api.readmetro.com/${params.country}/${params.edicion[0]}/full.json`)
-  
+
 }
 
 
@@ -498,5 +500,3 @@ export async function getServerSideProps({ params }) {
 
 
 export default EdicionTemplate
-
-
