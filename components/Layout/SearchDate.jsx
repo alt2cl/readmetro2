@@ -1,13 +1,13 @@
 
 import * as React from 'react';
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import Box from '@mui/material/Box';
 
-import MenuItem from '@mui/material/MenuItem';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import Menu from '@mui/material/Menu';
+
 import { css } from '@emotion/react';
 import { useSelector, useDispatch } from 'react-redux'
+import configsite from '@/src/configSite'
 
 
 import { updateDateSlice  } from '@/redux/features/date/dateSlice'
@@ -100,13 +100,23 @@ const textfielddate = (theme) => ({
 
 const SearchDate = (props) => {
 
-  const {defaultValueCountry, menupaises, lang, landingCountry, landingEdition, landingArchivo, router } = props
+ 
+
+  const menupaises = configsite.routeCountry;
 
   const langCurrent = useSelector(state=> state.lang.currentLang)
+  const countryCurrent = useSelector(state=> state.country.countryName)
+
+  const router = useRouter()
+
+  const landingCountry = router.query.country && !router.query.edicion ? true : false
+  const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] != 'archivo' ? true : false
+  const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
+
+
 
   let langDatePicker 
 
-console.log('langCurrent>', langCurrent)
   switch (langCurrent) {
     case 'ES':
       langDatePicker = esLocale
@@ -139,21 +149,20 @@ console.log('langCurrent>', langCurrent)
 
     const [fechasCalendario, setFechasCalendario] = useState([]);
 
+    const [countryName, setCountryName] = useState('/');
+
 
     const handleChangeDate = (newValue) => {
 
-      console.log('datepicker', newValue)
       setValueDate(newValue);
       const formatDate = newValue.toLocaleDateString('es-CL', { year: 'numeric',month: '2-digit',day: '2-digit' })
       const arrayDate = formatDate.split("-")
       const dateString = arrayDate.length > 2 ? `${arrayDate[2]}/${arrayDate[1]}/${arrayDate[0]}` : null
 
-      console.log('datepicker 2', dateString , defaultValueCountry, router)
       
       dispatch(updateDateSlice(dateString))
 
-      if(defaultValueCountry == "/"){
-        console.log('search estoy en el home')
+      if(countryCurrent == "/" || countryCurrent == undefined){
         router.push(`/?_date=${dateString.replaceAll('/','')}`)
       }
 
@@ -170,25 +179,10 @@ console.log('langCurrent>', langCurrent)
       
     };
 
-    //console.log('date value', valueDate)
-
-
-    //console.log('router:::', ' - ', router.query.country ,' - ', router.asPath)
-    
     
     const menuId = 'primary-search-account-menu';
     const isMenuOpen = Boolean(anchorEl);
 
-    // const listEnableDates = useSelector(state => state.date.arrayEnableDates)
-
-    // console.log('listEnableDates',listEnableDates)
-
-
-    
-
-    // const handleMobileMenuClose = () => {
-    //     setMobileMoreAnchorEl(null);
-    //   };
     
 
 
@@ -199,54 +193,23 @@ console.log('langCurrent>', langCurrent)
       if(e.target.value == '/'){
         router.push("/")
       } else {
-        router.push(`/${lang ? lang : 'ES'}/${e.target.value}`)
+        router.push(`/${langCurrent ? langCurrent : 'ES'}/${e.target.value}`)
       }
       
     }
 
    
-    // const dataOptions = menupaises.map((item)=>{
-    //   return(
-    //     <option value={item.slug} key={item.slug}>{item.name}</option>
-    //   )
-    // })
+      
+    
 
+ 
 
-    const countrySelect = () => {
-      // console.log('countryvalue',countryvalue )
-     
-
-      return(
-
-        <NativeSelect css={pullproduct}
-          defaultValue={router.query.country ? router.query.country : '/'}
-          inputprops={{
-            name: 'country',
-            id: 'uncontrolled-native',
-          }}
-          onChange={handleChangeSelectcountry}
-        >
-          {
-            menupaises.map((item)=>(
-                <option value={item.slug} key={item.slug}>{item.name}</option>
-              )
-            )
-          }
-
-          
-        </NativeSelect>
-
-      )
-    }
-
+   
+  
     
 
 
     useEffect(()=>{
-
-
-
-      
 
       if(router.query.country){
         fetch(`https://api.readmetro.com/${router.query.country}/dates_editions_by_country.json`)
@@ -288,24 +251,32 @@ console.log('langCurrent>', langCurrent)
 
       }
 
-      
 
-    },[router.query.country])
+    },[router.query.country, countryCurrent])
 
-      
-
-
- 
-        
+            
 
     return (
         <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
 
-          {countrySelect()}
+        <NativeSelect css={pullproduct}
+              value={countryCurrent == undefined ? '/': countryCurrent }
+              inputprops={{
+                name: router.query.country,
+                id: router.query.country,
+              }}
+              onChange={handleChangeSelectcountry}
+            >
+              {
+                menupaises.map((item)=>(
+                    <option value={item.slug} key={item.slug}>{item.name}</option>
+                  )
+                )
+              }
+        </NativeSelect>
 
         <Box sx={{height:'45px', flexGrow: '1'}}>
 
-        {defaultValueCountry != "/" ? 
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={langDatePicker}>
             <Stack spacing={3} >
               <MobileDatePicker
@@ -331,7 +302,7 @@ console.log('langCurrent>', langCurrent)
             </Stack>
             </LocalizationProvider>
         
-        : null}
+      
 
         </Box>
          
