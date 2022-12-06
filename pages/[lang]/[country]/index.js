@@ -27,6 +27,7 @@ import AnchorSection from '@/components/UI/Molecula/AnchorSection'
 import Suscription from '@/components/UI/Organismo/Suscription';
 import Breadcumb from '@/components/UI/Molecula/Breadcumb'
 import { updateAnchorrefSlice, updateAnchorsectionSlice } from '@/redux/features/anchorsection/anchorsectionSlice';
+import {updateCountrySlice} from '@/redux/features/country/countrySlice'
 
 
 
@@ -71,7 +72,6 @@ function CountryTemplate({data}) {
 
 
   const dispatch = useDispatch();
-  //dispatch(updateCountrySlice({countryName:country}))
   //const dialogState = useSelector(state => state.dialog.open)
   const dialogImagesArrayState = useSelector(state => state.dialog.imagesvalues.arrayimages)
   const dialogDatesState = useSelector(state => state.dialog.imagesvalues)
@@ -106,7 +106,7 @@ function CountryTemplate({data}) {
     })
 
 
-    dispatch(updateAnchorsectionSlice(listNames))
+    
 
 
 
@@ -304,9 +304,10 @@ function CountryTemplate({data}) {
 
 
    useEffect(()=>{
+    dispatch(updateAnchorsectionSlice(listNames))
     handleAnchor(triggerAnchor)
 
-   },[triggerAnchor])
+   },[triggerAnchor, listNames])
 
 
 

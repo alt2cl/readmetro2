@@ -22,7 +22,8 @@ export default function SlideCarousel(props){
             overflowY: 'hidden',
             padding: '0px',
             transition: 'all 1s ease',
-            '-webkit-overflow-scrolling': 'touch',
+            //'-webkit-overflow-scrolling': 'touch',
+            webkitOverflowScrolling: 'touch',
             scrollSnapType: 'x mandatory',
             scrollPadding: '0 0 0 0',
             // 'scroll-behavior': 'smooth'

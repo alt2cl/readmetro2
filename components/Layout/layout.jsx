@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import configsite from '@/src/configSite'
 import SearchDate from '@/components/Layout/SearchDate';
+import { useSelector} from 'react-redux'
 
 
 
@@ -20,22 +21,22 @@ function Layout( props ) {
     const lang = router.query.lang ? router.query.lang : null
 
     const menupaises = configsite.routeCountry;
+    const countryCurrent = useSelector(state=> state.country.countryName)
 
 
-    const [thisSection, setThisSection] = useState('/')
+  console.log('countryCurrent ...', countryCurrent )
 
-    useEffect(()=>{
-        console.log('countryvalue de entreda',thisSection )
-        setThisSection(router.query.country)
+  function updateHeader() {
+    return (
+        <Header router={router} />
 
-    },[thisSection])
+    )
+  }
 
     return (
         <>
-            <Header router={router} searchInput={
-                <SearchDate lang={lang} router={router}  menupaises={menupaises} defaultValueCountry={thisSection} landingCountry={landingCountry} landingEdition ={landingEdition } landingArchivo={landingArchivo}/>
-            } />
             
+            {updateHeader()}
             <main>
             <Container  maxWidth="xl">
                 {children}

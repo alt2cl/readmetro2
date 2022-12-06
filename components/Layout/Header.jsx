@@ -8,6 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import SearchDate from "@/components/Layout/SearchDate";
 
 // import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
@@ -27,6 +28,7 @@ import Select from '@mui/material/Select';
 import ElevationScroll from '@/components/CustomHooks/ElevationScroll';
 import { useDispatch, useSelector } from 'react-redux'
 import { updateLangSlice, updateCurrentLangSlice  } from '@/redux/features/lang/langSlice'
+import {updateCountrySlice} from '@/redux/features/country/countrySlice'
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import MenuList from '@mui/material/MenuList';
@@ -83,14 +85,17 @@ export default function Header(props) {
   const listSections = useSelector(state => state.anchorsection.sections)
   
 
-  const{ searchInput, router} = props
+  const{  router} = props
   const [language, setLanguage] = useState(router.query.lang ? router.query.lang : langCurrent);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
 
+useEffect(()=>{
+  dispatch(updateCountrySlice(router.query.country))
 
+},[router.query.country])
 
 
 
@@ -262,12 +267,8 @@ useEffect(()=>{
           <ListItemText>{langOptions.listWords.menu.portals}</ListItemText>
         </MenuItem>
         {menupaises.map((item)=>(
-
           item.name != "Mundo" ?
-
           <MenuItem key={'menuitem-'+item.name}>
-         
-
           <ListItemButton>
               <ListItemIcon>
                 <LaunchIcon />
@@ -281,11 +282,8 @@ useEffect(()=>{
                   > 
                       {item.name}
                   </Link>
-
               </ListItemText>
             </ListItemButton>
-
-         
         </MenuItem>
         : null
 
@@ -312,10 +310,6 @@ useEffect(()=>{
     })
 
 
-    
-
-
-
 
   return (
     <>
@@ -337,7 +331,8 @@ useEffect(()=>{
 
             <Box sx={{flexGrow:1}}>
               <Box sx={{ display: { xs: 'none', md: 'block' }}}>
-                {searchInput}
+                
+                <SearchDate/>
                 
               </Box>
             </Box>
@@ -421,9 +416,11 @@ useEffect(()=>{
           <ElevationScroll threshold={50} {...props}>
             <Box>
               <Box sx={{ display: { xs: 'block', md: 'none' }}}>
-                {searchInput}
+                {/* {searchInput} */}
+                <SearchDate/>
+
               </Box>
-              {router.query.edicion == undefined &&
+              {router.query.edicion == undefined && router.query._date == undefined && listSections &&
               <Box sx={{ display: { xs: 'block' }}}>
                 <AnchorSection listNames={listSections} />
               </Box>

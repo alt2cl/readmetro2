@@ -3,10 +3,11 @@ import { createSlice } from '@reduxjs/toolkit'
 export const countrySlice = createSlice({
   name: 'country',
   initialState: {
-    countryName: 'Mundo'
+    countryName: '/',
   },
   reducers: {
     updateCountrySlice: (state, action) => {
+      console.log('slice country', state, action)
       state.countryName = action.payload
     }
   }
