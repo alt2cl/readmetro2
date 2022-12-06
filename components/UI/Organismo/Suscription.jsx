@@ -16,30 +16,175 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
 
-export default  function Suscription() {
+import axios from 'axios';
 
-    const [state, setState] = React.useState({
-        publimetro: true,
-        autos: false,
-        nuevamujer: false,
-        mail:false,
-        telegram: false,
-        whatsapp: false
+
+
+export default  function Suscription(data) {
+
+
+    const [state, setState] = React.useState({ mail: true});
+    const [suscripcion, setSuscripcion] = React.useState({});
+    const [pais, setPais] = React.useState(typeof(data.data.countryslug) != "undefined" ? data.data.countryslug : data.data.country.countryslug);
+    const [errorNombre, setErrorNombre] = React.useState(false);
+    const [errorApellido, setErrorApellido] = React.useState(false);
+    const [errorCorreo, setErrorCorreo] = React.useState(false);
+    const [errorEdition, setErrorEdition] = React.useState(false);
+    const [errorPlataforma, setErrorPlataforma] = React.useState(false);
+
+    const [alertText, setAlerttext] = React.useState("Estas suscrito, revisa tu casilla de correo!");
+    const [alertseverity, setAlertseverity] = React.useState("success");
+    const [alertopen, setAlertopen] = React.useState(false);
+
+
+    const handleChangeSub = (event) => {
+      setSuscripcion({
+        ...suscripcion,
+        [event.target.name]: event.target.checked,
       });
+    };
+    const handleChange= (event) => {
+      setState({
+        ...state,
+        [event.target.name]: event.target.checked,
+      });
+    };
+    const validateEmail = (email) => {
+      const emailRegex = new RegExp(/^\S+@\S+\.\S+$/, "gm");
+      return !emailRegex.test(email);
+    };
+    const handleChangeInfo= (event) => {
+      if(event.target.name == "correo" && validateEmail(event.target.value)){
+          setErrorCorreo(true);
+          return false;
+      }else{
+          setErrorCorreo(false);
+      }
+      if(event.target.name == "nombre" && event.target.value.length <= 3){
+          setErrorNombre(true);
+          return false;
+      }else{
+          setErrorNombre(false);
+      }
+      if(event.target.name == "apellido" && event.target.value.length <= 3){
+          setErrorApellido(true);
+          return false;
+      }else{
+          setErrorApellido(false);
+      }
+      setState({
+        ...state,
+        [event.target.name]: event.target.value,
+      });
+    };
 
-    const handleChange = (event) => {
-        setState({
-          ...state,
-          [event.target.name]: event.target.checked,
-        });
-      };
+    const enviarSuscripcion = (e) => {
 
-      const { publimetro, autos, nuevamujer, mail, telegram, whatsapp } = state;
-      const error = [publimetro, autos, nuevamujer, mail, telegram, whatsapp].filter((v) => v).length !== 2;
+      e.preventDefault();
+
+      console.log("data to send",{  suscripcion: suscripcion, state: state, pais:pais  });
+      if(state.nombre == undefined){
+        setErrorNombre(true);
+        return false;
+      }
+      if(state.apellido == undefined){
+        setErrorApellido(true);
+        return false;
+      }
+      if(state.correo == undefined){
+        setErrorCorreo(true);
+        return false;
+      }
+
+      if(Object.keys(suscripcion).length === 0){
+        setErrorEdition(true);
+      }else{
+        setErrorEdition(false);
+
+        if(!errorNombre && !errorApellido && !errorCorreo){
+          console.log("enviando",errorNombre,errorApellido,errorCorreo);
+          axios.post('https://sub.readmetro.com/', {  suscripcion: suscripcion, state: state, pais:pais  } )
+          .then(res => {
+            console.log('res', res.data);
+            if(res.data.includes("correcto")){
+              setAlerttext("Listo!, Revisa tu casilla de correo para confirmar la suscripción!");
+              setAlertseverity("success");
+            }else{
+              setAlerttext("Error al suscribir, intentalo más tarde!");
+              setAlertseverity("error");
+            }
+            setAlertopen(true);
+          })
+          .catch(err => {
+            console.log('error in request', err);
+          });
+        }
+
+      }
 
 
 
+    };
+
+
+
+    var tuDate1 = new Date();
+    tuDate1.setMonth(tuDate1.getMonth() - 3);
+    let listado = [];
+
+    if(data.data.cities != undefined){
+      data.data.cities.forEach((city, i) => {
+        // console.log("gg",city);
+
+        const fechapub = city.allEditions[0].date+ ' 00:00:00';
+        var tuDate2 = new Date(fechapub);
+
+        var a = new Date(tuDate1.getFullYear(),tuDate1.getMonth(),tuDate1.getDate(),tuDate1.getUTCDate());
+        var b = new Date(tuDate2.getFullYear(),tuDate2.getMonth(),tuDate2.getDate(),tuDate1.getUTCDate());
+
+        if(a <= b){
+          listado.push(<FormControlLabel
+              control={
+              <Checkbox onChange={handleChangeSub} name={city.cityslug}  />
+              }
+              label={city.cityname}
+          />);
+        }else{
+          console.log(city.cityname,"tiene que tener fecha mayor a",a.toLocaleDateString(),"y tiene",b.toLocaleDateString());
+        }
+
+
+
+      });
+    }
+    if(data.data.cityslug != undefined){
+
+          const city = data.data;
+          const fechapub = city.allEditions[0].date+ ' 00:00:00';
+          var tuDate2 = new Date(fechapub);
+
+          var a = new Date(tuDate1.getFullYear(),tuDate1.getMonth(),tuDate1.getDate(),tuDate1.getUTCDate());
+          var b = new Date(tuDate2.getFullYear(),tuDate2.getMonth(),tuDate2.getDate(),tuDate1.getUTCDate());
+
+          if(a <= b){
+            listado.push(<FormControlLabel
+                control={
+                <Checkbox onChange={handleChangeSub} name={city.cityslug}  />
+                }
+                label={city.cityname}
+            />);
+          }else{
+            console.log(city.cityname,"tiene que tener fecha mayor a",a.toLocaleDateString(),"y tiene",b.toLocaleDateString());
+          }
+    }
+
+
+    if(listado.length === 0){
+      return null;
+    }
     return (
         <Accordion sx={{mt:'2rem', mb: '3rem'}}>
             <AccordionSummary
@@ -58,104 +203,47 @@ export default  function Suscription() {
                 <Box sx={{border: '1px dashed #ccc',p: '10px', flexGrow: '1', borderRadius: {xs: '5px 5px 0px 0px', sm: '5px'}  }}>
                     <Box>Selecciones las ediciones que desea recibir y cuando:</Box>
                     <Box>
-                        <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+                        <FormControl sx={{ m: 3 }} error={errorEdition} component="fieldset" variant="standard">
                             <FormGroup sx={{display: 'flex', flexDirection: {xs: 'column', sm: 'column'}}}>
-                                <Box sx={{display: 'flex', flexDirection:'column'}}>
-                                    <FormControlLabel
-                                        control={
-                                        <Checkbox checked={publimetro} onChange={handleChange} name="publimetro" />
-                                        }
-                                        label="Publimetro"
-                                    />
-
-
-                                    <FormControl>
-                                        <RadioGroup
-                                            aria-labelledby="frecuencia"
-                                            defaultValue="diario"
-                                            name="frecuencia"
-                                            sx={{display:'flex', flexDirection: 'row'}}
-                                        >
-                                            <FormControlLabel value="diario" control={<Radio />} label="Diario" />
-                                            <FormControlLabel value="semanal" control={<Radio />} label="Semanal" />
-                                        </RadioGroup>
-                                    </FormControl>
-                                </Box>
-                                
-                                    
-                            
-
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox checked={autos} onChange={handleChange} name="autos" />
-                                    }
-                                    label="Autos RPM"
-                                />
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox checked={nuevamujer} onChange={handleChange} name="nuevamujer" />
-                                    }
-                                    label="Nueva Mujer"
-                                />
+                                {listado}
                             </FormGroup>
+                            <FormHelperText>{errorEdition ? 'Error: Selecciona al menos una edición.' : ''}</FormHelperText>
+
                         </FormControl>
                     </Box>
                 </Box>
-                <Box sx={{border: '1px dashed #ccc', borderRadius: {xs: ' 0px 0px 5px 5px', sm: '5px'} , p: '10px', ml: {xs:'0px', sm: '1rem'} , flexGrow: '1'}}>
-                    <Box>Selecciona tus plataformas favoritas</Box>
-                    <Box>
-                    <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-                            <FormGroup sx={{display: 'flex', flexDirection: {xs: 'row', sm: 'column'}}}>
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox checked={mail} onChange={handleChange} name="mail" />
-                                    }
-                                    label="Mail"
-                                />
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox checked={telegram} onChange={handleChange} name="telegram" />
-                                    }
-                                    label="Telegram"
-                                />
-                                <FormControlLabel
-                                    control={
-                                    <Checkbox checked={whatsapp} onChange={handleChange} name="whatsapp" />
-                                    }
-                                    label="Whatsapp"
-                                />
-                            </FormGroup>
-                        </FormControl>
 
-                    </Box>
-                </Box>
             </Box>
             <Box>
                 <Box sx={{display:'flex', flexDirection: {xs:'column', sm:'row'}}} component="form" noValidate autoComplete="off">
-                        <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>      
-                            <TextField id="inputNombre" label="Nombre" variant="outlined" fullWidth />
+                        <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>
+                            <TextField id="inputNombre" error={errorNombre} helperText={errorNombre ? 'Error: Ingresa un nombre valido.' : ''} label="Nombre" variant="outlined" name="nombre" fullWidth onChange={handleChangeInfo} />
                         </Box>
-                        <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>      
-                            <TextField id="inputMail" label="Mail" variant="outlined" fullWidth />
+                        <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>
+                            <TextField id="inputApellido" error={errorApellido} helperText={errorApellido ? 'Error: Ingresa un apellido valido.' : ''} label="Apellido" variant="outlined" name="apellido" fullWidth onChange={handleChangeInfo} />
                         </Box>
-                        <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>      
-                            <TextField id="inputTelefono" label="Telefono" variant="outlined"  fullWidth
-                            inputprops={{
-                                startAdornment: <InputAdornment position="start">+56 9</InputAdornment>,
-                            }} />
+                        <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>
+                            <TextField id="inputMail" error={errorCorreo} helperText={errorCorreo ? 'Error: Ingresa un correo valido.' : ''} label="Mail" variant="outlined" name="correo" fullWidth onChange={handleChangeInfo} />
                         </Box>
+
                         <Box sx={{flexGrow: '1'}}>
-                            <Button variant="contained" fullWidth>Suscribir</Button>
+                            <Button variant="contained" fullWidth onClick={(e) => enviarSuscripcion(e)}>Suscribir</Button>
                         </Box>
-                
+
                 </Box>
+                <Box sx={{ p: 1 }} noValidate autoComplete="off">
+                  <Collapse in={alertopen}>
+                    <Alert severity={alertseverity} >{alertText}</Alert>
+                  </Collapse>
+                </Box>
+
 
             </Box>
         </Box>
 
         </AccordionDetails>
         </Accordion>
-        
+
     )
 
 }

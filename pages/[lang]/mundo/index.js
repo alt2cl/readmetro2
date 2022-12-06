@@ -25,6 +25,8 @@ import { updateAnchorsectionSlice } from '@/redux/features/anchorsection/anchors
 
 export default function Home({data}) {
 
+  const originalData = typeof(data[0]) != "undefined" ?  data[0] :  data;
+
   const [imageError, setImageError] = useState(false);
 
   const dispatch = useDispatch()
@@ -161,7 +163,7 @@ export default function Home({data}) {
                     ogType={"website"}
                 /> 
                 <IntroText />
-                <Suscription />
+                <Suscription data={originalData} />
     {listCountry}
     </>
      
