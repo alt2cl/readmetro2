@@ -21,6 +21,17 @@ const theme = createTheme({
     secondary: {
       main: '#028270',
     },
+    gray: {
+      level1: '#E9EEF3',
+      level2: '#dbdfe3',
+      level3: '#c0c4c8',
+      level4: '#909499',
+    },
+    shadow: {
+      dark: '#7e8887',
+      medium: '#939998',
+      light: '#dadada',
+    },
     error: {
       main: red.A400,
     },

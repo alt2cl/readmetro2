@@ -186,17 +186,30 @@ export default  function Suscription(data) {
       return null;
     }
     return (
-        <Accordion sx={{mt:'2rem', mb: '3rem'}}>
+        <Accordion sx={{
+          mt:'2rem', 
+          mb: '3rem', 
+          background: 'transparent', 
+          border: (theme) => `2px dashed ${theme.palette.gray.level2}`, 
+          boxShadow: 'none', 
+          borderRadius: '5px'}}>
             <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-            >
-                <Box sx={{display:'flex', flexDirection:'column'}}>
-                    <Typography variant="caption">Directo en tus plataformas</Typography>
-                    <Typography variant="h6">Suscríbete a nuestras ediciones AQUÍ</Typography>
-                </Box>
-        </AccordionSummary>
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                  sx={{
+                    backgroundImage:'url("/img/bgSuscription.png")',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'top center',
+                    backgroundSize:' auto 70px',
+                  
+                  }}
+              >
+                  <Box sx={{display:'flex', flexDirection:'column'}}>
+                      <Typography sx={{color: (theme)=> theme.palette.primary.main}} variant="caption">Directo en tus plataformas</Typography>
+                      <Typography variant="h6">Suscríbete a nuestras ediciones AQUÍ</Typography>
+                  </Box>
+          </AccordionSummary>
         <AccordionDetails>
         <Box sx={{display: 'flex', flexDirection: 'column'}}>
             <Box sx={{display: 'flex', mb:'1rem',  flexDirection: {xs: 'column', sm: 'row'}}}>

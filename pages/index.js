@@ -19,6 +19,7 @@ import { useDispatch,useSelector } from 'react-redux'
 import { updateAnchorsectionSlice } from '@/redux/features/anchorsection/anchorsectionSlice';
 import CountryMap from '@/components/UI/Organismo/CountryMaps'
 import Suscription from "@/components/UI/Organismo/Suscription";
+import HeadMap from '@/components/UI/Atomo/HeadMap'
 
 
 
@@ -32,19 +33,24 @@ export default function Home({data}) {
 
   return (
     <>
-    <HeadSeo
-                    title={`Index Your Awesome Title Here`}
-                    description={`Your description goes here on every page.
-                      Keep character count between 140 to 160 characters`}
-                    canonicalUrl={siteMetadata.siteUrl}
-                    ogTwitterImage={siteMetadata.siteLogoSquare}
-                    ogType={"website"}
-                />
-                <IntroText />
+      <HeadSeo
+          title={`Index Your Awesome Title Here`}
+          description={`Your description goes here on every page.
+            Keep character count between 140 to 160 characters`}
+          canonicalUrl={siteMetadata.siteUrl}
+          ogTwitterImage={siteMetadata.siteLogoSquare}
+          ogType={"website"}
+      />
+      <IntroText />
 
-                <Suscription data={originalData} />
+      <Suscription data={originalData} />
 
-                <CountryMap />
+      <HeadMap title={'Ingresa a la Edición que quieres leer...'} />
+    
+      <Box sx={{overflowX:'auto', marginLeft:'-15px', width:'calc(100% + 30px)'}}>
+      <CountryMap />
+      </Box>
+      
     </>
 
 

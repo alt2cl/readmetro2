@@ -60,7 +60,31 @@ const configSite = {
             "slug": "peru",
             "name": "Perú",
             "externalLink": "https://www.publimetro.pe/"
-        } 
+        },
+        {
+            "link": "/es/usa",
+            "slug": "usa",
+            "name": "Estados Unidos",
+            "externalLink": "https://www.metroworldnews.com/"
+        },
+        {
+            "link": "/es/guatemala",
+            "slug": "guatemala",
+            "name": "Guatemala",
+            "externalLink": "https://www.publinews.gt/"
+        },
+        {
+            "link": "/es/puerto-rico",
+            "slug": "puerto-rico",
+            "name": "Puerto Rico",
+            "externalLink": "https://www.metro.pr/"
+        },
+        {
+            "link": "/es/italy",
+            "slug": "italy",
+            "name": "Italy",
+            "externalLink": "https://metronews.it/"
+        }
     ],
     "langOptions": [
         {
