@@ -47,7 +47,7 @@ export default function Home({data}) {
 
       <HeadMap title={'Ingresa a la Edición que quieres leer...'} />
     
-      <Box sx={{overflowX:'auto', marginLeft:'-15px', width:'calc(100% + 30px)'}}>
+      <Box sx={{overflowX:'auto', marginLeft:['-15px', 'auto'], width:'calc(100% + 30px)'}}>
       <CountryMap />
       </Box>
       

@@ -60,6 +60,22 @@ const configLang = {
                     "listen":"Escuchar",
                     "listening":"Escuchando",
                     "page":"Página",
+                },
+                "suscription": {
+                    "mail":"Correo",
+                    "name":"Nombre",
+                    "lastName":"Apellido",
+                    "excerpt":"Directo en tus plataformas",
+                    "title":"Suscríbete a nuestras ediciones AQUÍ",
+                    "instructions1":"Selecciones las ediciones que desea recibir y cuando:",
+                    "errorEdition":"Error: Selecciona al menos una edición.",
+                    "errorName": "Error: Ingresa un nombre valido.",
+                    "errorLastName": 'Error: Ingresa un apellido valido.',
+                    "errorSuscription":"Error al suscribir, intentalo más tarde!",
+                    "errorMail":"Error: Ingresa un correo valido.",
+                    "callBtn":"Suscribir",
+                    "success": "Listo!, Revisa tu casilla de correo para confirmar la suscripción!",
+                    "readySuscription":"Estas suscrito, revisa tu casilla de correo!"
                 }
             }
         },
@@ -117,6 +133,22 @@ const configLang = {
                     "listen":"Escuchar",
                     "listening":"Escuchando",
                     "page":"Página",
+                },
+                "suscription": {
+                    "mail":"Courrier",
+                    "name":"Nom",
+                    "lastName":"Nom de Famille",
+                    "excerpt":"Direct sur vos plateformes",
+                    "title":"Abonnez-vous à nos éditions ICI",
+                    "instructions1":"Sélectionnez les numéros que vous souhaitez recevoir et quand :",
+                    "errorEdition":"Erreur : Sélectionnez au moins une édition.",
+                    "errorName": "Erreur : Veuillez entrer un nom valide.",
+                    "errorLastName": 'Erreur : Veuillez saisir un nom de famille valide.',
+                    "errorSuscription":"Échec de l'inscription, réessayez plus tard !",
+                    "errorMail":"Erreur : Veuillez saisir une adresse e-mail valide.",
+                    "callBtn":"S'abonner",
+                    "success": "Terminé ! Vérifiez votre boîte aux lettres pour confirmer l'abonnement !",
+                    "readySuscription":"Vous êtes abonné, consultez votre boite mail!"
                 }
             }
         },
@@ -175,6 +207,22 @@ const configLang = {
                     "listening":"Luisteren",
                     "page":"Bladzijde",
                     
+                },
+                "suscription": {
+                    "mail":"Mail",
+                    "name":"Naam",
+                    "lastName":"Achternaam",
+                    "excerpt":"Direct op uw platformen",
+                    "title":"Abonneer u HIER op onze edities",
+                    "instructions1":"Selecteer de nummers die je wilt ontvangen en wanneer:",
+                    "errorEdition":"Fout: selecteer ten minste één editie.",
+                    "errorName": "Fout: Voer een geldige naam in.",
+                    "errorLastName": 'Fout: Voer een geldige achternaam in.',
+                    "errorSuscription":"Abonneren mislukt, probeer het later opnieuw!",
+                    "errorMail":"Fout: Voer een geldig e-mailadres in.",
+                    "callBtn":"Abonneren",
+                    "success": "Klaar! Controleer je mailbox om de inschrijving te bevestigen!",
+                    "readySuscription":"Je bent geabonneerd, check je mailbox!"
                 }
             }
         },
@@ -232,6 +280,22 @@ const configLang = {
                     "listen":"Ouço",
                     "listening":"Ouvindo",
                     "page":"Página",
+                },
+                "suscription": {
+                    "mail":"o email",
+                    "name":"Nome",
+                    "lastName":"Sobrenome",
+                    "excerpt":"Direto em suas plataformas",
+                    "title":"Subscreva as nossas edições AQUI",
+                    "instructions1":"Selecione as edições que deseja receber e quando:",
+                    "errorEdition":"Erro: selecione pelo menos uma edição.",
+                    "errorName": "Erro: Por favor insira um nome válido.",
+                    "errorLastName": 'Erro: Insira um sobrenome válido.',
+                    "errorSuscription":"Falha ao se inscrever, tente novamente mais tarde!",
+                    "errorMail":"Erro: Por favor insira um e-mail válido.",
+                    "callBtn":"Se inscrever",
+                    "success": "Pronto! Verifique sua caixa de correio para confirmar a assinatura!",
+                    "readySuscription":"Você está inscrito, verifique sua caixa de correio!"
                 }
             }
         },
@@ -289,6 +353,22 @@ const configLang = {
                     "listen":"Listen",
                     "listening":"Listening",
                     "page":"Page",
+                },
+                "suscription": {
+                    "mail":"Mail",
+                    "name":"Name",
+                    "lastName":"Last Name",
+                    "excerpt":"Direct on your platforms",
+                    "title":"Subscribe to our editions HERE",
+                    "instructions1":"Select the issues you want to receive and when:",
+                    "errorEdition":"Error: Select at least one edition.",
+                    "errorName": "Error: Please enter a valid name.",
+                    "errorLastName": 'Error: Please enter a valid last name.',
+                    "errorSuscription":"Failed to subscribe, try again later!",
+                    "errorMail":"Error: Please enter a valid email.",
+                    "callBtn":"Subscribe",
+                    "success": "Done! Check your mailbox to confirm the subscription!",
+                    "readySuscription":"You are subscribed, check your mailbox!"
                 }
             }
         }

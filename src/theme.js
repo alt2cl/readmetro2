@@ -16,7 +16,8 @@ const theme = createTheme({
     mode:'light',
     primary: {
       main: '#2A9858',
-      contrastText: '#fff'
+      contrastText: '#fff',
+      main2: '#218149'
     },
     secondary: {
       main: '#028270',
@@ -26,6 +27,7 @@ const theme = createTheme({
       level2: '#dbdfe3',
       level3: '#c0c4c8',
       level4: '#909499',
+      font1: '#373C41',
     },
     shadow: {
       dark: '#7e8887',

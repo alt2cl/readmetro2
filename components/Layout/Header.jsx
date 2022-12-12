@@ -255,10 +255,12 @@ useEffect(()=>{
           <ListItemText>
               <Link 
                     href="https://www.metroworldnews.com/about-us/" 
-                    color="#000"  
-                    variant="subtitle2"
+                    
                 > 
-                     {langOptions.listWords.menu.about}
+                <Typography variant="subtitle2" sx={{fontSize:'13px!important', color: (theme)=> theme.palette.gray.font1}} >
+                {langOptions.listWords.menu.about}
+                </Typography>
+                     
                 </Link>
                 </ListItemText>
         </MenuItem>
@@ -352,7 +354,7 @@ useEffect(()=>{
                         variant="subtitle2"
                         noWrap
                         component="div"
-                        sx={{ display: { xs: 'none', sm: 'block' } }}
+                        sx={{ display: { xs: 'none', sm: 'block' }, fontSize:'13px!important', color: (theme)=> theme.palette.gray.font1 }}
                     >
                       {langOptions.listWords.menu.portals}
                     </Typography>
@@ -370,11 +372,11 @@ useEffect(()=>{
             >   
                 <Link 
                     href="https://www.metroworldnews.com/about-us/" 
-                    color="#000"  
-                    variant="subtitle2"
                 >
                   
-                  {langOptions.listWords.menu.about}
+                  <Typography variant="subtitle2" sx={{fontSize:'13px!important', color: (theme)=> theme.palette.gray.font1}} >
+                {langOptions.listWords.menu.about}
+                </Typography>
                 </Link>
             </Button>
           </Box>
@@ -420,7 +422,7 @@ useEffect(()=>{
                 <SearchDate/>
 
               </Box>
-              {router.query.edicion == undefined && router.query._date == undefined && listSections &&
+              {router.query.edicion == undefined && router.query.country != undefined && router.query._date == undefined && listSections &&
               <Box sx={{ display: { xs: 'block' }}}>
                 <AnchorSection listNames={listSections} />
               </Box>

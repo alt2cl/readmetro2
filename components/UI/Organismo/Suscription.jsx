@@ -20,7 +20,7 @@ import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
 
 import axios from 'axios';
-
+import {useSelector} from 'react-redux'
 
 
 export default  function Suscription(data) {
@@ -38,6 +38,10 @@ export default  function Suscription(data) {
     const [alertText, setAlerttext] = React.useState("Estas suscrito, revisa tu casilla de correo!");
     const [alertseverity, setAlertseverity] = React.useState("success");
     const [alertopen, setAlertopen] = React.useState(false);
+
+    const langData = useSelector(state => state.lang.dataCurrentLang)
+
+    
 
 
     const handleChangeSub = (event) => {
@@ -110,10 +114,10 @@ export default  function Suscription(data) {
           .then(res => {
             console.log('res', res.data);
             if(res.data.includes("correcto")){
-              setAlerttext("Listo!, Revisa tu casilla de correo para confirmar la suscripción!");
+              setAlerttext(langData.listWords.suscription.success);
               setAlertseverity("success");
             }else{
-              setAlerttext("Error al suscribir, intentalo más tarde!");
+              setAlerttext(langData.listWords.suscription.errorSuscription);
               setAlertseverity("error");
             }
             setAlertopen(true);
@@ -135,11 +139,17 @@ export default  function Suscription(data) {
     tuDate1.setMonth(tuDate1.getMonth() - 3);
     let listado = [];
 
+    console.log('data.data.cities:',data.data.cities)
+
+
     if(data.data.cities != undefined){
       data.data.cities.forEach((city, i) => {
+
+
         // console.log("gg",city);
 
-        const fechapub = city.allEditions[0].date+ ' 00:00:00';
+        if(city.allEditions.length > 0) {
+          const fechapub = city.allEditions[0].date+ ' 00:00:00';
         var tuDate2 = new Date(fechapub);
 
         var a = new Date(tuDate1.getFullYear(),tuDate1.getMonth(),tuDate1.getDate(),tuDate1.getUTCDate());
@@ -155,6 +165,10 @@ export default  function Suscription(data) {
         }else{
           console.log(city.cityname,"tiene que tener fecha mayor a",a.toLocaleDateString(),"y tiene",b.toLocaleDateString());
         }
+
+        }
+
+        
 
 
 
@@ -186,8 +200,7 @@ export default  function Suscription(data) {
       return null;
     }
     return (
-        <Accordion sx={{
-          mt:'2rem', 
+        <Accordion sx={{ 
           mb: '3rem', 
           background: 'transparent', 
           border: (theme) => `2px dashed ${theme.palette.gray.level2}`, 
@@ -206,21 +219,21 @@ export default  function Suscription(data) {
                   }}
               >
                   <Box sx={{display:'flex', flexDirection:'column'}}>
-                      <Typography sx={{color: (theme)=> theme.palette.primary.main}} variant="caption">Directo en tus plataformas</Typography>
-                      <Typography variant="h6">Suscríbete a nuestras ediciones AQUÍ</Typography>
+                      <Typography sx={{color: (theme)=> theme.palette.primary.main}} variant="caption">{langData.listWords.suscription.excerpt}</Typography>
+                      <Typography variant="h6" sx={{fontSize: ['1rem','1.2rem']}}>{langData.listWords.suscription.title}</Typography>
                   </Box>
           </AccordionSummary>
         <AccordionDetails>
         <Box sx={{display: 'flex', flexDirection: 'column'}}>
             <Box sx={{display: 'flex', mb:'1rem',  flexDirection: {xs: 'column', sm: 'row'}}}>
                 <Box sx={{border: '1px dashed #ccc',p: '10px', flexGrow: '1', borderRadius: {xs: '5px 5px 0px 0px', sm: '5px'}  }}>
-                    <Box>Selecciones las ediciones que desea recibir y cuando:</Box>
+                    <Box>{langData.listWords.suscription.instructions1}</Box>
                     <Box>
                         <FormControl sx={{ m: 3 }} error={errorEdition} component="fieldset" variant="standard">
                             <FormGroup sx={{display: 'flex', flexDirection: {xs: 'column', sm: 'column'}}}>
                                 {listado}
                             </FormGroup>
-                            <FormHelperText>{errorEdition ? 'Error: Selecciona al menos una edición.' : ''}</FormHelperText>
+                            <FormHelperText>{errorEdition ? langData.listWords.suscription.errorEdition : ''}</FormHelperText>
 
                         </FormControl>
                     </Box>
@@ -230,17 +243,17 @@ export default  function Suscription(data) {
             <Box>
                 <Box sx={{display:'flex', flexDirection: {xs:'column', sm:'row'}}} component="form" noValidate autoComplete="off">
                         <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>
-                            <TextField id="inputNombre" error={errorNombre} helperText={errorNombre ? 'Error: Ingresa un nombre valido.' : ''} label="Nombre" variant="outlined" name="nombre" fullWidth onChange={handleChangeInfo} />
+                            <TextField id="inputNombre" error={errorNombre} helperText={errorNombre ? langData.listWords.suscription.errorName : ''} label={langData.listWords.suscription.name} variant="outlined" name="nombre" fullWidth onChange={handleChangeInfo} />
                         </Box>
                         <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>
-                            <TextField id="inputApellido" error={errorApellido} helperText={errorApellido ? 'Error: Ingresa un apellido valido.' : ''} label="Apellido" variant="outlined" name="apellido" fullWidth onChange={handleChangeInfo} />
+                            <TextField id="inputApellido" error={errorApellido} helperText={errorApellido ? langData.listWords.suscription.errorlastName : ''} label={langData.listWords.suscription.lastName} variant="outlined" name="apellido" fullWidth onChange={handleChangeInfo} />
                         </Box>
                         <Box sx={{flexGrow: '2', pr: {sm:'1rem'}, mb: {xs:'1rem', sm: '0px'}}}>
-                            <TextField id="inputMail" error={errorCorreo} helperText={errorCorreo ? 'Error: Ingresa un correo valido.' : ''} label="Mail" variant="outlined" name="correo" fullWidth onChange={handleChangeInfo} />
+                            <TextField id="inputMail" error={errorCorreo} helperText={errorCorreo ? langData.listWords.suscription.errorMail : ''} label={langData.listWords.suscription.mail} variant="outlined" name="correo" fullWidth onChange={handleChangeInfo} />
                         </Box>
 
                         <Box sx={{flexGrow: '1'}}>
-                            <Button variant="contained" fullWidth onClick={(e) => enviarSuscripcion(e)}>Suscribir</Button>
+                            <Button variant="contained" fullWidth onClick={(e) => enviarSuscripcion(e)}>{langData.listWords.suscription.callBtn}</Button>
                         </Box>
 
                 </Box>
