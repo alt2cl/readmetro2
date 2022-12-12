@@ -23,6 +23,7 @@ const handleDispatch = (i) => {
             overflowY: 'hidden',
             padding: '0px',
             transition: 'all 1s ease',
+            mb: '2rem',
             //'-webkit-overflow-scrolling': 'touch',
             webkitOverflowScrolling: 'touch',
             scrollSnapType: 'x mandatory',

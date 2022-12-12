@@ -34,6 +34,7 @@ import esLocale from 'date-fns/locale/es';
 import ptLocale from 'date-fns/locale/pt-BR';
 import frLocale from 'date-fns/locale/fr';
 import bgLocale from 'date-fns/locale/bg';
+import { BorderBottom } from '@mui/icons-material';
 
 
 const boxSearch = (theme) => css({
@@ -259,13 +260,37 @@ const SearchDate = (props) => {
     return (
         <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
 
-        <NativeSelect css={pullproduct}
+          <Box sx={{
+                background: (theme)=> theme.palette.primary.main2,
+                position:'relative',
+                display:'flex',
+              
+                '&:before': {
+                  content:'""',
+                  borderTop: '23px solid transparent',
+                  borderBottom: '23px solid transparent ',
+                  borderLeft: (theme)=> `13px solid ${theme.palette.primary.main2}`,
+                  position: 'absolute',
+                  top: '0px',
+                  right: '-12px',
+
+                }
+              }}>
+                <NativeSelect css={pullproduct}
               value={countryCurrent == undefined ? '/': countryCurrent }
               inputprops={{
                 name: router.query.country,
                 id: router.query.country,
               }}
               onChange={handleChangeSelectcountry}
+              sx={{
+                background: 'none',
+                paddingRight: '0px!important',
+                '& select': {
+                  padding: '0px!important'
+                }
+              }}
+              
             >
               {
                 menupaises.map((item)=>(
@@ -275,7 +300,11 @@ const SearchDate = (props) => {
               }
         </NativeSelect>
 
-        <Box sx={{height:'45px', flexGrow: '1'}}>
+          </Box>
+
+        
+
+        <Box sx={{height:'45px', flexGrow: '1', paddingLeft: '10px'}}>
 
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={langDatePicker}>
             <Stack spacing={3} >

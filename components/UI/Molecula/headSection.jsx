@@ -120,7 +120,6 @@ const landingEdition = router.query.edicion && router.query.edicion[0] && router
         
     }
 
-    console.log('colorBullet', colorBullet)
 
     return ( 
         <>

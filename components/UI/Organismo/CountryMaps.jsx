@@ -21,7 +21,6 @@ export default function CountryMaps(params) {
             maxWidth: '1000px',
             margin: '0 auto',
             marginBottom: '3rem',
-            marginLeft: '-15px',
             minWidth: '520px',
         }}>
 
