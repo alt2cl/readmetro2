@@ -1,25 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 // import Layout from '@/components/Layout/layout'
-import SectionBox from '@/components/Layout/sectionBox'
-import HeadSection from '@/components/UI/Molecula/headSection'
-import SlideCarouselCountry from '@/components/UI/Organismo/SlideCarouselCountry'
+
 import Box from '@mui/material/Box';
-import { Typography } from '@mui/material';
-import Image from 'next/image';
-import fallback from '@/public/img/fallback.jpg'
-//import Link from '@/src/Link';
-import Link from 'next/link';
-import Button from '@mui/material/Button';
-import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+
 import HeadSeo from '@/components/Layout/headSeo'
 import siteMetadata from '@/src/siteMetadata'
 
 import IntroText from "@/components/UI/Molecula/IntroText";
-import { useDispatch,useSelector } from 'react-redux'
-import { updateAnchorsectionSlice } from '@/redux/features/anchorsection/anchorsectionSlice';
 import CountryMap from '@/components/UI/Organismo/CountryMaps'
 import Suscription from "@/components/UI/Organismo/Suscription";
 import HeadMap from '@/components/UI/Atomo/HeadMap'
+import {useSelector} from 'react-redux'
 
 
 
@@ -28,6 +19,7 @@ import HeadMap from '@/components/UI/Atomo/HeadMap'
 
 export default function Home({data}) {
   const originalData = typeof(data[0]) != "undefined" ?  data[0] :  data;
+  const langData = useSelector(state => state.lang.dataCurrentLang)
 
 
 
@@ -45,7 +37,7 @@ export default function Home({data}) {
 
       <Suscription data={originalData} />
 
-      <HeadMap title={'Ingresa a la Edición que quieres leer...'} />
+      <HeadMap title={langData.listWords.headSection.map} />
     
       <Box sx={{overflowX:'auto', marginLeft:['-15px', 'auto'], width:'calc(100% + 30px)'}}>
       <CountryMap />

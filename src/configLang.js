@@ -31,6 +31,7 @@ const configLang = {
                     "goWeb": "Ir a la web",
                     "archive": "Archivo",
                     "lastIn":"Lo Último en:",
+                    "map":"Ingresa a la Edición que quieres leer...",
                 },
                 "bottons": {
                     "goLastEditions": "Ir a las últimas ediciones",
@@ -104,6 +105,7 @@ const configLang = {
                     "goWeb": "Aller sur le web",
                     "archive": "Déposer",
                     "lastIn":"Au plus tard:",
+                    "map":"Entrez l'édition que vous voulez lire...",
                 },
                 "bottons": {
                     "goLastEditions": "Accéder aux dernières éditions",
@@ -177,6 +179,7 @@ const configLang = {
                     "goWeb": "Ga naar het web",
                     "archive": "Bestand",
                     "lastIn":"Laatste in:",
+                    "map":"Voer de editie in die u wilt lezen...",
                 },
                 "bottons": {
                     "goLastEditions": "Ga naar de laatste edities",
@@ -251,6 +254,7 @@ const configLang = {
                     "goWeb": "Ir para a web",
                     "archive": "Arquivo",
                     "lastIn":"Mais recente em:",
+                    "map":"Digite a edição que deseja ler...",
                 },
                 "bottons": {
                     "goLastEditions": "Ir para as últimas edições",
@@ -324,6 +328,7 @@ const configLang = {
                     "goWeb": "Go to the website",
                     "archive": "File",
                     "lastIn":"Lastest in:",
+                    "map":"Enter the Edition you want to read...",
                 },
                 "bottons": {
                     "goLastEditions": "Go to the latest editions",

@@ -45,7 +45,7 @@ const HeadMap = ({title, link}) => {
 
             }
             }}>
-                    <Typography variant={"h6"} display={"block"} >
+                    <Typography variant={"subtitle1"} display={"block"} sx={{fontSize:['1rem','1.2rem']}} >
                         {title}
                     </Typography>
               
