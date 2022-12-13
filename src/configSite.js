@@ -14,8 +14,8 @@ const configSite = {
     },
     "routeCountry": [
         {
-            "link":"/",
-            "slug": "/",
+            "link":"/es/mundo",
+            "slug": "mundo",
             "name": "Mundo",
             "externalLink": "/"
         },
@@ -84,6 +84,12 @@ const configSite = {
             "slug": "italy",
             "name": "Italy",
             "externalLink": "https://metronews.it/"
+        },
+        {
+            "link": "/es/russia",
+            "slug": "russia",
+            "name": "Russia",
+            "externalLink": "https://www.metronews.ru/"
         }
     ],
     "langOptions": [

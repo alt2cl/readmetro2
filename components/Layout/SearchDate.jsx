@@ -150,7 +150,6 @@ const SearchDate = (props) => {
 
     const [fechasCalendario, setFechasCalendario] = useState([]);
 
-    const [countryName, setCountryName] = useState('/');
 
 
     const handleChangeDate = (newValue) => {
@@ -255,7 +254,11 @@ const SearchDate = (props) => {
 
     },[router.query.country, countryCurrent])
 
-            
+    num = 6
+
+    console.log(num)
+    
+    var num  
 
     return (
         <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
@@ -264,6 +267,7 @@ const SearchDate = (props) => {
                 background: (theme)=> theme.palette.primary.main2,
                 position:'relative',
                 display:'flex',
+                borderRadius: '5px',
               
                 '&:before': {
                   content:'""',

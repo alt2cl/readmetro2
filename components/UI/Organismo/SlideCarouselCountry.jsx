@@ -147,6 +147,9 @@ export default function SlideCarouselCountry(props){
             borderRadius: 0,
             opacity: 0.4,
             transition: 'opacity .3s ease',
+            justifyContent: 'end',
+            alignItems: 'flex-start',
+
 
             '& svg':  {
                 width: '40px',
