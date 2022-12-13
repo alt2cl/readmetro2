@@ -48,7 +48,7 @@ export default function CountryMaps(params) {
             <Pinmap x={'20%'} y={'83%'} name={'Perú'} bp={'r'} link={`/${langData}/peru`}/>
             <Pinmap x={'39%'} y={'85%'} name={'Argentina'} bp={'l'} link={`/${langData}/argentina`}/>
             <Pinmap x={'19%'} y={'92%'} name={'Chile'} bp={'r'} link={`/${langData}/chile`}/>
-            <Pinmap x={'88%'} y={'30%'} name={'Rusia'} bp={'r'} link={`/${langData}/rusia`}/>
+            <Pinmap x={'88%'} y={'30%'} name={'Rusia'} bp={'r'} link={`/${langData}/russia`}/>
             <Pinmap x={'78%'} y={'43%'} name={'Italia'} bp={'r'} link={`/${langData}/italy`}/>
 
 
