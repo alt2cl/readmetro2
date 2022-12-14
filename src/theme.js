@@ -33,6 +33,7 @@ const theme = createTheme({
       dark: '#7e8887',
       medium: '#939998',
       light: '#dadada',
+      menu: '#656a6e',
     },
     error: {
       main: red.A400,
