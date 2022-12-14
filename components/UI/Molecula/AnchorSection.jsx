@@ -29,10 +29,11 @@ const handleDispatch = (i) => {
             scrollSnapType: 'x mandatory',
             scrollPadding: '0 0 0 0',
             scrollBehavior: 'smooth',
-            backgroundImage: 'linear-gradient(to right, #f8fafd, #f1f4f8, #eaedf3, #e3e7ef, #dce1ea, #dce1ea, #dce1ea, #dce1ea, #e3e7ef, #eaedf3, #f1f4f8, #f8fafd)',
+            backgroundColor: (theme) => theme.palette.shadow.menu,
+            //backgroundImage: 'linear-gradient(to right, #f8fafd, #f1f4f8, #eaedf3, #e3e7ef, #dce1ea, #dce1ea, #dce1ea, #dce1ea, #e3e7ef, #eaedf3, #f1f4f8, #f8fafd)',
 }}>
             {listNames.map((item, i)=>{
-                return <Button onClick={()=>handleDispatch(i)} sx={{ whiteSpace: 'nowrap', flex: 'none', color: '#636465'}} key={'buttonanchor-'+i}>
+                return <Button onClick={()=>handleDispatch(i)} sx={{ whiteSpace: 'nowrap', flex: 'none', color: '#fff'}} key={'buttonanchor-'+i}>
                     {item}
                 </Button>
             })}

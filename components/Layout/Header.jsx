@@ -255,7 +255,6 @@ useEffect(()=>{
           <ListItemText>
               <Link 
                     href="https://www.metroworldnews.com/about-us/" 
-                    
                 > 
                 <Typography variant="subtitle2" sx={{fontSize:'13px!important', color: (theme)=> theme.palette.gray.font1}} >
                 {langOptions.listWords.menu.about}
@@ -291,12 +290,6 @@ useEffect(()=>{
 
         ))}
         
-        
-        
-        
-        
-        
-        
       </MenuList>
       
     </Menu>
@@ -315,8 +308,8 @@ useEffect(()=>{
 
   return (
     <>
-      <AppBar color="inherit" position="relative" sx={{ boxShadow: 1 }} >
-        <Toolbar>
+      <AppBar color="inherit" position="relative" sx={{ boxShadow: (theme)=> `0px -3px 10px ${theme.palette.shadow.menu}`}} >
+        <Toolbar sx={{minHeight:['56px','80px']}}>
             <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
               <Link href={'/'}>
                 <IconButton
