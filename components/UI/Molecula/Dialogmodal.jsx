@@ -49,20 +49,23 @@ export default function Dialogmodal(props) {
 
     const handleNextAudio = () => {
 
-      //console.log('playListtt', playList)
+      console.log('playListtt', playList)
 
-
+      //esto detiene el current audio
       if(playList[pageplayer][indexplayer]){
         playList[pageplayer][indexplayer].audio.pause();
         playList[pageplayer][indexplayer].audio.currentTime = 0
       }
 
-      
+      //esto revisa si hay un siguiente audio
       if(playList[pageplayer][indexplayer + 1]) {
         console.log('no hay entre al 1', pageplayer, indexplayer + 1 , playList[pageplayer])
         
+        //si hay un sig audio le pone play
         playList[pageplayer][indexplayer + 1].audio.play()
 
+
+        //actualiza el redux con el audio player en curso
         dispatch(updateCurrentPlay({
           show: showplayer,
           play: true,

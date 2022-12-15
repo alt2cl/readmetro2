@@ -19,7 +19,7 @@ export const audioplayerSlice = createSlice({
       state.currentPlay = action.payload
     },
     updatePlayList: (state, action) => {
-      //console.log('action.payload', action.payload)
+      console.log('esto recibe el playlist', action.payload)
       state.playList.push(action.payload) 
     }
     

@@ -103,6 +103,7 @@ const NewsPagesList = (props) => {
 
         const listAudios = []
 
+
         if(audioContents){
             audioContents.map((item, i)=>{
                 if (item.pagina == pagina) {
@@ -119,6 +120,43 @@ const NewsPagesList = (props) => {
         return listAudios
 
     }
+
+
+    //nuevo
+
+    let listaAudiosPorPagina = []
+    
+    //si hay cortes entonces...
+    if(audioContents && audioContents.length > 0) {
+        console.log('resultado audioContents', audioContents, dataImages.countpages)
+        for (let index = 1; index < dataImages.countpages; index++) {
+            
+            let result = audioContents.filter(audioitem => audioitem.pagina === String(index))
+
+            console.log('_index y result :', index, result, result.length)
+            let arraypage = []
+
+            for (let index = 0; index < result.length; index++) {
+                const element = result[index];
+                
+                arraypage.push({
+                    url: element.audio,
+                    numitem: `${element.pagina}.${index + 1}`,
+                })
+                
+            }
+
+            listaAudiosPorPagina.push(arraypage) 
+           
+
+            
+            
+
+        }
+
+    }
+
+    console.log('listaAudiosPorPagina :', listaAudiosPorPagina, getListAudios(0) )
 
    
 

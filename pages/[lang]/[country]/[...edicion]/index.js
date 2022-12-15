@@ -84,19 +84,7 @@ function EdicionTemplate({data}) {
 
   const dispatch = useDispatch();
 
-  // const dialogImagesArrayState = useSelector(state => state.dialog.imagesvalues.arrayimages)
-  // const dialogDatesState = useSelector(state => state.dialog.imagesvalues)
-
-
-
-  // const handleCloseModal = () => {
-  //   setOpenModal(false)
-  // };
-
-
-    // const handleOpenModal = () => {
-    //   setOpenModal(true)
-    // };
+ 
 
 
     const handleBackModal = () => {
