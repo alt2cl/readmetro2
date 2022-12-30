@@ -6,10 +6,12 @@ import Chip from '@mui/material/Chip';
 import HeadphonesIcon from '@mui/icons-material/Headphones';
 //import Button from '@mui/material/Button';
 import AudioPlayer from '@/components/UI/Organismo/AudioPlayer'
-import AudioPlayList from '@/components/UI/Organismo/AudioPlayList'
-import fallback from '@/public/img/fallback.jpg'
+import AudioPlayList from '@/components/UI/Organismo/AudioPlayList2'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Link from 'next/link'
+import { useDispatch } from 'react-redux'
+import { updatePlayListAll } from '@/redux/features/audioplayer/audioplayerSlice'
+
 
 
 const NewsPagesList = (props) => {
@@ -19,6 +21,8 @@ const NewsPagesList = (props) => {
     // const routerpage = router.query.edicion && router.query.edicion[2] ? router.query.edicion[2] : null
 
     //const pagina = page
+
+    const dispatch = useDispatch()
 
 
     const audioContents = dataImages.recortes
@@ -129,46 +133,52 @@ const NewsPagesList = (props) => {
     //si hay cortes entonces...
     if(audioContents && audioContents.length > 0) {
         console.log('resultado audioContents', audioContents, dataImages.countpages)
+        
         for (let index = 1; index < dataImages.countpages; index++) {
-            
+            const item = audioContents[index]
             let result = audioContents.filter(audioitem => audioitem.pagina === String(index))
 
-            console.log('_index y result :', index, result, result.length)
-            let arraypage = []
 
-            for (let index = 0; index < result.length; index++) {
-                const element = result[index];
-                
-                arraypage.push({
-                    url: element.audio,
-                    numitem: `${element.pagina}.${index + 1}`,
-                })
-                
+            
+
+            const arrayAudios = []
+
+            let newResult = []
+
+            if(result.length > 0) {
+                newResult = result.map(item => {
+                    let cloneItem = {...item}
+                    cloneItem.audio = new Audio(item.audio)
+                    return (cloneItem)
+                }
+                )
             }
+            console.log('el result ::', result , newResult)
 
-            listaAudiosPorPagina.push(arraypage) 
-           
 
-            
-            
-
+            listaAudiosPorPagina.push(newResult) 
         }
 
     }
 
-    console.log('listaAudiosPorPagina :', listaAudiosPorPagina, getListAudios(0) )
+    console.log('listaAudiosPorPagina ::', listaAudiosPorPagina )
 
    
 
     useEffect(() => {
         scrolltoPosition(itemsRef)
+        if(listaAudiosPorPagina.length > 0 ){
+            console.log('los states despache', listaAudiosPorPagina)
+            dispatch(updatePlayListAll(listaAudiosPorPagina))
+        }
+        
     },[])
 
     for (let index = 1; index < dataImages.countpages; index++) {
         newsPage.push(
             <Box sx={{position: 'relative', pb: '1rem'}} key={`itemNewspaper${index}`} id={`page-${index}`} ref={el => itemsRef.current[index] = el}>
                 <Box sx={{alignItems: 'center',display:'flex', top: '0px', zIndex: '20', background: getListAudios(index).length > 0 ? 'linear-gradient(to bottom, rgba(58,58,70,1) 20%,rgba(58,58,70,0))': 'linear-gradient(to bottom, rgba(58,58,70,0.3) 20%,rgba(58,58,70,0))', p: '5px 0 1rem 5px' }}>
-                    <AudioPlayList urls={getListAudios(index)} page={index} cantPages={dataImages.countpages}/>
+                    <AudioPlayList page={index} cantPages={dataImages.countpages}/>
                     <AudioPlayer urls={getListAudios(index)} page={index} />
                 </Box>
                 <Box sx={{position: 'relative'}}>
