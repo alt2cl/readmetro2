@@ -11,7 +11,8 @@ export const audioplayerSlice = createSlice({
       index: 0,
       page: 0,
     },
-    playList: []
+    playList: [],
+    playListAll: []
   },
   reducers: {
     updateCurrentPlay: (state, action) => {
@@ -21,6 +22,9 @@ export const audioplayerSlice = createSlice({
     updatePlayList: (state, action) => {
       console.log('esto recibe el playlist', action.payload)
       state.playList.push(action.payload) 
+    },
+    updatePlayListAll: (state, action) => {
+      state.playListAll.push(action.payload) 
     }
     
   }
@@ -29,6 +33,6 @@ export const audioplayerSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const {updateCurrentPlay, updatePlayList } = audioplayerSlice.actions
+export const {updateCurrentPlay, updatePlayList, updatePlayListAll } = audioplayerSlice.actions
 
 export default audioplayerSlice.reducer

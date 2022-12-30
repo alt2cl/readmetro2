@@ -30,80 +30,104 @@ export default function Dialogmodal(props) {
     const pageplayer = useSelector(state => state.audioplayer.currentPlay.page)
     const indexplayer = useSelector(state => state.audioplayer.currentPlay.index)
 
-    const playList = useSelector(state => state.audioplayer.playList)
+    const playList = useSelector(state => state.audioplayer.playListAll)
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
+    const currentPlayList = playList[0]
+
     const handlePauseAudio = () => {
       //console.log('contador handle pause:', pageplayer, indexplayer, playList[pageplayer][indexplayer].audio.pause() )
-      playList[pageplayer][indexplayer].audio.pause()
+      currentPlayList[pageplayer][indexplayer].audio.pause()
       dispatch(updateCurrentPlay({
         show: showplayer,
-        play: true,
+        play: false,
         title: `Página ${pageplayer}`,
         index: indexplayer,
         page: pageplayer,
       }))
     }
 
-    const handleNextAudio = () => {
-
-      console.log('playListtt', playList)
+    const handlePrevNextAudio = (direction) => {
 
       //esto detiene el current audio
-      if(playList[pageplayer][indexplayer]){
-        playList[pageplayer][indexplayer].audio.pause();
-        playList[pageplayer][indexplayer].audio.currentTime = 0
+      if(currentPlayList[pageplayer] && currentPlayList[pageplayer][indexplayer] && currentPlayList[pageplayer][indexplayer].audio){
+        currentPlayList[pageplayer][indexplayer].audio.pause();
+        currentPlayList[pageplayer][indexplayer].audio.currentTime = 0
       }
-
       //esto revisa si hay un siguiente audio
-      if(playList[pageplayer][indexplayer + 1]) {
-        console.log('no hay entre al 1', pageplayer, indexplayer + 1 , playList[pageplayer])
-        
+      let sigIndex = direction == "next" ? indexplayer + 1 : indexplayer - 1
+
+      if(currentPlayList[pageplayer] && currentPlayList[pageplayer][sigIndex]?.audio) {
+        console.log('entre al 1')
         //si hay un sig audio le pone play
-        playList[pageplayer][indexplayer + 1].audio.play()
-
-
+        currentPlayList[pageplayer][sigIndex].audio.play()
         //actualiza el redux con el audio player en curso
         dispatch(updateCurrentPlay({
           show: showplayer,
           play: true,
           title: `Página ${pageplayer}`,
-          index: indexplayer + 1,
+          index: sigIndex,
           page: pageplayer,
         }))
       } else {
-        
-        console.log('no hay entre al 2', pageplayer, indexplayer, playList[pageplayer + 1])
+        console.log('entre al 2')
 
-        // playList[pageplayer][indexplayer].audio.pause()
-        // playList[pageplayer][indexplayer].audio.currentTime = 0
+        if ( pageplayer < currentPlayList.length) {
+          console.log('entre al 3')
+          
+          // entro si hay mas nodos
 
+            function isArrayIndex(element, index) {
+              if (element.length > 0 && index > pageplayer) {
+                return true
+              }
+              return false
+            }
 
-        if (playList[pageplayer + 1][0]) {
-            //playList[pageplayer + 1][0].audio.play()
+            function isArrayIndexPrev(element, index) {
+              if (index < pageplayer && element.length > 0 ) {
+                return true
+              }
+              return false
+            }
+
+            let cloneCurrentPlayList = [...currentPlayList]
+            let reverseCloneCurrentPlayList = cloneCurrentPlayList.reverse()
+
+            console.log('reverse::', reverseCloneCurrentPlayList)
+
+            //obtengo el siguiente nodo con mas de 0 elementos y que este con index mayor al current index
+            let sigIndexWithContent = currentPlayList.findIndex(direction == "next" ? isArrayIndex : isArrayIndexPrev)
 
             dispatch(updateCurrentPlay({
               show: showplayer,
               play: true,
-              title: `Página ${pageplayer + 1}`,
+              title: `Página ${sigIndexWithContent  }`,
               index: -1,
-              page: pageplayer + 1,
+              page: sigIndexWithContent ,
             }))
+        } else {
+          console.log('entre al 4')
+          //entro si es el ultimo nodo y mando el indice del primero
+          let indicePrimerNodo =  currentPlayList.findIndex(element => element.length > 0)
 
-        } 
-        
+          dispatch(updateCurrentPlay({
+            show: showplayer,
+            play: true,
+            title: `Página ${indicePrimerNodo}`,
+            index:  -1,
+            page: indicePrimerNodo,
+          }))
+
+        }
       }
-      
-
-      
-
     }
 
     const handlePlayAudio = () => {
 
-      playList[pageplayer][indexplayer].audio.play()
+      currentPlayList[pageplayer][indexplayer].audio.play()
       dispatch(updateCurrentPlay({
         show: showplayer,
         play: true,
@@ -113,32 +137,7 @@ export default function Dialogmodal(props) {
       }))
       
 
-      // let myPlaylist = [...playList]
 
-      // console.log('contador playList pageplayer', myPlaylist[pageplayer][indexplayer].audio.play())
-      // myPlaylist[pageplayer][indexplayer].audio.play()
-
-      // if(pageplayer != 0) {
-      //   myPlaylist[pageplayer]
-
-      // }
-
-      
-
-      // console.log('playList', playList[0].find(audio => audio.num === '1.1'))
-      // const first = playList[0].find(audio => audio.num === '1.1')
-      // //first.playing = true
-      // first.audio.play()
-
-      
-
-      // dispatch(updateCurrentPlay({
-      //   show: showplayer,
-      //   play: true,
-      //   title: "",
-      //   index: indexplayer,
-      //   page: pageplayer,
-      // }))
     }
 
     useEffect(()=>{
@@ -178,7 +177,7 @@ export default function Dialogmodal(props) {
             <Box sx={{display: 'flex', width: '100%', justifyContent:'space-between', alignItems: 'center'}}>
               <Box sx={{display:'flex', alignItems: 'center'}}>
                 <Box sx={{display: 'flex'}}>
-                    <IconButton color="secondary" aria-label="Previo Audio" size="large">
+                    <IconButton color="secondary" aria-label="Previo Audio" size="large" onClick={() => handlePrevNextAudio("prev")}>
                       <SkipPreviousIcon  fontSize="inherit" />
                     </IconButton>
                     {checkedplay ? 
@@ -190,7 +189,7 @@ export default function Dialogmodal(props) {
                       <PlayCircleOutlineIcon  fontSize="inherit" />
                     </IconButton>
                     }
-                    <IconButton color="primary" aria-label="Siguiente Audio" size="large" onClick={() => handleNextAudio()}>
+                    <IconButton color="primary" aria-label="Siguiente Audio" size="large" onClick={() => handlePrevNextAudio("next")}>
                       <SkipNextIcon  fontSize="inherit" />
                     </IconButton>
                 </Box>
