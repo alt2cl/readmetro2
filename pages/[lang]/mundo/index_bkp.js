@@ -17,15 +17,8 @@ import Suscription from "@/components/UI/Organismo/Suscription";
 import IntroText from "@/components/UI/Molecula/IntroText";
 import { useDispatch,useSelector } from 'react-redux'
 import { updateAnchorsectionSlice } from '@/redux/features/anchorsection/anchorsectionSlice';
-import Grid from '@mui/material/Grid';
-import { useRouter } from 'next/router'
-
 
 export default function Home({data}) {
-
-  const router = useRouter()
-
-  
 
   const originalData = typeof(data[0]) != "undefined" ?  data[0] :  data;
 
@@ -35,9 +28,6 @@ export default function Home({data}) {
 
   const langData = useSelector(state => state.lang.dataCurrentLang)
   const langCurrent = useSelector(state => state.lang.currentLang)
-  const dateCurrent = useSelector(state => state.date.stringDate)
-
-  
 
   const triggerAnchor = useSelector(state => state.anchorsection.trigger)
 
@@ -47,71 +37,12 @@ export default function Home({data}) {
   return item.countryname
   })
 
-  console.log('dateCurrent:',typeof dateCurrent)
-  let fecha1 = "20230111"
-
-  if (dateCurrent) {
-    const arrayDate = dateCurrent.split('/')
-    const year= arrayDate[2]
-    const month= arrayDate[1]
-    const day= arrayDate[0]
-    fecha1 =  year+month+day
-
-    console.log('dateCurrent 2:',dateCurrent, fecha1)
-    
-  }
 
   
 
   
 
-
-
-  const listCountry = data.map((item, index)=>{
-    const citie = item.cities[0]
-    const allEdition = citie.allEditions[0]
-    console.log('allEdition', item.countryname, allEdition ,item  )
-    // const date = item.cities[0].allEditions[0].date ;
-    // const fecha = date != null ? date.replaceAll("-","/") : null;
-    // let foto = null
-    // if(fecha) {
-    //     foto = `https://rm.metrolatam.com/${fecha}/${item.cityslug}/thumb_1-${item.cities[0].allEditions[0].newcode}.webp`
-    // }
-
-    let fecha 
-
-    if(allEdition) {
-      fecha = allEdition.date.replaceAll("-","/")
-    }
-
-    return(
-    
-      <Grid item xs={6} md={2} key={'grid-'+item.countryname}>
-        {item.countryname}
-          {allEdition ?
-            <Image src={`https://rm.metrolatam.com/${fecha}/${citie.cityslug}/thumb_1-${allEdition.newcode}.webp`} 
-            layout="responsive"
-            width={fallback.width}
-            height={fallback.height}
-            alt={'error'}
-            /> 
-          : <Image src={fallback.src} 
-            layout="responsive"
-            width={fallback.width}
-            height={fallback.height}
-            alt={'error'}
-            />
-          }
-       
-      </Grid>
-     
-    )
-
-  })
-
-  
-
-    const listCountry_ = data.map((item, index) => {
+    const listCountry = data.map((item, index) => {
 
         const countryslug = item.countryslug
         const dataSlidePost = item.cities.map((item, i) => {
@@ -153,41 +84,48 @@ export default function Home({data}) {
                           alt={'error'}
                           />
                           }
-               
+                      
+                      {/* <Box sx={{display:'flex', position: 'absolute', bottom: '19px', left: '19px'}}>
+                          <Box css={slideCSS.counter}>
+                              {i}
+                          </Box>
+                      </Box> */}
                       
                   </Box>
 
                   <Box  sx={{position: 'absolute',bottom: '4px',left: '4px',right: '4px',display:'flex',justifyContent:'center', mb:'1rem'}}>
-                      <Link href={'/'+langCurrent+'/'+countryslug+'/'+item.cityslug}>
-                      <Button variant="contained" endIcon={<ArrowForwardOutlinedIcon />}>
-                      {langData.listWords.headSection.goEdition}
-                      </Button>
-                      </Link>
-                  </Box>
+                            <Link href={'/'+langCurrent+'/'+countryslug+'/'+item.cityslug}>
+                            <Button variant="contained" endIcon={<ArrowForwardOutlinedIcon />}>
+                            {langData.listWords.headSection.goEdition}
+                            </Button>
+                            </Link>
+                        </Box>
 
                   </>
               
               )
           })
-
-
       
         return(
-        <Box ref={el => refSection.current[index] = el} key={`sectionbox-${index}`}>
-          <SectionBox >
-            <HeadSection titleSection={item.countryname} slug={item.countryslug} linksite={item.website} linkedition  
-            colorBullet={'green'} 
-            data={item}
-            pretext={langData.listWords.headSection.lastIn}
-            />
-            <SlideCarouselCountry 
-            widthItem={250} 
-            content={dataSlidePost} 
-            citySlug={item.countryslug} 
-            optionsbtnsoff 
-            goeditionon
-            />
-          </SectionBox>
+
+          <Box ref={el => refSection.current[index] = el} key={`sectionbox-${index}`}>
+        
+        <SectionBox >
+          <HeadSection titleSection={item.countryname} slug={item.countryslug} linksite={item.website} linkedition  
+          colorBullet={'green'} 
+          data={item}
+          pretext={langData.listWords.headSection.lastIn}
+          />
+
+          <SlideCarouselCountry 
+          widthItem={250} 
+          content={dataSlidePost} 
+          citySlug={item.countryslug} 
+          optionsbtnsoff 
+          goeditionon
+          />
+
+        </SectionBox>
         </Box>
         )
 
@@ -203,15 +141,9 @@ export default function Home({data}) {
     }
 
     useEffect(()=>{
-      
-      if (!router.query._date) {
-        router.push(`/${router.query.lang}/mundo?_date=${fecha1}`)
-        console.log('router query',router.query)
-      }
-      
       dispatch(updateAnchorsectionSlice(listSections))
       handleAnchor(triggerAnchor)
-      },[triggerAnchor, listSections, router])
+      },[triggerAnchor, listSections])
 
   return (
     <>
@@ -224,37 +156,16 @@ export default function Home({data}) {
     /> 
     <IntroText />
     <Suscription data={originalData} />
-    <Grid container spacing={2}>
     {listCountry}
-    </Grid>
-    
     </>
       
   )
 }
 
-  export async function getServerSideProps({params, query}) {
+  export async function getServerSideProps() {
     // Call an external API endpoint to get posts.
     // You can use any data fetching library
-
-    let res= null
-    const fecha = new Date().toLocaleString(('en-CA'), {year: 'numeric', month: '2-digit', day: '2-digit'}).toString()
-
-   
-    if(query._date){
-      const splitDate = query._date.split('')
-      const y = splitDate.slice(0,4).toString().replaceAll(',','')
-      const m = splitDate.slice(4,6).toString().replaceAll(',','')
-      const d = splitDate.slice(6,8).toString().replaceAll(',','')
-      res = await fetch(`https://pdfserv2.readmetro.com/readmetro.php?date=${y+'-'+m+'-'+d}`);
-    } else {
-      res = await fetch(`https://pdfserv2.readmetro.com/readmetro.php?date=${fecha}`);
-    }
-
-
-    //const date = splitDate[0]
-    
-    
+    const res = await fetch('https://api.readmetro.com/country.json');
     const data = await res.json()
   
     // By returning { props: { posts } }, the Blog component

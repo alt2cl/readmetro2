@@ -308,7 +308,7 @@ useEffect(()=>{
 
   return (
     <>
-      <AppBar color="inherit" position="relative" sx={{ boxShadow: (theme)=> `0px -3px 10px ${theme.palette.shadow.menu}`, mb: '2rem'}} >
+      <AppBar color="inherit" position="relative" sx={{ boxShadow: (theme)=> `0px -3px 10px ${theme.palette.shadow.menu}`, mb: '0px'}} >
         <Toolbar sx={{minHeight:['56px','80px']}}>
             <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
               <Link href={'/'}>

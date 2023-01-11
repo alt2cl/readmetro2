@@ -133,7 +133,7 @@ function CountryTemplate({data}) {
 
           console.log('stringDateState', stringDateState)
 
-          if(stringDateState){
+          if(router.query._date){
             city.allEditions.map((currentEdition, i) => {
               let date = currentEdition.date.replaceAll('-','/')
 

@@ -114,7 +114,7 @@ const SearchDate = (props) => {
   const landingEdition = router.query.edicion && router.query.edicion[0] && router.query.edicion[1] != 'archivo' ? true : false
   const landingArchivo = router.query.edicion && router.query.edicion[1] && router.query.edicion[1] == 'archivo' ? true : false
 
-
+  console.log('el rouyer:', router)
 
   let langDatePicker 
 
@@ -153,18 +153,27 @@ const SearchDate = (props) => {
 
 
     const handleChangeDate = (newValue) => {
+      //newValue es lo q devuelve la seleccion del modal del calendario
 
-      setValueDate(newValue);
+      //return false
+      //aqui seteamos el formato de la fecha q retorna
+
+      let dateString
+
+      if(newValue){
+        setValueDate(newValue);
       const formatDate = newValue.toLocaleDateString('es-CL', { year: 'numeric',month: '2-digit',day: '2-digit' })
       const arrayDate = formatDate.split("-")
-      const dateString = arrayDate.length > 2 ? `${arrayDate[2]}/${arrayDate[1]}/${arrayDate[0]}` : null
+      dateString = arrayDate.length > 2 ? `${arrayDate[2]}/${arrayDate[1]}/${arrayDate[0]}` : null
 
       
       dispatch(updateDateSlice(dateString))
 
-      if(countryCurrent == "/" || countryCurrent == undefined){
-        router.push(`/?_date=${dateString.replaceAll('/','')}`)
+      if(!countryCurrent && router.asPath.includes('mundo')){
+        router.push(`/${router.query.lang}/mundo/?_date=${dateString.replaceAll('/','')}`)
       }
+
+     
 
       if (landingArchivo || landingEdition ) {
         console.log('search estoy en el archivo')
@@ -176,6 +185,13 @@ const SearchDate = (props) => {
         console.log('search estoy en el landing edicion', router)
         router.push(`/${router.query.lang}/${router.query.country}/?_date=${dateString.replaceAll('/','')}`)
       }
+
+      }
+      
+
+
+
+     
       
     };
 
@@ -219,7 +235,6 @@ const SearchDate = (props) => {
         let arrayfechas = []
         let arrayfechasCountry = []
 
-        console.log('valor router', router.query.edicion)
 
         for (const key in fechas) {
             if (fechas.hasOwnProperty(key) && router.query.edicion && router.query.edicion[0] && fechas[key].indexOf(router.query.edicion[0]) > -1) {
@@ -254,11 +269,7 @@ const SearchDate = (props) => {
 
     },[router.query.country, countryCurrent])
 
-    num = 6
-
-    console.log(num)
-    
-    var num  
+ console.log('el router en search:', router)
 
     return (
         <Box sx={{ flexGrow: 1, display: 'flex' }} css={boxSearch}>
@@ -326,7 +337,12 @@ const SearchDate = (props) => {
                   const y = dateParam.getFullYear()
                   const d =  ("0" + dateParam.getDate()).slice(-2);
                   const stringDate = `${d}-${m}-${y}`
-                  return fechasCalendario.includes(stringDate) ? false : true;
+                  if(router.query.country){
+                    return fechasCalendario.includes(stringDate) ? false : true;
+                  } else {
+                    return false
+                  }
+                  
                   //console.log('shouldDisableDate(dateParam)', shouldDisableDate(dateParam))
                   //return disableDates(dateParam)
                 }}

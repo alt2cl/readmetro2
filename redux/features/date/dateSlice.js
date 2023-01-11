@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const fecha = new Date()
+let fecha = new Date()
 
 export const dateSlice = createSlice({
   name: 'date',
   initialState: {
     //starDate: fecha,
-    stringDate: null,
+    stringDate: fecha.toLocaleString(('en-CA'), {year: 'numeric', month: '2-digit', day: '2-digit'}).toString(),
     arrayEnableDates: []
     
   },

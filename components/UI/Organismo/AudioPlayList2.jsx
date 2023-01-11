@@ -55,7 +55,7 @@ const AudioPLayList = (props) => {
 
     const plaiall =()=> {
  
-
+        console.log('entre al 1')
         const myPlaylist = [...playListAll[0]]
         const lengtlist = myPlaylist[page - 1].length 
         //const currentplay = myPlaylist[currentPage].findIndex(currentAudio => currentAudio.play == true)
@@ -77,19 +77,23 @@ const AudioPLayList = (props) => {
 
         
         if(myPlaylist[pageplayer].length == 0 ) {
+            console.log('entre al 2', indicePrimerNodo, indexplayer)
             myPlaylist[indicePrimerNodo][indexplayer].audio.pause()
             myPlaylist[indicePrimerNodo][indexplayer].audio.currentTime = 0
+            
 
         } else {
+            console.log('entre al 3', pageplayer, indexplayer, myPlaylist[pageplayer])
             myPlaylist[pageplayer][indexplayer].audio.pause()
             myPlaylist[pageplayer][indexplayer].audio.currentTime = 0
+            
         }
         
 
         
-
         
         if(counter < lengtlist) {
+            console.log('entre al 4',currentPage, counter, lengtlist)
             dispatch(updateCurrentPlay({
                 show: true,
                 play: true,
@@ -100,12 +104,11 @@ const AudioPLayList = (props) => {
 
             myPlaylist[currentPage][counter].audio.play()
 
-        }
-        
-        //esto controla el counter del playlist, si el playlist se acaba vuelve a 0
-        if(counter < lengtlist) {
-            console.log('counter y lenglist', counter, lengtlist)
-            counter = counter + 1
+            if (myPlaylist[currentPage][counter + 1].audio) {
+                counter = counter + 1
+            }
+
+            
 
         } else  {
             console.log('a-- counter mayor q leng', counter , lengtlist)
@@ -117,6 +120,7 @@ const AudioPLayList = (props) => {
                 index : counter ,
                 page: currentPage
             }))
+            console.log('entre al 6')
         }
 
         //esto reploduce la siguiente si hay
